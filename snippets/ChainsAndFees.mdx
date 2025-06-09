@@ -1,0 +1,102 @@
+export const Chains = ({ env, id }) => {
+  const key = `chains-${env}`;
+
+  if (typeof window === "undefined") {
+    return null;
+  }
+  if (typeof document === "undefined") {
+    return null;
+  }
+
+  if (!window[key]) {
+    window[key] = {
+      fetching: false,
+      data: null,
+      observer: null
+    };
+  }
+
+  if (!window[key].fetching) {
+    const appendChains = (data) => {
+      const rootElement = document.getElementById(id);
+      if (!rootElement) {
+        return;
+      }
+      const rows = data
+        .slice()
+        .sort((a, b) => a.network.localeCompare(b.network))
+        .map((network) => {
+          return `<tr key=${network.id}>
+          <td style="text-transform: capitalize; padding: 12px 8px; border-bottom: 1px solid #e5e7eb;">${network.network}</td>
+          <td style="padding: 12px 8px; border-bottom: 1px solid #e5e7eb;">${network.id}</td>
+          <td style="padding: 12px 8px; border-bottom: 1px solid #e5e7eb;">0%</td>
+          <td style="padding: 12px 8px; border-bottom: 1px solid #e5e7eb;">0.05%</td>
+        </tr>`;
+        });
+
+      rootElement.innerHTML = `<div id="${id}-marker"></div>${rows.join("")}`;
+      if (!window[key].observer) {
+        let observer = new MutationObserver(function(mutations) {
+          if (!document.getElementById(`${id}-marker`)) {
+            appendChains(data)
+          }
+        });
+        observer.observe(document.body, {childList: true, subtree: true});
+        window[key].observer = observer
+      }
+    };
+
+    const fetchChains = async () => {
+      try {
+        if (window[key].fetching) return;
+        window[key].fetching = true;
+        window[key].data = null;
+        const response = await fetch("https://nodes.sequence.app/status", {
+          headers: {
+            'accept': '*/*',
+            'x-access-key': 'AQAAAAAAAEDhMKr7aFdy4PIevg2ywkOvUEE'
+          }
+        });
+        const data = await response.json();
+        window[key].fetching = false;
+        window[key].data = data.networks;
+        appendChains(data.networks);
+      } catch (e) {
+        window[key].fetching = false;
+        window[key].data = false;
+      }
+    };
+
+    if (window[key].data) {
+      appendChains(window[key].data);
+    } else {
+      fetchChains();
+    }
+  }
+
+  return (
+    <table
+      style={{ 
+        width: "100%", 
+        borderCollapse: "collapse",
+        tableLayout: "fixed"
+      }}
+      className="anypay-table"
+    >
+      <thead
+        style={{
+          borderBottom: "2px solid rgb(227 226 230)",
+          backgroundColor: "#f9fafb"
+        }}
+      >
+        <tr style={{ textAlign: "left" }}>
+          <th style={{ padding: "16px 8px", fontWeight: "600", fontSize: "14px" }}>Network Name</th>
+          <th style={{ padding: "16px 8px", fontWeight: "600", fontSize: "14px" }}>Chain ID</th>
+          <th style={{ padding: "16px 8px", fontWeight: "600", fontSize: "14px" }}>Deposit Fee</th>
+          <th style={{ padding: "16px 8px", fontWeight: "600", fontSize: "14px" }}>Withdrawal Fee</th>
+        </tr>
+      </thead>
+      <tbody id={id}></tbody>
+    </table>
+  );
+};

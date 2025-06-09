@@ -1,0 +1,81 @@
+---
+title: 'Chain Abstraction'
+description: 'AnyPay abstracts away complexities of interacting with multiple blockchain networks as well as unified user liquidity for enhanced buying power.'
+icon: 'layer-group'
+---
+
+## What is Chain Abstraction?
+
+Chain abstraction is a paradigm that hides the complexity of multiple blockchains from both developers and end users, creating a unified experience that feels like interacting with a single blockchain. Unlike traditional cross-chain solutions that require explicit bridging and manual chain management, chain abstraction provides a seamless, automated layer that handles multi-chain interactions behind the scenes.
+
+## Cross-Chain vs Chain Abstraction
+
+<div style={{display: 'flex', gap: '20px', margin: '20px 0'}}>
+  <div style={{flex: 1}}>
+    <h3>Traditional Cross-Chain Experience</h3>
+    <img src="/images/standard-cross-experience.png" alt="Cross-Chain" style={{width: '100%', borderRadius: '8px'}} />
+  </div>
+  <div style={{flex: 1}}>
+    <h3>Chain Abstraction with AnyPay</h3>
+    <img src="/images/chain-abstraction.png" alt="Chain Abstraction through AnyPay" style={{width: '100%', borderRadius: '8px'}} />
+  </div>
+</div>
+
+### Traditional Cross-Chain
+
+In traditional cross-chain interactions, users:
+
+- Manage multiple wallets, gas tokens, and bridge separately for a payment
+- Understand bridging protocols and wait times
+- Handle transaction failures across different chains
+- Navigate complex user interfaces for each blockchain
+
+The standard cross-chain experience requires users to be aware of and manage multiple blockchain networks, each with their own tokens, interfaces, and complexities which significantly increases complexity.
+
+### Chain Abstraction
+
+Chain abstraction eliminates these complexities by:
+
+- **Unified User Liquidity**: Applications can enable users to pay in every token from every chain for any arbitrary payment, i.e., an NFT costs 60 USDC on Base, a user can purchase it using 30 USDC on Optimism and 30 Arbitrum seamlessly.
+- **Unified Interface**: Single point of interaction across all chains
+- **Gasless Transactions**: Users don't need to hold specific gas tokens
+- **Failure Recovery**: Built-in mechanisms to handle and recover from failed transactions
+
+With chain abstraction, users interact with a unified layer that automatically handles all the underlying blockchain complexity with simple integration with AnyPay for developers.
+
+
+## Unifying the Modular Ecosystem
+
+Chain abstraction through AnyPay realizes the vision of modular blockchain networks, by unifying fragmented liquidity, enhancing buying power for users, and simplifying integration across networks.
+
+## Example: Buy NFT on Base with USDC on Arbitrum and Optimism
+
+```ts
+import { getClient } from "anypay";
+import { createWalletClient, http } from "viem";
+
+// Set up wallet (can be MetaMask, Sequence, embedded, etc.)
+const wallet = createWalletClient({
+  account: address,
+  transport: http(),
+});
+
+// Bridge from Arbitrum to Optimism
+const quote = await getClient()?.actions.getQuote({
+  wallet,
+  chainId: [42161, 10], // From Arbitrum, Optimism
+  toChainId: [8543],  // To Base
+  amount: '100000000000000000', // Amount in wei (e.g. 0.1 ETH)
+  currency: ['0x0000000000000000000000000000', '0x0000000000000000000000000001'], // USDC token addresses on origin chains
+  toCurrency: '0x0000000000000000000000000000', // Token address on destination
+  recipient, // Destination address
+});
+
+await getClient()?.actions.execute({
+  quote,
+  wallet,
+  onProgress: (steps, fees, currentStep, currentStepItem) => {
+    console.log(steps, fees, currentStep, currentStepItem);
+  }
+});
+```

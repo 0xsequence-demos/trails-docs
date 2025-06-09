@@ -1,0 +1,38 @@
+---
+title: "Getting Started"
+description: "Install and Start"
+sidebarTitle: "Getting Started"
+---
+
+## Installation
+
+Install the [AnyPay SDK](https://github.com/0xsequence).
+
+<CodeGroup>
+```shell pnpm
+pnpm add @0xsequence/anypay-sdk/widget
+```
+```shell npm
+npm install --save @0xsequence/anypay-sdk/widget
+```
+```shell yarn
+yarn add @0xsequence/anypay-sdk/widget
+```
+```shell bun
+bun add @0xsequence/anypay-sdk/widget
+```
+</CodeGroup>
+
+## Integration Example
+This demo showcases a multi-step transfer flow using the Anypay SDK. Connect your wallet, select a token, specify the amount and recipient, and see the transaction confirmation process in action.
+
+
+```typescript
+import { AnyPayWidget } from '@0xsequence/anypay-sdk/widget'
+
+export const App = () => {
+  return (
+    <AnyPayWidget />
+  )
+}
+```

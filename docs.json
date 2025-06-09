@@ -1,35 +1,63 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "appearance": {
+    "default": "light",
+    "strict": true
+  },
+  "name": "Payment Orchestration Protocol",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
+    "primary": "#0e0e0e",
+    "light": "#fdfdf7",
     "dark": "#15803D"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Welcome",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "pop"
             ]
           },
           {
-            "group": "Essentials",
+            "group": "Overview",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
+              "overview/one-click-payments",
+              "overview/chain-abstraction",
+              "overview/cross-chain-execution"
+
+            ]
+          },
+          {
+            "group": "Examples",
+            "pages": [
+              "examples/swapping",
+              "examples/executing",
+              "examples/deposit-withdrawls",
+              "examples/nft-purchase",
+              "examples/bridging"
+            ]
+          },
+          {
+            "group": "Architecture",
+            "pages": [
+              "architecture/protocol",
+              "architecture/unified-liquidity",
+              "architecture/contract-compatibility",
+              "architecture/costs-fees",
+              "architecture/wallet-compatibility"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "resources/chains-and-fees",           
+              "resources/supported-tokens",
+              "resources/supported-protocols"
             ]
           }
         ]
@@ -53,26 +81,20 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "SDK",
+        "groups": [
+          {
+            "group": "SDK Documentation",
+            "pages": [
+              "sdk/get-started"
+            ]
+          }
+        ]
       }
     ],
     "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
     }
   },
   "logo": {
@@ -88,7 +110,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
+      "label": "Demos",
       "href": "https://dashboard.mintlify.com"
     }
   },

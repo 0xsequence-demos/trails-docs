@@ -1,0 +1,21 @@
+{
+    "author": "James Lawton",
+    "dependencies": {
+      "mintlify": "4.0.576",
+      "@0xsequence/network": "latest"
+},
+    "description": "Documentation for AnyPay",
+    "engines": {
+      "node": ">=16.0.0"
+    },
+    "homepage": "https://github.com/0xsequence/docs-v3#readme",
+    "license": "ISC",
+    "main": "index.js",
+    "name": "anypay",
+    "scripts": {
+      "dev": "mintlify dev",
+      "test": "mintlify broken-links"
+    },
+    "version": "1.0.0"
+  }
+  
