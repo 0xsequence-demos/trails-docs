@@ -59,15 +59,7 @@ The Payment Orchestration Protocol is complementary to existing cross-chain infr
 
 ![Payment Orchestration Protocol Stack](images/pop-protocol-stack.png)
 
-## Use Cases
-
-- One-click Payments
-- Chain Abstraction
-- Cross-chain Execution
-
-## Technical Implementation
-
-The protocol operates through:
+## How it works
 
 1. **Define Intent**: Create a payment transaction (mint, deposit, swap, etc) for any chain in any token.
 2. **Anypay Inspects**: Can this succeed without orchestration? Yes = Pass through. No = Continue Orchestrating
@@ -75,4 +67,4 @@ The protocol operates through:
 4. **Orchestrate Payment**: Intelligently combine swap + bridge + execute for the selected route.
 5. **Execute Transaction**: User confirms transaction via their wallet executes the end to end to flow for the selected payment.
 
-This architecture enables developers to build sophisticated payment experiences while abstracting the underlying complexity of multi-chain operations.
+This architecture enables developers to build sophisticated payment experiences while abstracting the underlying complexity of multi-chain operations - all you have to do is specify what payment to make.

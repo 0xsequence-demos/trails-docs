@@ -15,6 +15,10 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "Home",
+        "pages": ["home"]
+      },
+      {
         "tab": "Documentation",
         "groups": [
           {
