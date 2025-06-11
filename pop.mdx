@@ -21,9 +21,8 @@ The Payment Orchestration Protocol is an intent-based, chain-abstracted payments
 - Built-in indexing to automatically return user's wallet data, transaction history, etc.
 
 ### Blazing Fast
-- Fast from anywhere, even across chains using our intent-based architecture & relayer infrastructure.
+- Fast from anywhere, even with payments across chains using our intent-based architecture & relayer infrastructure.
 - Protocol intelligently detects optimal route for payment fulfillment.
-
 
 
 
@@ -60,15 +59,20 @@ The Payment Orchestration Protocol is complementary to existing cross-chain infr
 
 ![Payment Orchestration Protocol Stack](images/pop-protocol-stack.png)
 
+## Use Cases
+
+- One-click Payments
+- Chain Abstraction
+- Cross-chain Execution
 
 ## Technical Implementation
 
 The protocol operates through:
 
-1. **Intent Recognition**: Parse user payment requests
-2. **Balance Aggregation**: Collect available assets across all chains
-3. **Route Optimization**: Calculate optimal payment paths
-4. **Execution Coordination**: Orchestrate cross-chain transactions
-5. **Settlement Verification**: Ensure successful payment completion
+1. **Define Intent**: Create a payment transaction (mint, deposit, swap, etc) for any chain in any token.
+2. **Anypay Inspects**: Can this succeed without orchestration? Yes = Pass through. No = Continue Orchestrating
+3. **Select Route**: Anypay suggests the optimal tokens across chains — user can confirm or customize.
+4. **Orchestrate Payment**: Intelligently combine swap + bridge + execute for the selected route.
+5. **Execute Transaction**: User confirms transaction via their wallet executes the end to end to flow for the selected payment.
 
 This architecture enables developers to build sophisticated payment experiences while abstracting the underlying complexity of multi-chain operations.
