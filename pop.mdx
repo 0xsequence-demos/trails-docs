@@ -6,7 +6,7 @@ description: Intent-based, chain-abstracted payments architecture for lightning 
 
 ## Overview
 
-The Payment Orchestration Protocol is an intent-based, chain-abstracted payments architecture that enables lightning fast, simplified payments from any wallet seamlessly with **unified user liquidity**. In contrast to typical cross-chain infrastructure, the protocol sources liquidity and aggregates all user balances for every token across every chain in a user's wallet as options for any payment execution on a destination chain such as a swap, deposit, transfer, or trade.
+The Payment Orchestration Protocol is a chain-abstracted payments architecture that enables lightning fast, simplified payments from any wallet seamlessly with **unified user liquidity**. In contrast to typical cross-chain infrastructure, the protocol sources liquidity and aggregates all user balances for every token across every chain in a user's wallet as options for any payment action on a destination chain such as a swap, deposit, mint, transfer, or trade.
 
 ## Key Features
 
@@ -24,34 +24,9 @@ The Payment Orchestration Protocol is an intent-based, chain-abstracted payments
 - Fast from anywhere, even with payments across chains using our intent-based architecture & relayer infrastructure.
 - Protocol intelligently detects optimal route for payment fulfillment.
 
-
-
-## Integration Options
-
-### Lightweight SDK
-- **Built-in UI**: Ready-to-use interface with customizable branding
-- **API Integration**: Headless implementation for custom UX
-- **Plug-and-play**: Minimal setup required for developers
-
-
-## Architecture Benefits
-
-### For Users
-- **Seamless UX**: No manual bridging or token swapping required
-- **Flexible Payments**: Use any combination of tokens/chains for transactions
-- **Aggregated Balance View**: Unified wallet balance across all chains
-- **Optimal Routing**: Automatic selection of best payment path
-
-### For Developers
-- **Easy Integration**: Lightweight SDK with minimal complexity
-- **Customizable**: Branding options and flexible UI components
-- **Rapid Development**: Plug-and-play functionality
-- **Enhanced Monetization**: Streamlined payment flows for every use case - swaps, deposits, mints, or withdrawals.
-
-### For Chains
-- **Increased User Acquisition**: Seamless onboarding without native token requirements
-- **Higher TVL**: Increased capital inflow through frictionless UX
-- **Greater Transaction Volume**: Reduced friction encourages more activity
+### Scalable
+- Anypay can leverage virtually any existing cross-chain or liquidity infrastructure.
+- Relayer & Indexing infrastructure is lightweight and easily deployable to new chains.
 
 ## How AnyPay Stacks up
 
@@ -62,9 +37,21 @@ The Payment Orchestration Protocol is complementary to existing cross-chain infr
 ## How it works
 
 1. **Define Intent**: Create a payment transaction (mint, deposit, swap, etc) for any chain in any token.
-2. **Anypay Inspects**: Can this succeed without orchestration? Yes = Pass through. No = Continue Orchestrating
+2. **Anypay Inspects**: Can this succeed with the assets held on current chain? Yes = Pass through. No = Continue Orchestrating
 3. **Select Route**: Anypay suggests the optimal tokens across chains — user can confirm or customize.
 4. **Orchestrate Payment**: Intelligently combine swap + bridge + execute for the selected route.
-5. **Execute Transaction**: User confirms transaction via their wallet executes the end to end to flow for the selected payment.
+5. **Execute Transaction**: User confirms transaction via their wallet which executes the end to end to flow for the selected payment.
 
 This architecture enables developers to build sophisticated payment experiences while abstracting the underlying complexity of multi-chain operations - all you have to do is specify what payment to make.
+
+## Integration
+
+Simply add our SDK to your client-side application and specify the payment your want to make.
+
+### Lightweight SDK
+- **Built-in UI**: Ready-to-use widget interface with customizable branding
+- **Headless**: Headless implementation for custom UX
+- **Plug-and-play**: Minimal setup required for developers
+
+
+
