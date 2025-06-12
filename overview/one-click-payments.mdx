@@ -1,47 +1,45 @@
 ---
 title: One-Click Payments
-description: Enable payments across **any blockchain**, with **any wallet**, and in **one click**. Powered by the Anypay SDK and chain-abstraction logic, this protocol bridges, swaps, and settles complex transactions without requiring users to understand the underlying flow.
+description: How AnyPay achieves one-confirmation payments leveraging any token from any chain.
 icon: 'bolt'
 ---
 
-## What It Does
+## One-Confirmation Payments
 
-Anypay allows a user to:
+AnyPay enables the following experience for developers & users:
 
-- Execute any arbitrary payment (swap, mint, deposit, buy) on a dapp.
-- Purchase an item priced in any token on any chain.
-- Even if their funds are on a different chain (Polygon, Ethereum, etc.)
+- Execute any arbitrary payment (swap, mint, deposit, buy) on an app.
+- Action or item can be priced in any token on any chain.
+- Any bridges or swaps necessary to execute the payment are handled automatically.
+- Users can select the desired token and from which chain they would like to execute the payment.
 
-All of this happens with just **one user confirmation**, even if cross-chain bridging or token swapping is required behind the scenes, regardless if they are using an EOA, account abstraction wallet or 7702-enabled wallet.
+All of this happens with just **one user confirmation**, even if cross-chain bridging or token swapping is required behind the scenes, and regardless if they are using an EOA, account abstraction or smart wallet or 7702-enabled wallet.
+
+Ultimately, this enhances the user experience of your application, optimizes your payment flows, and ensures more liquidity and volume to your app.
 
 ## How It Works
 
-Anypay enables one-click payments by abstracting complex wallet logic, bridging, and transaction routing into a seamless user flow using the **ERC-7795 requirements object**.
+Anypay enables one-click payments through a sophisticated intent-based architecture that handles complex cross-chain operations seamlessly. Here's how it works:
 
-When a user clicks "Buy," the following happens:
+1. **User Initiates Payment**  
+   The user clicks "Buy" or initiates any payment action on a dapp, triggering the Anypay flow.
 
-1. **Dapp Sends a Transaction + ERC-7795 Requirement**  
-   The transaction includes a `requirement` object, compliant with the [ERC-7795 spec](https://eips.ethereum.org/EIPS/eip-7795), which defines a condition that must be met before the transaction can execute — e.g. the user must have 50 USDC on Arbitrum.
+2. **Intent Address Generation**  
+   A unique intent address is generated for this specific transaction. This address exists on both the origin and destination chains and contains predefined logic for handling the payment flow.
 
-2. **Wallet Evaluates Requirement**  
-   If the requirement is satisfied (e.g. user already has 50 USDC on Arbitrum), the wallet signs and relays the transaction immediately.  
-   If not, the wallet initiates a cross-chain flow to fulfill it.
+3. **Origin Deposit**  
+   The user sends a single transaction to deposit their tokens (from any chain they hold funds on) into the intent address on the origin chain.
 
-3. **Anypay Finds a Route**  
-   The Anypay SDK computes a route to fulfill the requirement — this may include a swap or bridge from another chain where the user holds USDC (e.g. from Polygon or Mainnet).
+4. **Origin Chain Execution**  
+   Relayer automatically executes an operation on the origin intent address, performing any necessary actions to move funds to the destination.
 
-4. **User Confirms Once**  
-   The wallet bundles and signs both the origin and destination transactions in a single user interaction.
+5. **Destination Chain Arrival**  
+   The bridged funds arrive at the corresponding intent address on the destination chain, ready for the final execution.
 
-5. **Transactions Are Relayed**  
-   - The **origin transaction** (e.g. bridging 50 USDC) is sent immediately.  
-   - The **destination transaction** (e.g. NFT purchase) is submitted with the 7795 requirement attached and held by the relayer.
+6. **Final Settlement**  
+   Relayer executes the final wallet operation on the destination intent address, completing the payment by sending funds to the recipient, executing any required contract calls, minting NFTs, or performing other specified actions.
 
-6. **Requirement Met → Final Transaction Sent**  
-   Once the relayer observes that the requirement is fulfilled (e.g. 50 USDC received), the destination transaction is dispatched and mined.
-
-This flow works with **any wallet** — MetaMask, WalletConnect, Coinbase Wallet, Sequence, embedded wallets, and more — requiring just **one user confirmation** to complete even multi-chain transactions.
-
+This intent-based approach ensures that users only need to sign **one transaction** while the system handles all the complex routing, bridging, and settlement logic automatically across multiple chains.
 
 ## Example: Buy with Cross-Chain USDC
 
