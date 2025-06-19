@@ -60,7 +60,6 @@
             "group": "Resources",
             "pages": [
               "resources/chains-and-fees",           
-              "resources/supported-tokens",
               "resources/supported-protocols"
             ]
           }
