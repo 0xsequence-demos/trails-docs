@@ -1,16 +1,19 @@
 ---
 title: "Getting Started"
-description: "Install and Start"
+description: "Install and Import"
 sidebarTitle: "Getting Started"
 ---
 
-## Installation
+### Requirements
+Node v.XX? Reactv.??
 
-Install the [AnyPay SDK](https://github.com/0xsequence).
+## React Installation
+
+Install the [AnyPay SDK](https://github.com/0xsequence/anypay/tree/master).
 
 <CodeGroup>
 ```shell pnpm
-pnpm add @0xsequence/anypay-sdk/widget
+pnpm i @0xsequence/anypay-sdk/widget
 ```
 ```shell npm
 npm install --save @0xsequence/anypay-sdk/widget
@@ -23,16 +26,43 @@ bun add @0xsequence/anypay-sdk/widget
 ```
 </CodeGroup>
 
-## Integration Example
-This demo showcases a multi-step transfer flow using the Anypay SDK. Connect your wallet, select a token, specify the amount and recipient, and see the transaction confirmation process in action.
-
+### Import Widget
 
 ```typescript
 import { AnyPayWidget } from '@0xsequence/anypay-sdk/widget'
 
 export const App = () => {
   return (
-    <AnyPayWidget />
+    <AnyPayWidget
+      renderInline={true}
+      theme="auto"
+      walletOptions={[]}
+    />
   )
 }
+```
+
+## Script Import
+
+While we recommend to utilize the SDK as a React component, you can alternatively import via a script in your `index.html`.
+
+```typescript
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AnyPay Widget Demo</title>
+    <script src="https://anypay.sequence-demos.xyz/js/anypay.min.js"></script>
+</head>
+<body>
+    <div id="anypay"></div>
+    
+    <script>
+        AnyPayWidget.render(document.getElementById('anypay'), {
+            renderInline: true,
+            theme: 'auto',
+            walletOptions: []
+        });
+    </script>
+</body>
+</html>
 ```

@@ -40,8 +40,8 @@
             "group": "Examples",
             "pages": [
               "examples/swapping",
-              "examples/deposit-withdrawls",
               "examples/nft-purchase",
+              "examples/deposit-withdrawls",
               "examples/executing"
               ]
           },
@@ -60,26 +60,6 @@
             "pages": [
               "resources/chains-and-fees",           
               "resources/supported-protocols"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint Examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
             ]
           }
         ]

@@ -7,7 +7,7 @@ icon: 'arrow-up-arrow-down'
 
 ## Interacting with DeFi Protocols
 
-From CLOBs (Central limit order books), lending and borrowing protocols, perpetual & options protocols, AnyPay is ideal for increasing transaction volume and enabling your users to leverage their unified liquidity as well as a multitude of tokens all while swapping seamlessly for enhancing deposits and improving withdrawals.
+From CLOBs (central limit order books), lending and borrowing protocols, perpetual & options protocols, AnyPay is ideal for increasing transaction volume and enabling your users to leverage their unified liquidity as well as a multitude of tokens all while swapping seamlessly for enhancing deposits and improving withdrawals.
 
 ## Example Implementation with Aave
 
@@ -22,8 +22,7 @@ export const AaveDepositExample = () => {
   // Aave V3 Pool contract on Base
   const AAVE_POOL_CONTRACT = "0xa0d9C1E9E48Ca30c8d8C3B5D69FF5dc1f6DFfC24"
   
-  // Encode the deposit function call using the correct format
-  // Function selector: 0x474cf53d
+  // Encode the deposit function call on Aave
   const depositCalldata = "0x474cf53d" + 
     "000000000000000000000000a238dd80c259a72e81d7e4664a9801593f98d1c5" + // First parameter (token/asset address)
     "00000000000000000000000097c4a952b46becad0663f76357d3776ba11566e1" + // Second parameter (recipient/onBehalfOf address)
