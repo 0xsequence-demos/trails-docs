@@ -4,3 +4,84 @@ description: 'Comprehensive examples of swapping tokens across chains using unif
 icon: 'arrow-right-arrow-left'
 ---
 
+## Cross-Chain Token Swapping
+
+AnyPay enables seamless token swapping across multiple blockchain networks, allowing users to exchange tokens without manually bridging assets or dealing with multiple DEXs. Whether users want to swap ETH on Mainnet for USDC on Base, or exchange MATIC on Polygon for USDT on Arbitrum, AnyPay handles all the complexity behind the scenes.
+
+## Enhanced Swapping Experience
+
+Traditional cross-chain swapping requires users to:
+- Bridge tokens to the target chain
+- Find and interact with DEXs on multiple networks
+- Pay gas fees on each chain
+- Wait for bridge confirmations
+- Manage slippage across multiple transactions
+
+With AnyPay, users can perform complex cross-chain swaps in a single transaction, using their existing token balances from any supported chain.
+
+## Cross-Chain Swapping Examples
+
+### Simple Cross-Chain Token Exchange
+
+This example shows how to use the AnyPay widget for a cross-chain swap that pays 0.1 USDC on Base:
+
+```tsx
+import { AnyPayWidget } from '@0xsequence/anypay-sdk/widget'
+
+
+export const CrossChainSwap = () => {
+  return (
+    <AnyPayWidget
+      sequenceApiKey={'key_123...'}
+      toAddress="0x12c4A952b46bEcaD0663f76357d3776ba11566E1" // Recipients's wallet address
+      toAmount="0.1"
+      toChainId={8453} // Base
+      toToken="USDC"
+      renderInline={true}
+      theme="auto"
+      walletOptions={[]}
+    >
+      <button className="custom-button-styles">
+        Pay with AnyPay
+      </button>
+    </AnyPayWidget>
+  )
+}
+```
+
+### Stablecoin Cross-Chain Swapping
+
+Perfect for maintaining stablecoin positions across different chains:
+
+```tsx
+import { AnyPayWidget } from '@0xsequence/anypay-sdk/widget'
+
+export const StablecoinSwap = () => {
+  return (
+    <AnyPayWidget
+      toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1"
+      toAmount="1000" // 1000 USDT
+      toChainId={42161} // Arbitrum
+      toToken="USDT"
+      renderInline={true}
+      theme="auto"
+      walletOptions={[]}
+    >
+      <div className="swap-button">
+        Swap to USDT on Arbitrum
+      </div>
+    </AnyPayWidget>
+  )
+}
+```
+
+
+## Integration Benefits
+
+- **Unified Liquidity**: Access tokens across all supported chains in one transaction
+- **Reduced Complexity**: Eliminate manual bridging and multi-step swaps
+- **Better Rates**: Automatic routing finds optimal swap paths
+- **Gas Efficiency**: Single transaction instead of multiple bridge/swap operations
+- **Slippage Protection**: Built-in MEV protection and optimal execution
+- **Time Savings**: No waiting for bridge confirmations between steps
+
