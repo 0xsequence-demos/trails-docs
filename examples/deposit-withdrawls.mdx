@@ -1,5 +1,90 @@
 ---
 title: 'Decentralized Finance'
-description: 'How AnyPay supports common flows for DeFi protocols to accelerate TVL and activity. '
+description: 'How AnyPay supports common flows for DeFi protocols to accelerate TVL and activity.'
 icon: 'arrow-up-arrow-down'
 ---
+
+
+## Interacting with DeFi Protocols
+
+From CLOBs (Central limit order books), lending and borrowing protocols, perpetual & options protocols, AnyPay is ideal for increasing transaction volume and enabling your users to leverage their unified liquidity as well as a multitude of tokens all while swapping seamlessly for enhancing deposits and improving withdrawals.
+
+## Example Implementation with Aave
+
+### Depositing USDC into Aave on Base
+
+This example shows how to use the AnyPay widget to deposit USDC into Aave's lending pool on Base:
+
+```tsx
+import { AnyPayWidget } from '@0xsequence/anypay-sdk/widget'
+
+export const AaveDepositExample = () => {
+  // Aave V3 Pool contract on Base
+  const AAVE_POOL_CONTRACT = "0xa0d9C1E9E48Ca30c8d8C3B5D69FF5dc1f6DFfC24"
+  
+  // Encode the deposit function call using the correct format
+  // Function selector: 0x474cf53d
+  const depositCalldata = "0x474cf53d" + 
+    "000000000000000000000000a238dd80c259a72e81d7e4664a9801593f98d1c5" + // First parameter (token/asset address)
+    "00000000000000000000000097c4a952b46becad0663f76357d3776ba11566e1" + // Second parameter (recipient/onBehalfOf address)
+    "0000000000000000000000000000000000000000000000000000000000000000"   // Third parameter (amount/referralCode)
+
+  return (
+    <AnyPayWidget
+      toAddress={AAVE_POOL_CONTRACT}
+      toAmount="100" // 100 USDC
+      toChainId={8453} // Base
+      toToken="USDC"
+      toCalldata={depositCalldata}
+      renderInline={true}
+      theme="auto"
+      walletOptions={{}}
+    />
+  )
+}
+```
+
+### Dynamic Deposit Implementation
+
+For a more flexible implementation that can handle different amounts and user addresses:
+
+```tsx
+import { AnyPayWidget } from '@0xsequence/anypay-sdk/widget'
+
+interface AaveDepositWidgetProps {
+  userAddress: string
+  tokenAddress: string
+  amount: string
+}
+
+export const DynamicAaveDepositWidget: React.FC<AaveDepositWidgetProps> = ({ 
+  userAddress, 
+  tokenAddress, 
+  amount 
+}) => {
+  const AAVE_POOL_CONTRACT = "0xa0d9C1E9E48Ca30c8d8C3B5D69FF5dc1f6DFfC24"
+  
+  // Generate deposit calldata with user's address
+  const generateDepositCalldata = () => {
+    const functionSelector = "0x474cf53d"
+    const paddedTokenAddress = tokenAddress.toLowerCase().replace('0x', '').padStart(64, '0')
+    const paddedUserAddress = userAddress.toLowerCase().replace('0x', '').padStart(64, '0')
+    const paddedAmount = "0000000000000000000000000000000000000000000000000000000000000000" // Placeholder for amount
+    
+    return functionSelector + paddedTokenAddress + paddedUserAddress + paddedAmount
+  }
+  
+  return (
+    <AnyPayWidget
+      toAddress={AAVE_POOL_CONTRACT}
+      toAmount={amount}
+      toChainId={8453}
+      toToken="USDC"
+      toCalldata={generateDepositCalldata()}
+      renderInline={true}
+      theme="auto"
+      walletOptions={{}}
+    />
+  )
+}
+```

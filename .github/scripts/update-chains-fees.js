@@ -91,7 +91,7 @@ async function updateChainsAndFees() {
             id: network.id,
             name: relayChain.displayName || relayChain.name,
             depositFee: "0 BPS",
-            withdrawalFee: `${(relayChain.withdrawalFee || 0) + 20} BPS`,
+            withdrawalFee: `${(relayChain.withdrawalFee || 0) + 1} BPS`,
             tokenSupport: tokenSupport
           });
         }
