@@ -40,11 +40,10 @@
             "group": "Examples",
             "pages": [
               "examples/swapping",
-              "examples/executing",
               "examples/deposit-withdrawls",
               "examples/nft-purchase",
-              "examples/bridging"
-            ]
+              "examples/executing"
+              ]
           },
           {
             "group": "Architecture",
