@@ -3,13 +3,13 @@
 Welcome to the Anypay docs! 
 
 ## Development
-To install dev tools, use the following command
+To install the repo, use the following command
 
 ```bash
 pnpm i
 ```
 
-Run the following command at the root of your documentation (where mint.json is)
+Run the following command at the root of your documentation (where docs.json is)
 
 ```bash
 pnpm dev
