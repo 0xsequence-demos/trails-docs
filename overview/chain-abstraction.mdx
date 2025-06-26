@@ -51,34 +51,3 @@ With chain abstraction, users interact with a unified layer that automatically h
 
 Chain abstraction through AnyPay realizes the vision of modular blockchain networks, by unifying fragmented liquidity, enhancing buying power for users, and simplifying integration across networks.
 
-## Example: Buy NFT on Base with USDC on Arbitrum and Optimism
-
-```ts
-import { getClient } from "anypay";
-import { createWalletClient, http } from "viem";
-
-// Set up wallet (can be MetaMask, Sequence, embedded, etc.)
-const wallet = createWalletClient({
-  account: address,
-  transport: http(),
-});
-
-// Bridge from Arbitrum to Optimism
-const quote = await getClient()?.actions.getQuote({
-  wallet,
-  chainId: [42161, 10], // From Arbitrum, Optimism
-  toChainId: [8543],  // To Base
-  amount: '100000000000000000', // Amount in wei (e.g. 0.1 ETH)
-  currency: ['0x0000000000000000000000000000', '0x0000000000000000000000000001'], // USDC token addresses on origin chains
-  toCurrency: '0x0000000000000000000000000000', // Token address on destination
-  recipient, // Destination address
-});
-
-await getClient()?.actions.execute({
-  quote,
-  wallet,
-  onProgress: (steps, fees, currentStep, currentStepItem) => {
-    console.log(steps, fees, currentStep, currentStepItem);
-  }
-});
-```
