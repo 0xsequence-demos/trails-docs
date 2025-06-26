@@ -24,15 +24,25 @@ Instead, users can purchase NFTs directly using their existing token balances fr
 
 This example shows how to use the AnyPay widget to purchase an NFT on Polygon, paying with ETH from Ethereum Mainnet:
 
-```tsx
+<CodeGroup>
+
+```tsx NFTPurchase.tsx
 import { AnyPayWidget } from '@0xsequence/anypay-sdk/widget'
+import { encodeFunctionData } from 'viem'
+import { nftABI } from './abi.ts'
 
 export const CrossChainNFTPurchase = () => {
   // NFT contract address on Arbitrum
   const NFT_CONTRACT = "0xAA3df3c86EdB6aA4D03b75092b4dd0b99515EC83"
   
   // NFT purchase calldata
-  const purchaseCalldata = "0x6a62784200000000000000000000000097c4a952b46becad0663f76357d3776ba11566e1"
+  const purchaseCalldata = encodeFunctionData({
+    abi: nftABI,
+    functionName: 'mint',
+    args: [
+      "0x97c4a952b46becad0663f76357d3776ba11566e1", // recipient address
+    ],
+  })
 
   return (
     <AnyPayWidget
@@ -49,6 +59,21 @@ export const CrossChainNFTPurchase = () => {
 }
 ```
 
+```typescript abi.ts
+export const nftABI = [
+  {
+    type: "function",
+    name: "mint",
+    stateMutability: "payable",
+    inputs: [
+      { name: "to", type: "address" },
+    ],
+    outputs: [],
+  },
+] as const
+```
+
+</CodeGroup>
 
 ## Integration Benefits
 

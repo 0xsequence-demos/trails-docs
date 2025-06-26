@@ -31,9 +31,7 @@
             "group": "Overview",
             "pages": [
               "overview/one-click-payments",
-              "overview/chain-abstraction",
-              "overview/cross-chain-execution"
-
+              "overview/chain-abstraction"
             ]
           },
           {
@@ -41,18 +39,13 @@
             "pages": [
               "examples/swapping",
               "examples/nft-purchase",
-              "examples/deposit-withdrawls",
-              "examples/executing"
-              ]
+              "examples/deposit-withdrawls"              ]
           },
           {
             "group": "Architecture",
             "pages": [
-              "architecture/protocol",
-              "architecture/unified-liquidity",
-              "architecture/contract-compatibility",
-              "architecture/costs-fees",
-              "architecture/wallet-compatibility"
+              "architecture/how-it-works",
+              "architecture/protocol"
             ]
           },
           {
@@ -80,8 +73,8 @@
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/anypay.svg",
+    "dark": "/logo/anypay.svg"
   },
   "navbar": {
     "links": [

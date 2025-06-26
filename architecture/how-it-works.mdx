@@ -3,3 +3,103 @@ title: 'How AnyPay Works'
 description: 'Core architecture and design principles of the Payment Orchestration Protocol for cross-chain transactions'
 icon: 'sitemap'
 ---
+
+AnyPay's Payment Orchestration Protocol simplifies cross-chain transactions through an intelligent 5-step process that handles the complexity of multi-chain operations behind the scenes.
+
+## Overview
+
+The AnyPay protocol automatically determines the optimal path for cross-chain payments, whether it's a simple single-chain transaction or a complex multi-step orchestration involving swaps, bridges, and executions across different blockchains.
+
+## Step-by-Step Flow
+
+<Steps>
+  <Step title="Define Intent">
+    **Create a payment transaction for any chain in any token**
+    
+    Users begin by defining their payment intent - whether it's a mint, deposit, swap, or any other transaction type. This intent can be created for any supported blockchain using any supported token.
+
+  </Step>
+
+  <Step title="AnyPay Inspects">
+    **Determines if orchestration is needed**
+    
+    AnyPay's intelligent inspection engine analyzes the defined intent to determine the optimal execution path:
+
+    - **Pass Through**: If the transaction can succeed without orchestration (same chain, sufficient balance, etc.), it passes through directly
+    - **Continue Orchestrating**: If cross-chain operations or token swaps are needed, the system continues to the orchestration process
+
+    <Note>
+      This inspection happens in milliseconds and considers factors like:
+      - Available token balances
+      - Gas requirements
+      - Chain compatibility
+      - Protocol availability
+    </Note>
+  </Step>
+
+  <Step title="Select Route">
+    **AnyPay suggests optimal routing options**
+    
+    When orchestration is required, AnyPay analyzes available routes across chains and presents the optimal options:
+
+    - **Automated Suggestions**: The system suggests the most efficient token and chain combinations
+    - **User Customization**: Users can review and customize the suggested route
+    - **Cost Analysis**: Each route option includes gas costs, fees, and estimated execution time
+
+    <Tip>
+      Users maintain full control over the routing decision while benefiting from AnyPay's optimization algorithms.
+    </Tip>
+  </Step>
+
+  <Step title="Orchestrate Payment">
+    **Intelligently combine operations for the selected route**
+    
+    Once the route is confirmed, AnyPay orchestrates the necessary operations:
+
+    - **Swap Operations**: Convert tokens to the required format
+    - **Bridge Transactions**: Move assets between chains when needed
+    - **Execution Preparation**: Set up the final transaction parameters
+
+  </Step>
+
+  <Step title="Execute Transaction">
+    **User confirms and completes the end-to-end flow**
+    
+    The final step puts control back in the user's hands:
+
+    - **Wallet Confirmation**: User reviews and confirms the transaction through their connected wallet
+    - **End-to-End Execution**: AnyPay executes the complete orchestrated flow
+    - **Transaction Completion**: The system handles all intermediate steps and delivers the final result
+
+    <Info>
+      Users only need to sign once, but AnyPay may execute multiple transactions behind the scenes to complete the orchestrated payment.
+    </Info>
+  </Step>
+</Steps>
+
+## Key Benefits
+
+<CardGroup cols={2}>
+  <Card title="Simplified UX" icon="hand-sparkles">
+    Users interact with a simple interface while AnyPay handles complex cross-chain orchestration
+  </Card>
+  <Card title="Optimal Routing" icon="route">
+    Intelligent algorithms find the most efficient paths across chains and protocols
+  </Card>
+  <Card title="Cost Effective" icon="dollar-sign">
+    Minimizes fees and gas costs through smart routing and batching
+  </Card>
+  <Card title="Secure" icon="shield-check">
+    Non-custodial architecture ensures users maintain control of their assets
+  </Card>
+</CardGroup>
+
+## Technical Architecture
+
+The AnyPay protocol leverages several key components:
+
+- **Intent Recognition**: Parses and understands user payment intentions
+- **Route Optimization**: Calculates optimal paths across supported chains
+- **Protocol Integration**: Interfaces with DEXs, bridges, and other protocols
+- **Transaction Orchestration**: Coordinates complex multi-step operations
+- **Execution Engine**: Handles the actual transaction execution and monitoring
