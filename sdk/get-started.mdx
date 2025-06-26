@@ -5,7 +5,7 @@ sidebarTitle: "Getting Started"
 ---
 
 ### Requirements
-Node v.XX? Reactv.??
+Node.js v16+ and React v17+
 
 ## React Installation
 
@@ -34,19 +34,43 @@ import { AnyPayWidget } from '@0xsequence/anypay-sdk/widget'
 export const App = () => {
   return (
     <AnyPayWidget
-      renderInline={true}
-      theme="auto"
-      walletOptions={[]}
+      sequenceApiKey="YOUR_SEQUENCE_PROJECT_ACCESS_KEY"
+      toAddress="0x..."
+      toAmount="0.1"
+      toChainId={8453}
+      toToken="USDC"
     />
   )
 }
 ```
 
+## Configuration Options
+
+| Prop                        | Type                                                      | Required | Default   | Description                                                                                                   |
+|-----------------------------|-----------------------------------------------------------|----------|-----------|---------------------------------------------------------------------------------------------------------------|
+| `sequenceApiKey`            | `string`                                                  | Yes      | —         | Your Sequence project access key. Used to authenticate API requests. A key can be generated on the [Sequence Builder](https://sequence.build/).                                          |
+| `toAddress`                 | `string`                                                  | No       | —         | The predefined  recipient or destination address for the transaction.                                                            |
+| `toAmount`                  | `string`                                                  | No       | —         | The predefined amount to send (e.g., "0.1") to the destination address.                                                                   |
+| `toChainId`                 | `number \| string`                                        | No       | —         | The predefined destination chain ID.                                                                             |
+| `toToken`                   | `string`                                                  | No       | —         | The default token symbol to send (e.g., "ETH", "USDC"). Currently only "ETH" and "USDC" are supported values, but this will change to a token address in near future.                                                   |
+| `toCalldata`                | `string`                                                  | No       | —         | Optional calldata for contract interactions (e.g., NFT minting, DeFi actions) at the destination address.                                |
+| `provider`                  | `any`                                                     | No       | —         | Custom EIP-1193 provider for wallet interactions.                                                             |
+| `children`                  | `React.ReactNode`                                         | No       | —         | Custom React node for the widget's trigger button.                                                            |
+| `renderInline`              | `boolean`                                                 | No       | `true`    | If `true`, renders inline; if `false`, renders as a modal triggered by the button.                                                    |
+| `theme`                     | `"light" \| "dark" \| "auto"`                        | No       | `"auto"` | Controls the widget's color theme. "auto" matches the user's system preference.                               |
+| `walletOptions`             | `string[]`                                                | No       | `["injected", "privy"]` | Array of wallet options to show for connection. Supported: `"injected"`, `"privy"`. It's expected however that the dapp provides their own wallet connection.          |
+| `onOriginConfirmation`      | `(txHash: string) => void`                                | No       | —         | Callback with the origin transaction hash when confirmed.                                                     |
+| `onDestinationConfirmation` | `(txHash: string) => void`                                | No       | —         | Callback with the destination transaction hash when confirmed.                                                |
+| `privyAppId`                | `string`                                                  | No       | —         | Privy App ID for Privy wallet integration.                                                                    |
+| `privyClientId`             | `string`                                                  | No       | —         | Privy Client ID for Privy wallet integration.                                                                 |
+| `paymasterUrl`              | `string`                                                  | No       | —         | URL of a 4337-compatible bundler/paymaster URL for gasless transactions (e.g., thirdweb, Pimlico, ZeroDev, Alchemy, etc). The option `gasless` must also be to `true` to enable it.                                           |
+| `gasless`                   | `boolean`                                                 | No       | —         | If `true`, enables gasless transactions using sequence Relayer or paymaster (ERC-4337) if `paymasterUrl` is set.                                         |
+
 ## Script Import
 
 While we recommend to utilize the SDK as a React component, you can alternatively import via a script in your `index.html`.
 
-```typescript
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,9 +82,11 @@ While we recommend to utilize the SDK as a React component, you can alternativel
     
     <script>
         AnyPayWidget.render(document.getElementById('anypay'), {
-            renderInline: true,
-            theme: 'auto',
-            walletOptions: []
+            sequenceApiKey: 'YOUR_SEQUENCE_PROJECT_ACCESS_KEY',
+            toAddress: '0x...',
+            toAmount: '0.1',
+            toChainId: 8453,
+            toToken: 'USDC'
         });
     </script>
 </body>
