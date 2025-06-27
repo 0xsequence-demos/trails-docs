@@ -3,7 +3,7 @@
 Welcome to the Trails docs! 
 
 ## Development
-To install the repo, use the following command
+To install the repo, use the following command:
 
 ```bash
 pnpm i
