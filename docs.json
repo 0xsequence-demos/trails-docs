@@ -73,8 +73,8 @@
     }
   },
   "logo": {
-    "light": "/logo/Trails.svg",
-    "dark": "/logo/Trails.svg"
+    "light": "/logo/light.svg",
+    "dark": "/logo/light.svg"
   },
   "navbar": {
     "links": [
