@@ -80,13 +80,13 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "https://t.me/build_with_trails"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Demos",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://anypay.sequence-demos.xyz/widget"
     }
   },
   "footer": {
