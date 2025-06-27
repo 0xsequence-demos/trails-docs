@@ -1,12 +1,12 @@
 ---
 title: One-Click Payments
-description: How AnyPay achieves one-confirmation payments leveraging any token from any chain.
+description: How Trails achieves one-confirmation payments leveraging any token from any chain.
 icon: 'bolt'
 ---
 
 ## One-Confirmation Payments
 
-AnyPay enables the following experience for developers & users:
+Trails enables the following experience for developers & users:
 
 - Execute any arbitrary payment (swap, mint, deposit, buy) on an app.
 - Action or item can be priced in any token on any chain.
@@ -19,10 +19,10 @@ Ultimately, this enhances the user experience of your application, optimizes you
 
 ## How It Works
 
-Anypay enables one-click payments through a sophisticated intent-based architecture that handles complex cross-chain operations seamlessly. Here's how it works:
+Trails enables one-click payments through a sophisticated intent-based architecture that handles complex cross-chain operations seamlessly. Here's how it works:
 
 1. **User Initiates Payment**  
-   The user clicks "Buy" or initiates any payment action on a dapp, triggering the Anypay flow.
+   The user clicks "Buy" or initiates any payment action on a dapp, triggering the Trails flow.
 
 2. **Intent Address Generation**  
    A unique intent address is generated for this specific transaction. This address exists on both the origin and destination chains and contains predefined logic for handling the payment flow.
@@ -44,7 +44,7 @@ This intent-based approach ensures that users only need to sign **one transactio
 ## Example: Buy with Cross-Chain USDC
 
 ```ts
-import { getClient } from "anypay";
+import { getClient } from "Trails";
 import { createWalletClient, http } from "viem";
 
 // Set up wallet (can be MetaMask, Sequence, embedded, etc.)

@@ -3,14 +3,14 @@
   "dependencies": {
     "@0xsequence/network": "latest",
     "mintlify": "4.0.576"  },
-  "description": "Documentation for AnyPay",
+  "description": "Documentation for Trails",
   "engines": {
     "node": ">=16.0.0"
   },
   "homepage": "https://github.com/0xsequence/docs-v3#readme",
   "license": "ISC",
   "main": "index.js",
-  "name": "anypay",
+  "name": "Trails",
   "scripts": {
     "dev": "mintlify dev",
     "test": "mintlify broken-links"

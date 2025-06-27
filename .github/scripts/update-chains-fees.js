@@ -123,7 +123,7 @@ async function updateChainsAndFees() {
         borderCollapse: "collapse",
         tableLayout: "fixed"
       }}
-      className="anypay-table"
+      className="Trails-table"
     >
       <thead
         style={{

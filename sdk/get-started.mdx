@@ -9,31 +9,31 @@ Node.js v16+ and React v17+
 
 ## React Installation
 
-Install the [AnyPay SDK](https://github.com/0xsequence/anypay/tree/master).
+Install the [Trails SDK](https://github.com/0xsequence/Trails/tree/master).
 
 <CodeGroup>
 ```shell pnpm
-pnpm i @0xsequence/anypay-sdk/widget
+pnpm i @0xsequence/Trails-sdk/widget
 ```
 ```shell npm
-npm install --save @0xsequence/anypay-sdk/widget
+npm install --save @0xsequence/Trails-sdk/widget
 ```
 ```shell yarn
-yarn add @0xsequence/anypay-sdk/widget
+yarn add @0xsequence/Trails-sdk/widget
 ```
 ```shell bun
-bun add @0xsequence/anypay-sdk/widget
+bun add @0xsequence/Trails-sdk/widget
 ```
 </CodeGroup>
 
 ### Import Widget
 
 ```typescript
-import { AnyPayWidget } from '@0xsequence/anypay-sdk/widget'
+import { TrailsWidget } from '@0xsequence/Trails-sdk/widget'
 
 export const App = () => {
   return (
-    <AnyPayWidget
+    <TrailsWidget
       sequenceApiKey="YOUR_SEQUENCE_PROJECT_ACCESS_KEY"
       toAddress="0x..."
       toAmount="0.1"
@@ -74,14 +74,14 @@ While we recommend to utilize the SDK as a React component, you can alternativel
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AnyPay Widget Demo</title>
-    <script src="https://anypay.sequence-demos.xyz/js/anypay.min.js"></script>
+    <title>Trails Widget Demo</title>
+    <script src="https://Trails.sequence-demos.xyz/js/Trails.min.js"></script>
 </head>
 <body>
-    <div id="anypay"></div>
+    <div id="Trails"></div>
     
     <script>
-        AnyPayWidget.render(document.getElementById('anypay'), {
+        TrailsWidget.render(document.getElementById('Trails'), {
             sequenceApiKey: 'YOUR_SEQUENCE_PROJECT_ACCESS_KEY',
             toAddress: '0x...',
             toAmount: '0.1',

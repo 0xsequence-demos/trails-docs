@@ -7,7 +7,7 @@ icon: 'arrow-right-arrow-left'
 
 ## Cross-Chain Token Swapping
 
-AnyPay enables seamless token swapping across multiple blockchain networks, allowing users to exchange tokens without manually bridging assets or dealing with multiple DEXs. Whether users want to swap ETH on Mainnet for USDC on Base, or exchange POL on Polygon for USDT on Arbitrum, AnyPay handles all the complexity behind the scenes - automatically detecting if a swap or bridge is necessary for the payment.
+Trails enables seamless token swapping across multiple blockchain networks, allowing users to exchange tokens without manually bridging assets or dealing with multiple DEXs. Whether users want to swap ETH on Mainnet for USDC on Base, or exchange POL on Polygon for USDT on Arbitrum, Trails handles all the complexity behind the scenes - automatically detecting if a swap or bridge is necessary for the payment.
 
 ## Enhanced Swapping Experience
 
@@ -18,21 +18,21 @@ Traditional cross-chain swapping requires users to:
 - Wait for bridge confirmations
 - Manage slippage across multiple transactions
 
-With AnyPay, users can perform complex cross-chain swaps in a single transaction, using their existing token balances from any supported chain.
+With Trails, users can perform complex cross-chain swaps in a single transaction, using their existing token balances from any supported chain.
 
 ## Cross-Chain Swapping Examples
 
 ### Simple Cross-Chain Token Exchange
 
-This example shows how to use the AnyPay widget for a cross-chain swap that pays 0.1 USDC on Base:
+This example shows how to use the Trails widget for a cross-chain swap that pays 0.1 USDC on Base:
 
 ```tsx
-import { AnyPayWidget } from '@0xsequence/anypay-sdk/widget'
+import { TrailsWidget } from '@0xsequence/Trails-sdk/widget'
 
 
 export const CrossChainSwap = () => {
   return (
-    <AnyPayWidget
+    <TrailsWidget
       sequenceApiKey={'key_123...'}
       toAddress="0x12c4A952b46bEcaD0663f76357d3776ba11566E1" // Recipients's wallet address
       toAmount="0.1"
@@ -43,9 +43,9 @@ export const CrossChainSwap = () => {
       walletOptions={[]}
     >
       <button className="custom-button-styles">
-        Pay with AnyPay
+        Pay with Trails
       </button>
-    </AnyPayWidget>
+    </TrailsWidget>
   )
 }
 ```
@@ -55,11 +55,11 @@ export const CrossChainSwap = () => {
 Perfect for maintaining stablecoin positions across different chains:
 
 ```tsx
-import { AnyPayWidget } from '@0xsequence/anypay-sdk/widget'
+import { TrailsWidget } from '@0xsequence/Trails-sdk/widget'
 
 export const StablecoinSwap = () => {
   return (
-    <AnyPayWidget
+    <TrailsWidget
       toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1"
       toAmount="1000" // 1000 USDT
       toChainId={42161} // Arbitrum
@@ -71,7 +71,7 @@ export const StablecoinSwap = () => {
       <div className="swap-button">
         Swap to USDT on Arbitrum
       </div>
-    </AnyPayWidget>
+    </TrailsWidget>
   )
 }
 ```

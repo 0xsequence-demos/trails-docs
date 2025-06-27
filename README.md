@@ -1,6 +1,6 @@
 
-# AnyPay Documentation
-Welcome to the Anypay docs! 
+# Trails Documentation
+Welcome to the Trails docs! 
 
 ## Development
 To install the repo, use the following command
@@ -30,7 +30,7 @@ Our team reviews pull requests regularly and will provide feedback as needed. Fo
 
 If you find any errors or have suggestions for improvements but don't want to contribute directly, please open an issue describing the problem or enhancement.
 
-Thank you for helping make AnyPay better for everyone!
+Thank you for helping make Trails better for everyone!
 
 ### Troubleshooting
 

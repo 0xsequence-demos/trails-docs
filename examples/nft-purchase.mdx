@@ -6,11 +6,11 @@ icon: 'image'
 
 ## Cross-Chain & Token NFT Purchasing
 
-AnyPay revolutionizes NFT purchasing by enabling users to buy NFTs on any chain using tokens from any supported network. Whether your users hold ETH on Mainnet but want to purchase an NFT on Polygon, or have USDC on Arbitrum but want to buy on Base, AnyPay seamlessly handles the cross-chain bridging and token swapping in a single transaction.
+Trails revolutionizes NFT purchasing by enabling users to buy NFTs on any chain using tokens from any supported network. Whether your users hold ETH on Mainnet but want to purchase an NFT on Polygon, or have USDC on Arbitrum but want to buy on Base, Trails seamlessly handles the cross-chain bridging and token swapping in a single transaction.
 
 ## Enhanced User Experience for NFT Marketplaces
 
-By integrating AnyPay, NFT marketplacescan dramatically reduce friction for buyers who would otherwise need to:
+By integrating Trails, NFT marketplacescan dramatically reduce friction for buyers who would otherwise need to:
 - Bridge tokens manually to the target chain
 - Swap to the required payment token
 - Pay multiple gas fees across different networks
@@ -22,12 +22,12 @@ Instead, users can purchase NFTs directly using their existing token balances fr
 
 ### Purchasing an NFT on Polygon with ETH from Mainnet
 
-This example shows how to use the AnyPay widget to purchase an NFT on Polygon, paying with ETH from Ethereum Mainnet:
+This example shows how to use the Trails widget to purchase an NFT on Polygon, paying with ETH from Ethereum Mainnet:
 
 <CodeGroup>
 
 ```tsx NFTPurchase.tsx
-import { AnyPayWidget } from '@0xsequence/anypay-sdk/widget'
+import { TrailsWidget } from '@0xsequence/Trails-sdk/widget'
 import { encodeFunctionData } from 'viem'
 import { nftABI } from './abi.ts'
 
@@ -45,7 +45,7 @@ export const CrossChainNFTPurchase = () => {
   })
 
   return (
-    <AnyPayWidget
+    <TrailsWidget
       toAddress={NFT_CONTRACT}
       toAmount="0.00002"
       toChainId={42161} // Arbitrum

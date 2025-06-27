@@ -5,7 +5,7 @@
     "default": "light",
     "strict": true
   },
-  "name": "Payment Orchestration Protocol",
+  "name": "Trails",
   "colors": {
     "primary": "#0e0e0e",
     "light": "#fdfdf7",
@@ -73,8 +73,8 @@
     }
   },
   "logo": {
-    "light": "/logo/anypay.svg",
-    "dark": "/logo/anypay.svg"
+    "light": "/logo/Trails.svg",
+    "dark": "/logo/Trails.svg"
   },
   "navbar": {
     "links": [
