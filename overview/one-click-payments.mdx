@@ -13,31 +13,35 @@ Trails enables the following experience for developers & users:
 - Any bridges or swaps necessary to execute the payment are handled automatically.
 - Users can select the desired token and from which chain they would like to execute the payment.
 
-All of this happens with just **one user confirmation**, even if cross-chain bridging or token swapping is required behind the scenes, and regardless if they are using an EOA, account abstraction or smart wallet or 7702-enabled wallet.
+All of this happens with just **one user confirmation**, even if cross-chain bridging or token swapping is required behind the scenes, and regardless if they are using an EOA, account abstraction or
+smart wallet or 7702-enabled wallet. Trails does not require 7702-enabled wallets or chains, but does support them.
 
 Ultimately, this enhances the user experience of your application, optimizes your payment flows, and ensures more liquidity and volume to your app.
 
 ## How It Works
 
-Trails enables one-click payments through a sophisticated intent-based architecture that handles complex cross-chain operations seamlessly. Here's how it works:
+Trails enables one-click payments through an intent-based architecture that is able to execute multiple transactions across multiple chains from a single user wallet confirmation. Here's how it works:
 
 1. **User Initiates Payment**  
    The user clicks "Buy" or initiates any payment action on a dapp, triggering the Trails flow.
 
 2. **Intent Address Generation**  
-   A unique intent address is generated for this specific transaction. This address exists on both the origin and destination chains and contains predefined logic for handling the payment flow.
+   A unique intent contract address is computed based on the full transaction orchestration across multiple chains. The intent address encodes the details of both transactions on both the origin and destination
+   chains.
 
 3. **Origin Deposit**  
    The user sends a single transaction to deposit their tokens (from any chain they hold funds on) into the intent address on the origin chain.
 
 4. **Origin Chain Execution**  
-   Relayer automatically executes an operation on the origin intent address, performing any necessary actions to move funds to the destination.
+   Relayer automatically executes an operation on the origin intent address by submitting a merkle proof to execute the encoded origin transaction. The Relayer is unable to modify
+   the transaction contents, it simply is able to trigger the execution of the encoded origin transaction. In fact, any party is able to safely trigger the intent transaction to move it forward.
 
 5. **Destination Chain Arrival**  
    The bridged funds arrive at the corresponding intent address on the destination chain, ready for the final execution.
 
 6. **Final Settlement**  
-   Relayer executes the final wallet operation on the destination intent address, completing the payment by sending funds to the recipient, executing any required contract calls, minting NFTs, or performing other specified actions.
+   Relayer executes the final wallet operation on the destination intent address by submitting a merkle proof to execute the encoded destination transaction, completing the payment by sending funds
+   to the recipient, executing any required contract calls, minting NFTs, or performing other specified actions.
 
 This intent-based approach ensures that users only need to sign **one transaction** while the system handles all the complex routing, bridging, and settlement logic automatically across multiple chains.
 
