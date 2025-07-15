@@ -4,12 +4,9 @@ description: "Install and Import"
 sidebarTitle: "Getting Started"
 ---
 
-### Requirements
-Node.js v16+ and React v17+
+## Installation
 
-## React Installation
-
-Install the [Trails SDK](https://github.com/0xsequence/trails/tree/master).
+Install the [Trails SDK](https://github.com/0xsequence/trails).
 
 <CodeGroup>
 ```shell pnpm
@@ -74,21 +71,21 @@ While we recommend to utilize the SDK as a React component, you can alternativel
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Trails Widget Demo</title>
-    <script src="https://Trails.sequence-demos.xyz/js/Trails.min.js"></script>
+  <title>Trails Widget Demo</title>
+  <script src="https://dist.trails.build/trails.d08a37fb.min.js"></script>
 </head>
 <body>
-    <div id="Trails"></div>
+  <div id="0xtrails"></div>
     
-    <script>
-        TrailsWidget.render(document.getElementById('Trails'), {
-            sequenceApiKey: 'YOUR_SEQUENCE_PROJECT_ACCESS_KEY',
-            toAddress: '0x...',
-            toAmount: '0.1',
-            toChainId: 8453,
-            toToken: 'USDC'
-        });
-    </script>
+  <script>
+    TrailsWidget.render(document.getElementById('0xtrails'), {
+      sequenceApiKey: 'YOUR_SEQUENCE_PROJECT_ACCESS_KEY',
+      toAddress: '0x...',
+      toAmount: '0.1',
+      toChainId: 8453,
+      toToken: 'USDC'
+    });
+  </script>
 </body>
 </html>
 ```
