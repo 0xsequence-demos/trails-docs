@@ -2,7 +2,8 @@
   "author": "James Lawton",
   "dependencies": {
     "@0xsequence/network": "latest",
-    "mintlify": "4.0.576"  },
+    "mintlify": "4.2.16"
+  },
   "description": "Documentation for Trails",
   "engines": {
     "node": ">=16.0.0"
@@ -12,7 +13,7 @@
   "main": "index.js",
   "name": "Trails",
   "scripts": {
-    "dev": "mintlify dev",
+    "dev": "mintlify dev --no-open",
     "test": "mintlify broken-links"
   },
   "version": "1.0.0"
