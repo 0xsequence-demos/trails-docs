@@ -51,7 +51,6 @@
           {
             "group": "Resources",
             "pages": [
-              "resources/chains-and-fees",           
               "resources/supported-protocols"
             ]
           }
