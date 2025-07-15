@@ -24,7 +24,7 @@
           {
             "group": "Welcome",
             "pages": [
-              "pop"
+              "intro"
             ]
           },
           {
@@ -51,8 +51,7 @@
           {
             "group": "Resources",
             "pages": [
-              "resources/chains-and-fees",           
-              "resources/supported-protocols"
+              "resources/supported-chains"
             ]
           }
         ]
@@ -86,7 +85,7 @@
     "primary": {
       "type": "button",
       "label": "Demos",
-      "href": "https://anypay.sequence-demos.xyz/widget"
+      "href": "https://demo.trails.build"
     }
   },
   "footer": {

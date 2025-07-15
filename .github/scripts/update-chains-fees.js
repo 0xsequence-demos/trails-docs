@@ -159,4 +159,4 @@ ${tableRows}
   }
 }
 
-updateChainsAndFees(); 
+// updateChainsAndFees(); 
