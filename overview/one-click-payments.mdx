@@ -45,33 +45,25 @@ Trails enables one-click payments through an intent-based architecture that is a
 
 This intent-based approach ensures that users only need to sign **one transaction** while the system handles all the complex routing, bridging, and settlement logic automatically across multiple chains.
 
-## Example: Buy with Cross-Chain USDC
+## Example: Pay a recipient on Base in USDC with any token from any chain
 
 ```ts
-import { getClient } from '0xtrails';
-import { createWalletClient, http } from 'viem';
+import { TrailsWidget } from '0xtrails'
 
-// Set up wallet (can be MetaMask, Sequence, embedded, etc.)
-const wallet = createWalletClient({
-  account: address,
-  transport: http(),
-});
 
-// Bridge from Arbitrum to Optimism
-const quote = await getClient()?.actions.getQuote({
-  wallet,
-  chainId: 7777777, // From Zora
-  toChainId: 8453,  // To Base
-  amount: '100000000000000000', // Amount in wei (e.g. 0.1 ETH)
-  currency: '0x0000000000000000000000000000', // Token address on origin chain
-  toCurrency: '0x0000000000000000000000000000', // Token address on destination
-  recipient, // Destination address
-});
-
-await getClient()?.actions.execute({
-  quote,
-  wallet,
-  onProgress: (steps, fees, currentStep, currentStepItem) => {
-    console.log(steps, fees, currentStep, currentStepItem);
-  }
-});
+export const CrossChainPayment = () => {
+  return (
+    <TrailsWidget
+      toAddress="0x..." // recipient wallt address
+      toAmount="0.1"
+      toChainId={8453} // Base
+      toToken="USDC"
+      sequenceApiKey="YOUR_SEQUENCE_PROJECT_ACCESS_KEY"
+    >
+      <button className="custom-button-styles">
+        Pay with Crypto
+      </button>
+    </TrailsWidget>
+  )
+}
+```

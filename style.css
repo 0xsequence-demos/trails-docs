@@ -1,14 +1,11 @@
-/* Hide the "Powered by Mintlify" attribution */
 div.sm\:flex:has(a[href*="mintlify.com/preview-request"]) {
   display: none !important;
 }
 
-/* Alternative approach if the above doesn't work - target by link content */
 a[href*="mintlify.com/preview-request"] {
   display: none !important;
 }
 
-/* Another fallback approach - target the parent div containing the Mintlify attribution */
 div.sm\:flex:has(a[href*="utm_source=undefined"]) {
   display: none !important;
 } 
