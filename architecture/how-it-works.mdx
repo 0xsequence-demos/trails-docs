@@ -4,11 +4,14 @@ description: 'Core architecture and design of the Trails transaction rails proto
 icon: 'sitemap'
 ---
 
-Trails simplifies cross-chain transactions through an intelligent 5-step process that handles the complexity of multi-chain operations behind the scenes.
+Trails offers developers a solution to enable 1-click crypto experiences via any wallet, token and chain. Trails aims to make "Ethereum work as one" by solving the widespread chain and liquidity fragmentation problems by providing a multi-chain transaction orchestration layer on top of wallets that unifies all chains and automates token routing, all with a single end-user confirmation (1-click).
 
 ## Overview
 
-Trails automatically determines the optimal path for cross-chain payments, whether it's a simple single-chain transaction or a complex multi-step orchestration involving swaps, bridges, and executions across different blockchains.
+Trails automatically determines the optimal path for cross-chain transaction execution, whether it's a simple single-chain transaction or a complex multi-step orchestration involving swaps, bridges, and executions across different blockchains.
+
+Trails is built on the [Sequence](https://docs.sequence.xyz) v3 stack combining the powers of account abstraction, real-time indexing, and gasless transaction execution into an intent-powered chain abstraction solution. Trails is designed to work with any wallet, including a simple EOA wallet, a powerful smart wallet or an in-app embedded wallet (ie. MetaMask, Wallet Connect, Privy, Coinbase Smart Wallet, ...). For more details under-the-hood, please see the [protocol architecture](/architecture/protocol) section.
+
 
 ## Step-by-Step Flow
 
@@ -77,6 +80,7 @@ Trails automatically determines the optimal path for cross-chain payments, wheth
   </Step>
 </Steps>
 
+
 ## Key Benefits
 
 <CardGroup cols={2}>
@@ -93,6 +97,7 @@ Trails automatically determines the optimal path for cross-chain payments, wheth
     Non-custodial architecture ensures users maintain control of their assets
   </Card>
 </CardGroup>
+
 
 ## Technical Architecture
 
