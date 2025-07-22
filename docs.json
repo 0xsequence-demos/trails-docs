@@ -30,8 +30,9 @@
           {
             "group": "Overview",
             "pages": [
-              "overview/one-click-payments",
-              "overview/chain-abstraction"
+              "overview/chain-abstraction",
+              "overview/cross-chain-execution",
+              "overview/1-click-payments"
             ]
           },
           {
@@ -39,7 +40,9 @@
             "pages": [
               "examples/swapping",
               "examples/nft-purchase",
-              "examples/deposit-withdrawls"              ]
+              "examples/deposit-withdrawls",
+              "examples/more-use-cases"
+            ]
           },
           {
             "group": "Architecture",
@@ -80,6 +83,10 @@
       {
         "label": "Support",
         "href": "https://t.me/build_with_trails"
+      },
+      {
+        "label": "Swap",
+        "href": "https://trails-app.0xsequence.workers.dev/"
       }
     ],
     "primary": {
