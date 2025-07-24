@@ -31,7 +31,6 @@
             "group": "Overview",
             "pages": [
               "overview/chain-abstraction",
-              "overview/cross-chain-execution",
               "overview/1-click-payments"
             ]
           },
@@ -40,9 +39,8 @@
             "pages": [
               "examples/swapping",
               "examples/nft-purchase",
-              "examples/deposit-withdrawls",
-              "examples/more-use-cases"
-            ]
+              "examples/deposit-withdrawls"
+              ]
           },
           {
             "group": "Architecture",
