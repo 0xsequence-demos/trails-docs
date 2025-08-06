@@ -1,0 +1,34 @@
+---
+title: 'Fund'
+description: 'Trails supports depositing funds directly into your protocol, app, or chain to boost TVL'
+icon: 'money-bill'
+---
+
+
+## Funding with Trails
+
+Trails seamlessly enables users to deposit funds into your chain, app, or protocol with optimized UX flows and native integrations with multiple liquidity sources to optimize routes.
+
+## Depositing USDC into Base
+
+This example shows how to use the Trails widget to enable a user to deposit into a chain with any token, in this case USDC on Base.
+
+<CodeGroup>
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+
+export const BaseDeposit = () => {
+  return (
+    <TrailsWidget
+      mode="fund"
+      toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1" // User Address
+      toChainId={8453}
+      toToken="USDC"
+      theme="auto"
+    />
+  )
+}
+```
+</CodeGroup>
+

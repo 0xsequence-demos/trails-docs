@@ -8,4 +8,12 @@ a[href*="mintlify.com/preview-request"] {
 
 div.sm\:flex:has(a[href*="utm_source=undefined"]) {
   display: none !important;
+}
+
+#topbar-cta-button .bg-primary-dark {
+  background-color: #3A5bff !important;
+}
+
+#topbar-cta-button:hover .bg-primary-dark {
+  opacity: 0.9 !important;
 } 

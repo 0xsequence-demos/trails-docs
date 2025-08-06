@@ -1,0 +1,82 @@
+---
+title: 'Pay'
+description: 'Step-by-step examples for making payments for a variety of use cases leveraging Trails such as NFT purchases, buying with stablecoins, and more.'
+icon: 'bolt'
+---
+
+## Pay with Trails
+
+Trails revolutionizes crypto purchases by enabling users to buy NFTs, RWAs, or any other asset using any token a user holds from any supported chain. In addition, the payee can specify the settlement asset that they would like the payment to be reconciled in or to successfully complete the purchase, for example USDC, ETH, or any other token. 
+
+For example, if a user wants to purchase an NFT that is listed in USDC on Arbitrum, trails will automatically detect the funds the user currently holds in their wallet across all chains, presents those as options to fulfill the payment, and automatically handles any bridging, swapping, or execution logic if necessary to complete the transaction.
+
+## Use Cases
+- Purchase & mint an NFT directly from a marketplace on any chain.
+- Use crypto to make a purchase at an ecommerce platform.
+- Buy a onchain token representing a real-world asset (RWA).
+
+## Enhanced User Experience for NFT Marketplaces
+
+By integrating Trails, merchants dramatically reduce friction for buyers who would otherwise need to:
+- Bridge tokens manually to the target chain
+- Swap to the required payment token
+- Pay multiple gas fees across different networks
+- Wait for bridge confirmations
+
+Instead, users can directly take an action using their existing token balances from any supported chain.
+
+## Purchasing an NFT on Arbitrum
+
+This example shows how to use the Trails widget to purchase an NFT on Arbitrum, where the user can pay with any token from any chain that automatically gets converted to ETH to fulfill the purchase:
+
+<CodeGroup>
+
+```tsx NFTPurchase.tsx
+import { TrailsWidget } from '0xtrails'
+import { encodeFunctionData } from 'viem'
+import { nftABI } from './abi.ts'
+
+export const CrossChainNFTPurchase = () => {
+  // NFT contract address on Arbitrum
+  const NFT_CONTRACT = "0xAA3df3c86EdB6aA4D03b75092b4dd0b99515EC83"
+  
+  // NFT purchase calldata
+  const purchaseCalldata = encodeFunctionData({
+    abi: nftABI,
+    functionName: 'mint',
+    args: [
+      "0x97c4a952b46becad0663f76357d3776ba11566e1", // recipient address
+    ],
+  })
+
+  return (
+    <TrailsWidget
+      mode="pay"
+      toAddress={NFT_CONTRACT}
+      toAmount="0.00002"
+      toChainId={42161} // Arbitrum
+      toToken="ETH"
+      toCalldata={purchaseCalldata}
+      renderInline={true}
+      theme="auto"
+    />
+  )
+}
+```
+
+```typescript abi.ts
+export const nftABI = [
+  {
+    type: "function",
+    name: "mint",
+    stateMutability: "payable",
+    inputs: [
+      { name: "to", type: "address" },
+    ],
+    outputs: [],
+  },
+] as const
+```
+
+</CodeGroup>
+

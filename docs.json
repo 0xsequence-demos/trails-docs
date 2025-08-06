@@ -7,11 +7,11 @@
   },
   "name": "Trails",
   "colors": {
-    "primary": "#0e0e0e",
-    "light": "#fdfdf7",
+    "primary": "#3A5bff",
+    "light": "#D9ECFF",
     "dark": "#15803D"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.ico",
   "navigation": {
     "tabs": [
       {
@@ -37,9 +37,10 @@
           {
             "group": "Examples",
             "pages": [
-              "examples/swapping",
-              "examples/nft-purchase",
-              "examples/deposit-withdrawls"
+              "examples/pay",
+              "examples/swap",
+              "examples/fund",
+              "examples/earn"
               ]
           },
           {
@@ -73,8 +74,8 @@
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
   },
   "navbar": {
     "links": [

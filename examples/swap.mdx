@@ -1,0 +1,81 @@
+---
+title: 'Swap'
+description: 'Leverage trails to swap & bridge tokens cross-chain seamlessly for your app.'
+icon: 'arrows-rotate'
+---
+
+
+## Chain Abstraction Token Swapping
+
+Trails enables seamless token swapping across multiple blockchain networks, allowing users to exchange tokens without manually bridging assets or dealing with multiple DEXs.
+
+## Enhanced Swapping Experience
+
+Traditional cross-chain swapping requires users to:
+- Approve any ERC20 tokens 
+- Bridge tokens to the target chain
+- Find and interact with DEXs on multiple networks
+- Pay gas fees on each chain
+- Wait for bridge confirmations
+
+We optimize the UX flow, integrated as a simple widget for your application to enable swaps across multiple liquidity sources with any token in the user's wallet. All interactions executed in a single confirmation for the user. Notably, this works across any wallet or application, ERC-7702 is not required for batching transactions.
+
+## Examples
+
+### Simple Cross-Chain Token Swap
+
+Leveraging the Trails widget for a cross-chain swap that pays 0.1 USDC on Base:
+
+```tsx
+import { TrailsWidget } from '0xtrails'
+
+export const CrossChainSwap = () => {
+  return (
+    <TrailsWidget
+      toAddress="0x12c4A952b46bEcaD0663f76357d3776ba11566E1" // Recipients's wallet address
+      toAmount="0.1"
+      toChainId={8453} // Base
+      toToken="USDC"
+      theme="auto"
+    >
+      <button className="custom-button-styles">
+        Swap to USDC on Base
+      </button>
+    </TrailsWidget>
+  )
+}
+```
+
+Stablecoins are a great option to move between chains or execute swaps since they typically have high liquidity and very low slippage so are great for large values. We are compatible with nearly any stablecoin with onchain liquidity to tap into.
+
+### Stablecoin Cross-Chain Swapping
+
+```tsx
+import { TrailsWidget } from '0xtrails'
+
+export const StablecoinSwap = () => {
+  return (
+    <TrailsWidget
+      toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1" // Recipient address
+      toAmount="1000" // 1000 USDT
+      toChainId={42161} // Arbitrum
+      toToken="USDT"
+      theme="auto"
+    >
+      <div className="swap-button">
+        Swap to USDT on Arbitrum
+      </div>
+    </TrailsWidget>
+  )
+}
+```
+
+
+## Integration Benefits for Swaps with Trails
+
+- **Unified Liquidity**: Access tokens across all supported chains in one transaction
+- **High Performance Balance Retrieval**: A high-performant indexer is natively integrated to query the entirety of a user's balance for smooth UX and price retrieval.
+- **Reduced Complexity**: Eliminate manual bridging and multi-step swaps (Approval and Transfer)
+- **Customized Branding**: Brand or theme the widget however you'd like to be native to your protocol or application
+- **Seamless UX**: Automatic routing finds optimal swap paths for low slippage for improved UX
+
