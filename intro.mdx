@@ -9,7 +9,7 @@ description: Intent powered multichain transaction rails to pay, swap, fund, or 
 Trails is a multi-chain orchestration protocol that enables 1-click simplified and fast transactions from any wallet seamlessly with unified user liquidity across all chains.
 In contrast to typical cross-chain offerings, Trails sources liquidity and aggregates all user balances for every token across every chain in a user's wallet
 as options for any transaction (ie. payment) on a destination chain. Trails is architected as a trustless system that
-works on top of existing bridging / filler / solver infrastructure. Trails is free to integrate and is optimized for a variety of use cases, for example:
+works on top of existing bridging, filler, or solver infrastructure. Trails is free to integrate and is optimized for a variety of use cases, for example:
 
 - **[Pay](/examples/pay)**: Enable cross-chain, 1-click payments with any token for ecommerce platforms, NFT marketplaces, real-world asset purchases, and minimal-slippage stablecoin transactions.
 - **[Swap](/examples/swap)**: Embed low-latency, highly liquid cross-chain token swaps for DeFi applications, portfolio management tools, and trading platforms
@@ -47,26 +47,56 @@ works on top of existing bridging / filler / solver infrastructure. Trails is fr
 This architecture enables developers to build sophisticated transaction experiences while abstracting the underlying complexity of multichain operations. All you have to do is specify what transaction and any payment options to execute
 on a destination chain.
 
-### Liquidity in Trails
+### Working with Trails
 
+The Trails is complementary to existing cross-chain infrastructure it is highly pluggable and leverages various fillers, solvers, DEX's, and bridges for maximum liquidity and low-slippage across a wide variety of tokens and routes. In short, Trails enhances the flow of funds for underlying infrastructure.
 
-
-The Trails is complementary to existing cross-chain infrastructure by leveraging various fillers & solvers as well as various DEX's and bridges for maximum liquidity across a wide variety of tokens.
-
-Trails supports any wallets including: EOA wallets such as MetaMask, smart wallets like Coinbase Smart Wallet or Sequence. Trails supports any EVM-compatible chain
+Trails supports any wallets including: EOA wallets such as MetaMask, smart wallets like Coinbase Smart Wallet, and embedded wallets like Privy. Trails supports any EVM-compatible chain
 and does not require EIP-7702 enabled wallets. For more information please read our [architecture section](/architecture/how-it-works).
-
 
 ## Who Built Trails?
 
-Trails is built by [Sequence](https://sequence.xyz), the creators of the all-in-one developer platform for building web3 games and applications.
+Trails is built by [Sequence](https://sequence.xyz), the creators of the all-in-one developer platform for web3.
 
 ## Integration
 
-Simply add our SDK to your client-side application and specify the payment your want to make.
+Simply add our SDK as a customizable, embeddable widget to your client-side application and specify the transaction you want to make:
 
-### Lightweight SDK
-- **Built-in UI**: Ready-to-use widget interface with customizable branding
-- **Headless**: Headless implementation for custom UX
-- **Plug-and-play**: Minimal setup required for developers
+
+<CodeGroup>
+```shell pnpm
+pnpm i 0xtrails
+```
+```shell npm
+npm install --save 0xtrails
+```
+```shell yarn
+yarn add 0xtrails
+```
+```shell bun
+bun add 0xtrails
+```
+</CodeGroup>
+
+
+```ts
+import { TrailsWidget } from '0xtrails'
+
+// Execute a cross-chain payment to a recipient.
+export const CrossChainPayment = () => {
+  return (
+    <TrailsWidget
+      toAddress="0x..." // recipient wallet address
+      toAmount="0.1"
+      toChainId={8453} // Base
+      toToken="USDC"
+    >
+      <button className="custom-button-styles">
+        Pay with Crypto
+      </button>
+    </TrailsWidget>
+  )
+}
+```
+
 
