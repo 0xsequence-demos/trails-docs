@@ -1,6 +1,6 @@
 ---
 title: What is Trails
-description: Intent-powered multi-chain transaction rails to orchestrate 1-click payments and contract calls with any wallet, token or chain.
+description: Intent powered multichain transaction rails to pay, swap, fund, or earn in 1-click with any wallet, token or chain.
 ---
 
 
@@ -8,39 +8,48 @@ description: Intent-powered multi-chain transaction rails to orchestrate 1-click
 
 Trails is a multi-chain orchestration protocol that enables 1-click simplified and fast transactions from any wallet seamlessly with unified user liquidity across all chains.
 In contrast to typical cross-chain offerings, Trails sources liquidity and aggregates all user balances for every token across every chain in a user's wallet
-as options for any transaction (ie. payment) on a destination chain such as a swap, deposit, mint, transfer, or trade. Trails is architected as a trustless system that
-works on top of existing bridging / filler / solver infrastructure. Trails is free to integrate for any app.
+as options for any transaction (ie. payment) on a destination chain. Trails is architected as a trustless system that
+works on top of existing bridging / filler / solver infrastructure. Trails is free to integrate and is optimized for a variety of use cases, for example:
+
+- **[Pay](/examples/pay)**: Enable cross-chain, 1-click payments with any token for ecommerce platforms, NFT marketplaces, real-world asset purchases, and minimal-slippage stablecoin transactions.
+- **[Swap](/examples/swap)**: Embed low-latency, highly liquid cross-chain token swaps for DeFi applications, portfolio management tools, and trading platforms
+- **[Fund](/examples/fund)**: Maximize TVL and transaction velocity through fully brandable funding widgets for protocol deposits, chain onboarding, and liquidity provisioning
+- **[Earn](/examples/earn)**: Streamline DeFi yield opportunities by enabling deposits into tokenized vaults, lending pools, and yield strategies from any token on any chain
+
 
 ## Key Features
 
-### 1-click Seamless Payments
+### 1-click transactions
 - Payments occur in a single confirmation with any wallet, regardless if it's an EOA, account abstraction wallet, or EIP-7702 enabled.
 - Developers simply specify payment intent (e.g., "purchase NFT #123 with 30 USDC") for a user to confirm.
-- Built-in multi-chain real-time indexing to automatically return user's wallet balances & prices. No additional vendor license required.
+- Built-in multichain real-time indexing to automatically return user's wallet balances & prices. No additional vendor license required.
 
 ### Universal User Liquidity
 - Aggregates all user balances across every token and chain as payment options.
-- Enables payments using any combination of available assets and chains, i.e., use 30 USDC from Optimism + Base to purchase NFT for 60 USDC.
 - Leveraging existing liquidity infrastructure such as DEX's, bridges, or aggregators, we support a vast array of tokens and chains.
 
 ### Blazing Fast
-- Fast from anywhere, even with payments across chains using our intent-based architecture & relayer infrastructure. ~15 seconds to execution.
+- Fast from anywhere, even with payments across chains using our intent-based architecture & relayer infrastructure.
 - Protocol intelligently detects optimal route for payment fulfillment.
 
 ### Scalable
-- Trails can leverage virtually any existing cross-chain or liquidity infrastructure.
+- Trails can leverage virtually any existing cross-chain or liquidity infrastructure, including bridges, aggregators, and more.
 - Relayer & Indexing infrastructure is lightweight and easily deployable to new chains.
 
 ## How Trails Works
 
-1. **Define Intent (app)**: Create a payment transaction (mint, deposit, swap, etc) for any chain in any token.
-2. **Trails Inspects (trails sdk)**: Can this succeed with the assets held on current chain? Yes = Pass through. No = Continue Orchestration
-3. **Select Route (user)**: Trails suggests the optimal tokens across chains — user can confirm or customize.
-4. **Orchestrate Transaction (trails sdk)**: Intelligently combine swap + bridge + execute for the selected route.
-5. **Execute Transaction (trails intents)**: User confirms transaction via their wallet which executes the end to end to flow for the selected payment.
+1. **Define Intent (App)**: Create a payment transaction (mint, deposit, swap, etc) for any chain in any token.
+2. **Trails Inspects (Trails SDK)**: Can this succeed with the assets held on current chain? Yes = Pass through. No = Continue Orchestration.
+3. **Select Route (User)**: Trails presents an aggregated balance of the user's assets across all chains for the user to select from.
+4. **Orchestrate Transaction (Trails SDK)**: Intelligently combines and optimizes swap + bridge + execute for the selected route to fulfill the transaction.
+5. **Execute Transaction (Trails Intents)**: User confirms transaction via their wallet which executes the end to end to flow for the selected payment.
 
-This architecture enables developers to build sophisticated transaction experiences while abstracting the underlying complexity of multi-chain operations - all you have to do is specify what transaction to execute
+This architecture enables developers to build sophisticated transaction experiences while abstracting the underlying complexity of multichain operations - all you have to do is specify what transaction and any payment options to execute
 on a destination chain.
+
+### Liquidity in Trails
+
+
 
 The Trails is complementary to existing cross-chain infrastructure by leveraging various fillers & solvers as well as various DEX's and bridges for maximum liquidity across a wide variety of tokens.
 

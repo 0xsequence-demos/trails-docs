@@ -30,8 +30,8 @@
           {
             "group": "Overview",
             "pages": [
-              "overview/chain-abstraction",
-              "overview/1-click-payments"
+              "overview/1-click-payments",
+              "overview/chain-abstraction"
             ]
           },
           {
@@ -74,8 +74,8 @@
     }
   },
   "logo": {
-    "light": "/logo/light.png",
-    "dark": "/logo/dark.png"
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
   },
   "navbar": {
     "links": [

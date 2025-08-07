@@ -1,53 +1,53 @@
 ---
-title: 1-Click Payments
-description: How Trails achieves one-confirmation payments leveraging any token from any chain.
-icon: 'bolt'
+title: 1-Click Confirmations
+description: How Trails achieves 1-click payments, swaps, funds, and yield opportunities leveraging any token from any chain for arbitrary executions.
+icon: 'bolt-lightning'
 ---
 
-## Payments
+## 1-Click Confirmations
 
-Trails enables the following experience for developers & users:
+Trails enables the following experience for users:
 
-- Execute any arbitrary payment (swap, mint, deposit, buy) on an app.
-- Action or item can be priced in any token on any chain.
-- Any bridges or swaps necessary to execute the payment are handled automatically.
-- Users can select the desired token and from which chain they would like to execute the payment.
+- Execute any arbitrary logic such as a swap, mint, deposit, buy on an app or chain.
+- Action or asset can be priced in any token on any chain.
+- Users can select any desired token from any chain from their balance to execute the payment.
+- Any bridges, swaps, and execution logic necessary to execute the payment are handled automatically.
 
-All of this happens with just **one user confirmation**, even if cross-chain bridging or token swapping is required behind the scenes, and regardless if they are using an EOA, account abstraction or
-smart wallet or 7702-enabled wallet. Trails does not require 7702-enabled wallets or chains, but does support them.
+All of this happens with a single **one user confirmation**, even if cross-chain bridging or token swapping is required behind the scenes. Additionally, the user can utilize any wallet such as an EOA, account abstraction or
+smart wallet, or embedded wallet. Trails does not require 7702-enabled wallets or chains, but does support them. Lastly, no contract changes are required to integrate.
 
-Ultimately, this enhances the user experience of your application, optimizes your payment flows, and ensures more liquidity and volume to your app.
+Ultimately, this enhances and simplifies the user experience, optimizes your payment flows, and ensures more liquidity and volume to your app, chain, or protocol.
 
 ## How It Works
 
-With Trails, developers can provide a superior Web3 user experience for their customers that’s akin to Web2.
-
-Trails enables 1-click payments through an intent-based architecture that is able to execute multiple transactions across multiple chains from a single user wallet confirmation. Here's how it works:
+Trails enables 1-click payments through an intent-based architecture that is able to execute multiple transactions across multiple chains from a single user wallet confirmation with only a few lines of code. Here's how it works:
 
 1. **User Initiates Payment**  
-   The user clicks "Buy" or initiates any payment action on a dapp, triggering the Trails flow.
+   The user clicks "Buy" or initiates any action requiring payment on a dapp, triggering the Trails flow.
 
 2. **Intent Address Generation**  
    A unique intent contract address is computed based on the full transaction orchestration across multiple chains. The intent address encodes the details of both transactions on both the origin and destination
    chains.
 
 3. **Origin Deposit**  
-   The user sends a single transaction to deposit their tokens (from any chain they hold funds on) into the intent address on the origin chain.
+   The user sends a single transaction to deposit their tokens (from any chain they hold funds on) into the intent address on the origin chain. Importantly, the user's wallet has full control over this intent address.
 
 4. **Origin Chain Execution**  
    Relayer automatically executes an operation on the origin intent address by submitting a merkle proof to execute the encoded origin transaction. The Relayer is unable to modify
    the transaction contents, it simply is able to trigger the execution of the encoded origin transaction. In fact, any party is able to safely trigger the intent transaction to move it forward.
 
-5. **Destination Chain Arrival**  
+5. **Destination Chain Arrival** 
    The bridged funds arrive at the corresponding intent address on the destination chain, ready for the final execution.
 
 6. **Final Settlement**  
    Relayer executes the final wallet operation on the destination intent address by submitting a merkle proof to execute the encoded destination transaction, completing the payment by sending funds
-   to the recipient, executing any required contract calls, minting NFTs, or performing other specified actions.
+   to the recipient, executing any required contract calls, or performing other specified actions.
 
-This intent-based approach ensures that users only need to sign **one transaction** while the system handles all the complex routing, bridging, and settlement logic automatically across multiple chains.
+This intent-based approach ensures that users only need to sign **one transaction** while the system handles all the complex routing, bridging, execution, and settlement logic automatically across multiple chains.
 
-## Example: Pay a recipient on Base in USDC with any token from any chain
+Lastly, Trails is extremely simple to integrate in a few lines of code in your app where all the heavy lifting is taken care of - all that needs to be specified is the payment parameters and any `calldata` to execute if desired.
+
+## Example: Pay a recipient on Base in USDC with any token from any chain.
 
 ```ts
 import { TrailsWidget } from '0xtrails'
@@ -60,7 +60,6 @@ export const CrossChainPayment = () => {
       toAmount="0.1"
       toChainId={8453} // Base
       toToken="USDC"
-      sequenceApiKey="YOUR_SEQUENCE_PROJECT_ACCESS_KEY"
     >
       <button className="custom-button-styles">
         Pay with Crypto
