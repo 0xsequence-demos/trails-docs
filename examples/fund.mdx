@@ -7,28 +7,60 @@ icon: 'money-bill'
 
 ## Funding with Trails
 
-Trails seamlessly enables users to deposit funds into your chain, app, or protocol with optimized UX flows and native integrations with multiple liquidity sources to optimize routes.
+Trails seamlessly enables users to deposit funds into your chain, app, or protocol with optimized UX flows and native integrations with multiple liquidity sources to optimize routes for low-slippage. Users can fund from any token they hold across any supported chain, eliminating the need for manual bridging and swapping.
 
-## Depositing USDC into Base
+## Enhanced Funding Experience
 
-This example shows how to use the Trails widget to enable a user to deposit into a chain with any token, in this case USDC on Base.
+Traditional funding flows require users to:
+- Bridge tokens manually to the target chain
+- Swap to the required deposit token
+- Pay multiple gas fees across different networks
+- Wait for bridge confirmations
+- Navigate complex DeFi interfaces
+
+Trails simplifies this by allowing users to deposit funds using any token from any supported chain in a single transaction, automatically handling all bridging, swapping, routing, and execution logic.
+
+## Use Cases
+- Deposit into a perpetual exchange for leverage trading
+- Bootstrap liquidity for lending protocols
+- Add funds to your balance on an application with crypto support.
+- Fund staking contracts
+- Onboard users to new chains seamlessly by directly calling functions from any origin chain
+
+## Examples
+
+### Depositing USDC into Base
+
+This example shows how to use the Trails widget to enable a user to deposit into a chain with any token, in this case USDC on Base:
 
 <CodeGroup>
 
-```tsx
+```tsx SimpleDeposit.tsx
 import { TrailsWidget } from '0xtrails/widget'
 
 export const BaseDeposit = () => {
   return (
     <TrailsWidget
       mode="fund"
-      toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1" // User Address
-      toChainId={8453}
+      toAddress="0x..." // User Address
+      toChainId={8453} // Base
       toToken="USDC"
+      toAmount="100" // 100 USDC
       theme="auto"
     />
   )
 }
 ```
 </CodeGroup>
+
+
+## Integration Benefits for Funding with Trails
+
+- **Increased TVL**: Enable users to fund from any chain, dramatically increasing your potential user base
+- **Reduced Friction**: Eliminate complex bridging and swapping steps that cause user drop-off
+- **Universal Access**: Users can fund using any token they hold across supported chains
+- **Optimized Routes**: Automatic routing finds the most efficient paths for deposits for low-slippage
+- **Custom Branding**: Fully customizable widget that matches your protocol's design
+- **Real-time Balance**: High-performance indexer shows users their available balances across all chains
+- **Single Transaction**: All complexity handled in one user confirmation
 
