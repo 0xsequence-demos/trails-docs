@@ -1,0 +1,53 @@
+---
+title: Modes
+description: Overview of Pay and Fund modes
+---
+
+The Trails widget supports two modes optimized for different use cases, each using a different trade type approach.
+
+## Mode Overview
+
+### Pay Mode - Exact Output
+- **Use Case**: Payment scenarios where you need a specific amount delivered
+- **Trade Type**: Exact Output (recipient gets exactly what you specify)
+- **Best For**: NFT purchases, fixed-price transactions, e-commerce payments
+- **Logic**: User pays whatever is needed → Recipient gets exact `toAmount`
+
+### Fund Mode - Exact Input  
+- **Use Case**: Funding scenarios where users want to spend a specific amount
+- **Trade Type**: Exact Input (user spends exactly what you specify)
+- **Best For**: Protocol deposits, chain funding, investment scenarios
+- **Logic**: User spends exact `toAmount` → Destination gets whatever results
+
+## Simple Way to Think About It
+
+```
+Fund = exact_input trade type
+Pay = exact_output trade type
+```
+
+## When to Use Each Mode
+
+**Use Pay Mode when:**
+- Selling products with fixed prices
+- NFT marketplaces with set prices
+- Subscription payments
+- Any scenario where the recipient must receive an exact amount
+
+**Use Fund Mode when:**
+- Users want to deposit a specific budget amount
+- Funding protocols where the exact input matters
+- Investment scenarios where users allocate specific amounts
+- Chain onboarding where users want to spend a set amount
+
+## Configuration
+
+Both modes require the same core parameters:
+- `toAddress`: Destination address
+- `toAmount`: Amount (input for Fund, output for Pay)
+- `toChainId`: Destination chain
+- `toToken`: Destination token
+
+Learn more about each mode:
+- [Pay Mode](/sdk/modes/pay) - Exact output for payments
+- [Fund Mode](/sdk/modes/fund) - Exact input for deposits 

@@ -4,88 +4,61 @@ description: "Installing and importing the SDK"
 sidebarTitle: "Getting Started"
 ---
 
-## Installation
+You can try out the flow and demo of Trails on our sandbox environment [here](https://demo.trails.build/widget). 
 
-Install the [Trails SDK](https://github.com/0xsequence/trails).
+To install on your own application:
+<Steps>
+  <Step title="Install the SDK">
+    <CodeGroup>
+    ```shell pnpm
+    pnpm i 0xtrails
+    ```
+    ```shell npm
+    npm install --save 0xtrails
+    ```
+    ```shell yarn
+    yarn add 0xtrails
+    ```
+    ```shell bun
+    bun add 0xtrails
+    ```
+    </CodeGroup>
+  </Step>
+  
+  <Step title="Import and Use the Widget">
+    Add the widget to your React application, for example send 1 USDC cross-chain to a recipient on Base.
 
-<CodeGroup>
-```shell pnpm
-pnpm i 0xtrails
-```
-```shell npm
-npm install --save 0xtrails
-```
-```shell yarn
-yarn add 0xtrails
-```
-```shell bun
-bun add 0xtrails
-```
-</CodeGroup>
+    ```typescript
+    import { TrailsWidget } from '0xtrails/widget'
 
-### Import Widget
+    export const App = () => {
+      return (
+        <TrailsWidget
+          toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1"
+          toAmount="1" 
+          toChainId={8453}
+          toToken="USDC"
+        />
+      )
+    }
+    ```
+  </Step>
+</Steps>
 
-```typescript
-import { TrailsWidget } from '0xtrails'
-
-export const App = () => {
-  return (
-    <TrailsWidget
-      sequenceApiKey="YOUR_SEQUENCE_PROJECT_ACCESS_KEY"
-      toAddress="0x..."
-      toAmount="0.1"
-      toChainId={8453}
-      toToken="USDC"
-    />
-  )
-}
-```
-
-## Configuration Options
-
-| Prop                        | Type                                                      | Required | Default   | Description                                                                                                   |
-|-----------------------------|-----------------------------------------------------------|----------|-----------|---------------------------------------------------------------------------------------------------------------|
-| `sequenceApiKey`            | `string`                                                  | Yes      | —         | Your Sequence project access key. Used to authenticate API requests. A key can be generated on the [Sequence Builder](https://sequence.build/).                                          |
-| `toAddress`                 | `string`                                                  | No       | —         | The predefined  recipient or destination address for the transaction.                                                            |
-| `toAmount`                  | `string`                                                  | No       | —         | The predefined amount to send (e.g., "0.1") to the destination address.                                                                   |
-| `toChainId`                 | `number \| string`                                        | No       | —         | The predefined destination chain ID.                                                                             |
-| `toToken`                   | `string`                                                  | No       | —         | The default token symbol to send (e.g., "ETH", "USDC"). Currently only "ETH" and "USDC" are supported values, but this will change to a token address in near future.                                                   |
-| `toCalldata`                | `string`                                                  | No       | —         | Optional calldata for contract interactions (e.g., NFT minting, DeFi actions) at the destination address.                                |
-| `provider`                  | `any`                                                     | No       | —         | Custom EIP-1193 provider for wallet interactions.                                                             |
-| `children`                  | `React.ReactNode`                                         | No       | —         | Custom React node for the widget's trigger button.                                                            |
-| `renderInline`              | `boolean`                                                 | No       | `true`    | If `true`, renders inline; if `false`, renders as a modal triggered by the button.                                                    |
-| `theme`                     | `"light" \| "dark" \| "auto"`                        | No       | `"auto"` | Controls the widget's color theme. "auto" matches the user's system preference.                               |
-| `walletOptions`             | `string[]`                                                | No       | `["injected", "privy"]` | Array of wallet options to show for connection. Supported: `"injected"`, `"privy"`. It's expected however that the dapp provides their own wallet connection.          |
-| `onOriginConfirmation`      | `(txHash: string) => void`                                | No       | —         | Callback with the origin transaction hash when confirmed.                                                     |
-| `onDestinationConfirmation` | `(txHash: string) => void`                                | No       | —         | Callback with the destination transaction hash when confirmed.                                                |
-| `privyAppId`                | `string`                                                  | No       | —         | Privy App ID for Privy wallet integration.                                                                    |
-| `privyClientId`             | `string`                                                  | No       | —         | Privy Client ID for Privy wallet integration.                                                                 |
-| `paymasterUrl`              | `string`                                                  | No       | —         | URL of a 4337-compatible bundler/paymaster URL for gasless transactions (e.g., thirdweb, Pimlico, ZeroDev, Alchemy, etc). The option `gasless` must also be to `true` to enable it.                                           |
-| `gasless`                   | `boolean`                                                 | No       | —         | If `true`, enables gasless transactions using sequence Relayer or paymaster (ERC-4337) if `paymasterUrl` is set.                                         |
 
 ## Script Import
 
-While we recommend to utilize the SDK as a React component, you can alternatively import via a script in your `index.html`.
+While we recommend using the React component, you can also embed via a script tag in a non-React site.
 
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Trails Widget Demo</title>
-  <script src="https://dist.trails.build/0xtrails.d08a37fb.min.js"></script>
-</head>
-<body>
-  <div id="0xtrails"></div>
-    
-  <script>
-    TrailsWidget.render(document.getElementById('0xtrails'), {
-      sequenceApiKey: 'YOUR_SEQUENCE_PROJECT_ACCESS_KEY',
-      toAddress: '0x...',
-      toAmount: '0.1',
-      toChainId: 8453,
-      toToken: 'USDC'
-    });
-  </script>
-</body>
-</html>
+```js
+<div id="trails"></div>
+<script src="/js/trails.min.js"></script>
+<script>
+  TrailsWidget.render(document.getElementById('trails'), {
+    toAddress: '0x...',
+    toAmount: '0.1',
+    toChainId: 8453,
+    toToken: '0xUSDC...'
+  })
+</script>
 ```

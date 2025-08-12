@@ -1,0 +1,90 @@
+---
+title: "Theming and Customization"
+sidebarTitle: "Theming & Customization"
+---
+
+
+Trails has complete customizability on theming the widget to brand it to your application by simply passing your desired css to the `customCss` variable:
+
+```typescript
+import { TrailsWidget } from '0xtrails/widget'
+
+export const App = () => {
+  return (
+    <TrailsWidget
+      mode="pay"
+      theme="light"
+      customCss={`--trails-font-family: "Trebuchet MS", "Arial", sans-serif;
+--trails-border-radius-widget: 32px;
+--trails-border-radius-button: 24px;
+--trails-border-radius-input: 24px;
+`}
+    >
+      <button className="custom-button-styles">
+        Pay with Trails
+      </button>
+    </TrailsWidget>
+  )
+}
+```
+
+
+Here's the full list of configurability for the possible css variables to change:
+
+```css
+--trails-font-family: "Trebuchet MS", "Arial", sans-serif;
+--trails-border-radius-widget: 32px;
+--trails-border-radius-button: 24px;
+--trails-border-radius-input: 24px;
+--trails-border-radius-dropdown: 12px;
+--trails-border-radius-container: 8px;
+--trails-border-radius-list: 8px;
+--trails-widget-border: 4px solid rgb(0 82 204);
+--trails-primary: rgb(0 82 204);
+--trails-primary-hover: rgb(0 66 163);
+--trails-primary-disabled: rgb(209 213 219);
+--trails-primary-disabled-text: rgb(107 114 128);
+--trails-bg-primary: rgb(255 255 255);
+--trails-bg-secondary: rgb(248 250 252);
+--trails-bg-tertiary: rgb(241 245 249);
+--trails-bg-card: rgb(255 255 255);
+--trails-bg-overlay: rgb(255 255 255);
+--trails-text-primary: rgb(15 23 42);
+--trails-text-secondary: rgb(0 82 204);
+--trails-text-tertiary: rgb(51 65 85);
+--trails-text-muted: rgb(148 163 184);
+--trails-text-inverse: rgb(255 255 255);
+--trails-border-primary: rgb(0 82 204);
+--trails-border-secondary: rgb(226 232 240);
+--trails-border-tertiary: rgb(241 245 249);
+--trails-hover-bg: rgb(248 250 252);
+--trails-hover-text: rgb(15 23 42);
+--trails-focus-ring: rgb(0 82 204);
+--trails-success-bg: rgb(240 253 244);
+--trails-success-text: rgb(22 163 74);
+--trails-success-border: rgb(187 247 208);
+--trails-warning-bg: rgb(255 251 235);
+--trails-warning-text: rgb(217 119 6);
+--trails-warning-border: rgb(253 230 138);
+--trails-error-bg: rgb(254 242 242);
+--trails-error-text: rgb(220 38 38);
+--trails-error-border: rgb(254 202 202);
+--trails-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+--trails-input-bg: rgb(255 255 255);
+--trails-input-border: rgb(226 232 240);
+--trails-input-text: rgb(15 23 42);
+--trails-input-placeholder: rgb(148 163 184);
+--trails-input-focus-border: rgb(0 82 204);
+--trails-input-focus-ring: rgb(0 82 204);
+--trails-dropdown-bg: rgb(255 255 255);
+--trails-dropdown-border: rgb(226 232 240);
+--trails-dropdown-text: rgb(15 23 42);
+--trails-dropdown-hover-bg: rgb(248 250 252);
+--trails-dropdown-selected-bg: rgb(241 245 249);
+--trails-dropdown-selected-text: rgb(15 23 42);
+--trails-dropdown-focus-border: rgb(0 82 204);
+--trails-list-bg: rgb(255 255 255);
+--trails-list-border: rgb(226 232 240);
+--trails-list-hover-bg: rgb(240 248 255);
+```
+

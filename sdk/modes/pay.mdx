@@ -1,0 +1,36 @@
+---
+title: Pay
+description: Send & swap flow to a recipient
+---
+
+Pay mode is optimized for payment use cases such as cross-chain swaps, stablecoin trades, NFT & ecommerce purchases, and general transactions. It enables users to pay using any token from any supported chain, and is ideal when you know the exact amount the recipient should receive.
+
+## Trade Type: Exact Output
+
+Pay mode uses an **exact_output** trade, meaning:
+- You specify the exact amount the recipient will receive (`toAmount`)
+- The user pays whatever amount is needed from their available tokens
+- Perfect for fixed-price purchases (NFTs, swaps, functions with specific token amounts)
+
+## Basic Example
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+
+export function PayExample() {
+  return (
+    <TrailsWidget
+      mode="pay"
+      toAddress="0x1234567890123456789012345678901234567890"
+      toAmount="10" 
+      toChainId={8453}
+      toToken="USDC"
+      renderInline
+    />
+  )
+}
+```
+
+## Advanced Examples
+
+For detailed implementation examples including NFT purchases and complex payment flows, see our [Pay Examples](/examples/pay) page.

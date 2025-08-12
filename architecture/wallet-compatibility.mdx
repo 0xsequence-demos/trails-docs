@@ -4,34 +4,43 @@ description: 'Comprehensive wallet integration support and compatibility across 
 icon: 'wallet'
 ---
 
-## Basic
+Trails works with virtually all wallets including embedded wallets like Privy or injected EOAs while still facilitating complex transaction orchestration cross-chain in 1-click. Additionally, applications or wallets don't have to natively support ERC-7702 for this to work seamlessly.
 
-### Inline Code
+Simply pass the desired provider as an option to the trails widget, for example:
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+## Embedded wallets (Privy)
 
-```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
-```
+Use Privy for embedded email/social login experiences.
 
-### Code Block
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
-
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
+export function EmbeddedPrivy() {
+  return (
+    <TrailsWidget
+      walletOptions={["privy"]}
+      privyAppId="YOUR_PRIVY_APP_ID"
+      privyClientId="YOUR_PRIVY_CLIENT_ID"
+    />
+  )
 }
 ```
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
+## Injected wallets (EOA)
+
+Support browser-injected EOA wallets like MetaMask, Coinbase Wallet - compatible with ERC7702 implementations:
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+
+export function InjectedOnly() {
+  return (
+    <TrailsWidget
+      walletOptions={["injected"]}
+      renderInline
+    />
+  )
 }
 ```
-````
+
+For more wallet options check out Configuration Options[/sdk/get-started#configuration-options](/sdk/get-started#configuration-options) in our SDK.
