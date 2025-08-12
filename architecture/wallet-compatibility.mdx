@@ -12,7 +12,7 @@ Simply pass the desired provider as an option to the trails widget, for example:
 
 Use Privy for embedded email/social login experiences.
 
-```tsx
+```tsx highlight={6-8}
 import { TrailsWidget } from '0xtrails/widget'
 
 export function EmbeddedPrivy() {
@@ -21,6 +21,9 @@ export function EmbeddedPrivy() {
       walletOptions={["privy"]}
       privyAppId="YOUR_PRIVY_APP_ID"
       privyClientId="YOUR_PRIVY_CLIENT_ID"
+      toAddress="0x..." // Recipient address
+      toAmount="1000" // 1000 USDT
+      toChainId={42161} // Arbitrum
     />
   )
 }
@@ -30,14 +33,16 @@ export function EmbeddedPrivy() {
 
 Support browser-injected EOA wallets like MetaMask, Coinbase Wallet - compatible with ERC7702 implementations:
 
-```tsx
+```tsx highlight={6}
 import { TrailsWidget } from '0xtrails/widget'
 
 export function InjectedOnly() {
   return (
     <TrailsWidget
       walletOptions={["injected"]}
-      renderInline
+      toAddress="0x..." // Recipient address
+      toAmount="1000" // 1000 USDT
+      toChainId={42161} // Arbitrum
     />
   )
 }
