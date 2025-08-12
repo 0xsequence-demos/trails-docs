@@ -86,8 +86,8 @@
     }
   },
   "logo": {
-    "light": "/logo/light-mode.svg",
-    "dark": "/logo/dark-mode.svg"
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
   },
   "navbar": {
     "links": [
