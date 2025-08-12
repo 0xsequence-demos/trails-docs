@@ -1,0 +1,195 @@
+---
+title: Hooks
+description: "React Hooks available in the Trails SDK"
+sidebarTitle: "Hooks"
+---
+
+All hooks and helpers available  from the `0xtrails` unless stated otherwise.
+
+## Chains
+
+```ts
+import { getSupportedChains, useSupportedChains } from '0xtrails'
+```
+
+- getSupportedChains(): Promise\<Chain\[\]\>
+- useSupportedChains(): \{ chains: Chain\[\] \| undefined, isLoadingChains: boolean \}
+
+Chain data structure:
+
+```ts
+export type Chain = {
+  id: number
+  name: string
+  chainId: number
+  rpcUrls: string[]
+  nativeCurrency: {
+    name: string
+    symbol: string
+    decimals: number
+  }
+  blockExplorerUrls?: string[]
+}
+```
+
+Utility:
+
+```ts
+import { getChainInfo } from '0xtrails'
+const chain = getChainInfo(8453)
+```
+
+## Tokens
+
+```ts
+import { getSupportedTokens, useSupportedTokens, useTokenList } from '0xtrails'
+```
+
+- useTokenList(): \{ tokens: SupportedToken\[\] \| undefined, isLoadingTokens: boolean \}
+- useSupportedTokens(): \{ supportedTokens?: SupportedToken\[\], isLoadingTokens: boolean \}
+- getSupportedTokens(): Promise\<SupportedToken\[\]\>
+
+Token data structure:
+
+```ts
+export type SupportedToken = {
+  id: string
+  symbol: string
+  name: string
+  contractAddress: string
+  decimals: number
+  chainId: number
+  chainName: string
+  imageUrl: string
+}
+```
+
+Additional helpers:
+
+```ts
+import { useTokenInfo } from '0xtrails'
+// Returns basic info for an ERC-20 by address and optional chainId
+```
+
+Note: Images and metadata are cached (in-memory + localStorage) with built-in staleness windows for fast UX.
+
+## Balances
+
+```ts
+import {
+  useTokenBalances,
+  useAccountTotalBalanceUsd,
+  useHasSufficientBalanceToken,
+  useHasSufficientBalanceUsd,
+} from '0xtrails'
+```
+
+- useTokenBalances(address): returns sorted token balances enriched with USD price
+- useAccountTotalBalanceUsd(address): returns total USD balance across tokens
+- useHasSufficientBalanceUsd(address, targetUsd)
+- useHasSufficientBalanceToken(address, tokenAddress, tokenAmount, chainId)
+
+Example:
+
+```tsx
+const { totalBalanceUsd } = useAccountTotalBalanceUsd(address)
+const { hasSufficientBalanceToken } = useHasSufficientBalanceToken(
+  address,
+  '0xToken',
+  '2.5',
+  8453,
+)
+```
+
+## Quotes and Swap
+
+```ts
+import { useQuote, TradeType, type SwapReturn } from '0xtrails'
+```
+
+```ts
+export type UseQuoteProps = {
+  walletClient?: any
+  fromTokenAddress?: string | null
+  fromChainId?: number | null
+  toTokenAddress?: string | null
+  toChainId?: number | null
+  swapAmount?: string | bigint
+  toRecipient?: string | null
+  tradeType?: TradeType | null
+  slippageTolerance?: string | number | null
+  onStatusUpdate?: (txs: TransactionState[]) => void | null
+}
+```
+
+```ts
+export type UseQuoteReturn = {
+  quote: {
+    fromAmount: string
+    fromAmountMin: string
+    toAmount: string
+    toAmountMin: string
+    originToken: SupportedToken
+    destinationToken: SupportedToken
+    originChain: Chain
+    destinationChain: Chain
+    fees: { feeTokenAddress: string | null; totalFeeAmount: string | null; totalFeeAmountUsd: string | null; totalFeeAmountUsdDisplay: string | null }
+    slippageTolerance: string
+    priceImpact: string
+    completionEstimateSeconds: number
+    transactionStates?: TransactionState[]
+    originTokenRate?: string
+    destinationTokenRate?: string
+  } | null
+  swap: (() => Promise<SwapReturn | null>) | null
+  isLoadingQuote: boolean
+  quoteError: unknown
+}
+```
+
+Usage:
+
+```tsx
+const { data: walletClient } = useWalletClient()
+const { address } = useAccount()
+
+const { quote, swap, isLoadingQuote, quoteError } = useQuote({
+  walletClient,
+  fromTokenAddress,
+  fromChainId,
+  toTokenAddress,
+  toChainId,
+  swapAmount,
+  tradeType: TradeType.EXACT_OUTPUT,
+  toRecipient: address!,
+  slippageTolerance: '0.03',
+  onStatusUpdate: (txs) => console.log(txs),
+})
+```
+
+## Orchestration Hook (Advanced)
+
+```ts
+import { useTrails, type WagmiAccount } from '0xtrails'
+```
+
+High-level flow the hook manages:
+
+- Create intent (quotes and preconditions)
+- Commit intent config
+- Execute origin transaction
+- Monitor destination chain meta-transactions
+
+Config:
+
+```ts
+type UseTrailsConfig = {
+  account: WagmiAccount
+  disableAutoExecute?: boolean
+  env: 'local' | 'cors-anywhere' | 'dev' | 'prod'
+  useV3Relayers?: boolean
+  sequenceProjectAccessKey?: string
+}
+```
+
+Returns a comprehensive object including `createIntent`, `commitIntentConfig`, `sendOriginTransaction`, `sendMetaTxn`, status flags, committed intent addresses, transaction state and more. See the Orchestration page for a guided UI flow. 

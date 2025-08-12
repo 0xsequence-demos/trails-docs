@@ -1,0 +1,46 @@
+---
+title: Tokens & Chains
+---
+
+## Chains
+
+```ts
+import { getSupportedChains, useSupportedChains } from '0xtrails'
+```
+
+- getSupportedChains(): Promise\<Chain\[\]\>
+- useSupportedChains(): \{ chains: Chain\[\] \| undefined, isLoadingChains: boolean \}
+
+Utility:
+
+```ts
+import { getChainInfo } from '0xtrails'
+const chain = getChainInfo(8453)
+```
+
+## Tokens
+
+```ts
+import { useTokenList, useTokenInfo, getSupportedTokens } from '0xtrails'
+```
+
+- useTokenList(): \{ tokens: SupportedToken\[\] \| undefined, isLoadingTokens: boolean \}
+- useSupportedTokens(): \{ supportedTokens?: SupportedToken\[\], isLoadingTokens: boolean \}
+- getSupportedTokens(): Promise\<SupportedToken\[\]\>
+
+Token shape:
+
+```ts
+export type SupportedToken = {
+  id: string
+  symbol: string
+  name: string
+  contractAddress: string
+  decimals: number
+  chainId: number
+  chainName: string
+  imageUrl: string
+}
+```
+
+Images and metadata are cached (in-memory + localStorage) with built-in staleness windows for fast UX. 

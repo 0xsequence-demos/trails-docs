@@ -1,0 +1,51 @@
+---
+title: Fund
+description: Deposit flow optimized for funding chains, vaults, and protocols
+---
+
+Fund mode is optimized for deposit actions into chains, vaults, LPs, and protocols. It provides an enhanced funding experience by allowing users to deposit from any token on any supported chain. Fund is preferred when deposited to a chain, perpetual exchange, protocol, or use cases needing fiat on-ramps. 
+
+## Trade Type: Input Amount
+
+Fund mode uses an **input** trade type, meaning:
+- The user selects a input amount and token they would like to use for funding after calling the widget.
+- The destination receives the specified amount after swapping / bridging that the integrator specifies.
+- Perfect for scenarios where users want to choose a variable amount of funds for a token to deposit.
+
+## Use Cases
+
+Fund mode is ideal for:
+- **Chain Funding**: Deposit funds to get started on a new chain
+- **Protocol Deposits**: Fund lending protocols, perpetual exchanges, or DeFi apps
+- **Vault Deposits**: Add liquidity to yield farming vaults
+- **Staking Contracts**: Fund staking positions
+- **Increasing TVL**: Increase Total Value Locked by enabling deposits from any chain with any token
+
+## Configuration
+
+Fund mode requires the following parameters:
+- `toAddress`: The destination address (required)
+- `toChainId`: The destination chain ID (required)
+- `toToken`: The destination token (required)
+
+## Basic Example
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+
+export function FundExample() {
+  return (
+    <TrailsWidget
+      mode="fund"
+      toAddress="0x1234567890123456789012345678901234567890"
+      toChainId={8453}
+      toToken="USDC"
+      renderInline
+    />
+  )
+}
+```
+
+## Detailed Examples
+
+For comprehensive implementation examples including specific protocol deposits, chain funding, etc., see our [Fund Examples](/examples/fund) page.
