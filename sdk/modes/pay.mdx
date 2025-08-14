@@ -5,12 +5,16 @@ description: Send & swap flow to a recipient
 
 Pay mode is optimized for payment use cases such as cross-chain swaps, stablecoin trades, NFT & ecommerce purchases, and general transactions. It enables users to pay using any token from any supported chain, and is ideal when you know the exact amount the recipient should receive.
 
-## Trade Type: Exact Output
+**At a glance**: Pay fixes the destination amount (exact-output). You set `toAmount`; the widget figures out what the user spends.
 
-Pay mode uses an **exact_output** trade, meaning:
+## Trade Type: Output
+
+Pay mode lets you specify an **exact_output** trade, meaning:
 - You specify the exact amount the recipient will receive (`toAmount`)
 - The user pays whatever amount is needed from their available tokens
 - Perfect for fixed-price purchases (NFTs, swaps, functions with specific token amounts)
+
+This is also ideal when you want to execute functions on the destination side that have dynamic calldata 
 
 ## Basic Example
 
@@ -33,4 +37,4 @@ export function PayExample() {
 
 ## Advanced Examples
 
-For detailed implementation examples including NFT purchases and complex payment flows, see our [Pay Examples](/examples/pay) page.
+For detailed implementation examples including NFT purchases, complex payment flows, see our [Pay Examples](/examples/pay) page.

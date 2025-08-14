@@ -22,12 +22,14 @@ We optimize the UX flow, integrated as a simple widget for your application to e
 
 ## Examples
 
+_Modes: **pay** = exact destination amount (exact-output); **fund** = deposit/top-up where the user chooses how much to send. See [Pay](/sdk/modes/pay) and [Fund](/sdk/modes/fund)._ 
+
 ### Simple Cross-Chain Token Swap
 
 Leveraging the Trails widget for a cross-chain swap that pays 0.1 USDC on Base:
 
 ```tsx
-import { TrailsWidget } from '0xtrails'
+import { TrailsWidget } from '0xtrails/widget'
 
 export const CrossChainSwap = () => {
   return (
@@ -51,7 +53,7 @@ Stablecoins are a great option to move between chains or execute swaps since the
 ### Stablecoin Cross-Chain Swapping
 
 ```tsx
-import { TrailsWidget } from '0xtrails'
+import { TrailsWidget } from '0xtrails/widget'
 
 export const StablecoinSwap = () => {
   return (
