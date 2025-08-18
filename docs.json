@@ -23,16 +23,11 @@
         "groups": [
           {
             "group": "Welcome",
-            "pages": [
-              "intro"
-            ]
+            "pages": ["intro"]
           },
           {
             "group": "Overview",
-            "pages": [
-              "overview/1-click-payments",
-              "overview/chain-abstraction"
-            ]
+            "pages": ["overview/1-click-payments", "overview/chain-abstraction"]
           },
           {
             "group": "Examples",
@@ -41,7 +36,7 @@
               "examples/swap",
               "examples/fund",
               "examples/earn"
-              ]
+            ]
           },
           {
             "group": "Architecture",
@@ -53,9 +48,7 @@
           },
           {
             "group": "Resources",
-            "pages": [
-              "resources/supported-chains"
-            ]
+            "pages": ["resources/supported-chains"]
           }
         ]
       },
@@ -69,10 +62,7 @@
               "sdk/configuration",
               {
                 "group": "Modes",
-                "pages": [
-                  "sdk/modes/pay",
-                  "sdk/modes/fund"
-                ]
+                "pages": ["sdk/modes/pay", "sdk/modes/fund"]
               },
               "sdk/theming",
               "sdk/gasless",
@@ -82,8 +72,7 @@
         ]
       }
     ],
-    "global": {
-    }
+    "global": {}
   },
   "logo": {
     "light": "/logo/light-mode.svg",
@@ -94,10 +83,6 @@
       {
         "label": "Support",
         "href": "https://t.me/build_with_trails"
-      },
-      {
-        "label": "Swap",
-        "href": "https://trails-app.0xsequence.workers.dev/"
       }
     ],
     "primary": {
