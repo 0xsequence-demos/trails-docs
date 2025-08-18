@@ -84,12 +84,7 @@
         "label": "Support",
         "href": "https://t.me/build_with_trails"
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Demos",
-      "href": "https://demo.trails.build"
-    }
+    ]
   },
   "footer": {
     "socials": {
