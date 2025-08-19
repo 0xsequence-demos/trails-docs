@@ -65,3 +65,9 @@ Relayers on each chain work in concert to:
 - Execute transactions with cryptographic proofs
 - Ensure atomic completion or rollback
 - Maintain consistency across chain boundaries
+
+### 📨 Role of the Relayer (How is this trustless?)
+
+- Relayers cannot alter the transaction calldata or intent contents in any way; they can only submit the pre-committed, verifiable calls that match the intent's merkle commitments.
+- Their responsibility is limited to subsidizing gas and successfully landing the transaction on the underlying chain on the user's behalf.
+- Any deviation from the committed parameters is rejected on-chain by the intent contracts, ensuring the relayer cannot manipulate execution.
