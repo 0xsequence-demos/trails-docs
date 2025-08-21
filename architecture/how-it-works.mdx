@@ -10,7 +10,7 @@ Trails offers developers a solution to enable 1-click crypto experiences via any
 
 Trails automatically determines the optimal path for cross-chain transaction execution, whether it's a simple single-chain transaction or a complex multi-step orchestration involving swaps, bridges, and executions across different blockchains.
 
-Trails is built on the [Sequence](https://docs.sequence.xyz) v3 stack combining the powers of account abstraction, real-time indexing, and gasless transaction execution into an intent-powered chain abstraction solution. Trails is designed to work with any wallet, including a simple EOA wallet, a powerful smart wallet or an in-app embedded wallet (ie. MetaMask, Wallet Connect, Privy, Coinbase Smart Wallet, ...). For more details under-the-hood, please see the [protocol architecture](/architecture/protocol) section.
+Trails is built on the [Sequence](https://docs.sequence.xyz) v3 stack combining the powers of account abstraction, real-time indexing, and gasless transaction execution into an intent-powered chain abstraction solution. Trails is designed to work with any wallet, including a simple EOA wallet, a powerful smart wallet or an in-app embedded wallet (ie. MetaMask, Wallet Connect, Privy, Coinbase Smart Wallet, etc). For more details under-the-hood, please see the [protocol architecture](/architecture/protocol) section.
 
 The protocol is designed to be extensible, with plans to support non-EVM chains in the future.
 
@@ -119,13 +119,13 @@ The Trails protocol leverages several key components:
 - **Pluggable Architecture**: New protocols, bridges, and networks can be added without changing integrator code. Trails evaluates options at runtime and selects the safest, most efficient path, giving the developer full control over the flow.
 
 <Note>
-  Trails is responsible for orchestrating the flow, not holding user assets. It coordinates trusted protocols so users can transact with a single click (one transaction on the original chain), while assets move through underlying networks.
+  Trails is responsible for orchestrating the flow, not holding user assets. It coordinates protocols so users can transact with a single click (one transaction on the original chain), while assets move through underlying networks.
  </Note>
 
 
 ## Security & Validation
 
-- **Built on Sequence v3**: Trails is built on top of Sequence's patented v3 wallet contracts, leveraging mature account abstraction and battle-tested controls.
+- **Built on Sequence v3**: Trails is built on top of Sequence's audited v3 wallet contracts, leveraging mature account abstraction and battle-tested controls.
 - **Intent-Scoped Authorization**: Intent addresses are only used to trustlessly authorize the specific transaction calldata the user has explicitly permitted—nothing more.
 - **User “sudo” Control**: The user always retains superuser (sudo) control over their account and funds. In emergencies, they can take direct action at any time.
 - **Validation & Refunds**: Calls are simulated and expected to succeed. If a step cannot complete, Trails handles refunds and unwind flows automatically where applicable.
