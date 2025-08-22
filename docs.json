@@ -23,7 +23,7 @@
         "groups": [
           {
             "group": "Welcome",
-            "pages": ["intro"]
+            "pages": ["intro", "get-started"]
           },
           {
             "group": "Overview",
@@ -71,8 +71,7 @@
           }
         ]
       }
-    ],
-    "global": {}
+    ]
   },
   "logo": {
     "light": "/logo/light-mode.svg",

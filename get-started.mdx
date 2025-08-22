@@ -52,13 +52,9 @@ To install on your own application:
 - [Swap](/examples/swap): Cross-chain token swaps in a single confirmation with unified liquidity and optimal routing—no manual bridging or DEX hopping.
 - [Fund](/examples/fund): Deposit into a chain, app, or protocol from any token on any chain in one flow; Trails optimizes routes and handles swaps/bridges.
 - [Earn](/examples/earn): Deposit into vaults/pools (e.g., Aave) with automatic swap/bridge to the required asset; confirm once and start earning.
-- [Configuration](/sdk/configuration): Full list of widget props including mode, theming, gasless, events, and quote providers.
 
-### SDK modes
+- [Configuration](/sdk/configuration): Full list of variables to customize Trails including different modes, theming, enabling gasless transactions, events, and quote providers.
 
-- [Mode: Pay](/sdk/modes/pay): Exact-output payments and purchases; optionally pass calldata for onchain actions (e.g., mint or purchase).
-- [Mode: Fund](/sdk/modes/fund): Deposits/top-ups where the user chooses how much to send to a destination.
-- Earn: Built using Pay or Fund plus protocol-specific calldata. See the [Earn example](/examples/earn).
 
 ## Script Import
 
@@ -75,4 +71,4 @@ While we recommend using the React component, you can also embed via a script ta
     toToken: '0xUSDC...'
   })
 </script>
-```
+``` 

@@ -53,48 +53,9 @@ The Trails is complementary to existing cross-chain infrastructure it is highly 
 Trails supports any wallets including: EOA wallets such as MetaMask, smart wallets like Coinbase Smart Wallet, and embedded wallets like Privy. Trails supports any EVM-compatible chain
 and does not require EIP-7702 enabled wallets. For more information please read our [architecture section](/architecture/how-it-works).
 
+## Quickstart
 
-## Integration
-
-Simply add our SDK as a customizable, embeddable widget to your client-side application and specify the transaction you want to make:
-
-
-<CodeGroup>
-```shell pnpm
-pnpm i 0xtrails
-```
-```shell npm
-npm install --save 0xtrails
-```
-```shell yarn
-yarn add 0xtrails
-```
-```shell bun
-bun add 0xtrails
-```
-</CodeGroup>
-
-
-```ts
-import { TrailsWidget } from '0xtrails/widget'
-
-// Execute a cross-chain payment to a recipient.
-export const CrossChainPayment = () => {
-  return (
-    <TrailsWidget
-      toAddress="0x..." // recipient wallet address
-      toAmount="0.1"
-      toChainId={8453} // Base
-      toToken="USDC"
-    >
-      <button className="custom-button-styles">
-        Pay with Crypto
-      </button>
-    </TrailsWidget>
-  )
-}
-```
-
+Looking to integrate? [Get started](/get-started) in seconds.
 
 ## Who Built Trails?
 
