@@ -127,6 +127,6 @@ The Trails protocol leverages several key components:
 
 - **Built on Sequence v3**: Trails is built on top of Sequence's audited v3 wallet contracts, leveraging mature account abstraction and battle-tested controls.
 - **Intent-Scoped Authorization**: Intent addresses are only used to trustlessly authorize the specific transaction calldata the user has explicitly permitted—nothing more.
-- **User “sudo” Control**: The user always retains superuser (sudo) control over their account and funds. In emergencies, they can take direct action at any time.
+- **User “sudo” Control**: The user always retains control over their account and funds. In emergencies, they can take direct action at any time.
 - **Validation & Refunds**: Calls are simulated and expected to succeed. If a step cannot complete, Trails handles refunds and unwind flows automatically where applicable.
 - **Non-Custodial by Design**: Trails never takes custody; execution happens via the user's wallet permissions, preserving full control and auditability.
