@@ -50,7 +50,7 @@
           },
           {
             "group": "Resources",
-            "pages": ["resources/supported-chains"]
+            "pages": ["resources/supported-chains", "resources/llm-integration"]
           }
         ]
       },
@@ -75,8 +75,7 @@
       },
       {
         "tab": "API reference",
-        "icon": "terminal",
-        "description": "How to use the Example Co. API",
+        "description": "Trails API Referencing",
         "groups": [
           {
             "group": "API reference",
@@ -98,6 +97,14 @@
         "label": "Support",
         "href": "https://t.me/build_with_trails"
       }
+    ]
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude"
     ]
   }
 }

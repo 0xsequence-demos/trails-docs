@@ -2,7 +2,7 @@
   "author": "James Lawton",
   "dependencies": {
     "@0xsequence/network": "latest",
-    "mintlify": "4.2.16"
+    "mintlify": "4.2.103"
   },
   "description": "Documentation for Trails",
   "engines": {
