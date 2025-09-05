@@ -26,39 +26,154 @@ To install on your own application:
   </Step>
   
   <Step title="Import and Use the Widget">
-    Add the widget to your React application, for example send 1 USDC cross-chain to a recipient on Base.
+    Add the widget to your React application. Here are examples for different modes:
 
-    ```typescript
+    ### Payment Mode (Exact Output)
+    Send exactly 1 USDC to a recipient on Base:
+
+    ```tsx
     import { TrailsWidget } from '0xtrails/widget'
 
-    export const App = () => {
+    export const PaymentExample = () => {
       return (
         <TrailsWidget
           toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1"
           toAmount="1" 
           toChainId={8453}
           toToken="USDC"
-        />
+          mode="pay"
+          onCheckoutComplete={(result) => {
+            console.log('Payment completed:', result)
+          }}
+        >
+          <button className="pay-button">
+            Pay 1 USDC
+          </button>
+        </TrailsWidget>
+      )
+    }
+    ```
+
+    ### Swap Mode
+    Enable cross-chain token swapping:
+
+    ```tsx
+    import { TrailsWidget } from '0xtrails/widget'
+
+    export const SwapExample = () => {
+      return (
+        <TrailsWidget
+          mode="swap"
+          onCheckoutComplete={(result) => {
+            console.log('Swap completed:', result)
+          }}
+        >
+          <button className="swap-button">
+            Swap Tokens
+          </button>
+        </TrailsWidget>
+      )
+    }
+    ```
+
+    ### Fund Mode
+    Let users choose how much to deposit:
+
+    ```tsx
+    import { TrailsWidget } from '0xtrails/widget'
+
+    export const FundExample = () => {
+      return (
+        <TrailsWidget
+          toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1"
+          toChainId={8453}
+          toToken="USDC"
+          mode="fund"
+          onCheckoutComplete={(result) => {
+            console.log('Funding completed:', result)
+          }}
+        >
+          <button className="fund-button">
+            Add Funds
+          </button>
+        </TrailsWidget>
+      )
+    }
+    ```
+  </Step>
+
+  <Step title="Handle Events (Optional)">
+    You can listen to various events during the transaction flow:
+
+    ```tsx
+    import { TrailsWidget } from '0xtrails/widget'
+
+    export const AdvancedExample = () => {
+      return (
+        <TrailsWidget
+          toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1"
+          toAmount="1"
+          toChainId={8453}
+          toToken="USDC"
+          mode="pay"
+          onCheckoutStatusUpdate={({ sessionId, transactionStates }) => {
+            console.log('Transaction states updated:', sessionId, transactionStates)
+          }}
+          onCheckoutError={({ sessionId, error }) => {
+            console.error('Transaction error:', sessionId, error)
+          }}
+          onCheckoutComplete={({ sessionId }) => {
+            console.log('Transaction completed:', sessionId)
+          }}
+          gasless={true}
+          theme="dark"
+        >
+          <button className="advanced-button">
+            Send Payment
+          </button>
+        </TrailsWidget>
       )
     }
     ```
   </Step>
 </Steps>
 
+## Available Modes
+
+The widget supports several modes for different use cases:
+
+- **`pay`** - Exact output amount (user pays exactly what's specified)
+- **`fund`** - Deposit/top-up (user chooses amount to send)
+- **`swap`** - Cross-chain token swapping
+- **`earn`** - Yield farming and staking
+- **`receive`** - Request payments
 
 ## Script Import
 
 While we recommend using the React component, you can also embed via a script tag in a non-React site.
 
-```js
+You can load the Trails widget from various CDNs:
+
+```html
 <div id="trails"></div>
-<script src="/js/trails.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/0xtrails@latest/dist/umd/trails.min.js"></script>
 <script>
   TrailsWidget.render(document.getElementById('trails'), {
-    toAddress: '0x...',
+    toAddress: '0x97c4A952b46bEcaD0663f76357d3776ba11566E1',
     toAmount: '0.1',
     toChainId: 8453,
-    toToken: '0xUSDC...'
+    toToken: 'USDC',
+    mode: 'pay'
   })
 </script>
 ```
+
+### CDN Recommendations
+
+- **unpkg**: `https://unpkg.com/0xtrails@latest/dist/umd/trails.min.js`
+- **jsDelivr**: `https://cdn.jsdelivr.net/npm/0xtrails@latest/dist/umd/trails.min.js`
+- **Specific Version**: Replace `@latest` with `@1.0.0` (or your desired version) for production use
+
+<Note>
+For production applications, we recommend pinning to a specific version rather than using `@latest` to ensure consistent behavior.
+</Note>

@@ -11,9 +11,10 @@ Trails revolutionizes crypto purchases by enabling users to buy NFTs, RWAs, or a
 For example, if a user wants to purchase an NFT that is listed in USDC on Arbitrum, trails will automatically detect the funds the user currently holds in their wallet across all chains, presents those as options to fulfill the payment, and automatically handles any bridging, swapping, or execution logic if necessary to complete the transaction.
 
 ## Use Cases
-- Purchase & mint an NFT directly from a marketplace on any chain.
-- Use crypto to make a purchase at an ecommerce platform.
-- Buy an onchain token representing a real-world asset (RWA).
+- Purchase & mint an NFT directly from a marketplace on any chain
+- Use crypto to make a purchase at an ecommerce platform
+- Buy an onchain token representing a real-world asset (RWA)
+- Execute smart contract calls with payment
 
 ## Enhanced User Experience for NFT Marketplaces
 
@@ -25,7 +26,36 @@ By integrating Trails, merchants dramatically reduce friction for buyers who wou
 
 Instead, users can directly take an action using their existing token balances from any supported chain.
 
-## Purchasing an NFT on Arbitrum
+## Examples
+
+### Simple Payment
+
+The most basic payment setup - pay exactly 1 USDC to a recipient:
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+
+export const SimplePayment = () => {
+  return (
+    <TrailsWidget
+      mode="pay"
+      toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1"
+      toAmount="1"
+      toChainId={8453} // Base
+      toToken="USDC"
+      onCheckoutComplete={({ sessionId }) => {
+        console.log('Payment completed:', sessionId)
+      }}
+    >
+      <button className="pay-button">
+        Pay 1 USDC
+      </button>
+    </TrailsWidget>
+  )
+}
+```
+
+### Purchasing an NFT on Arbitrum
 
 This example shows how to use the Trails widget to purchase an NFT on Arbitrum, where the user can pay with any token from any chain that automatically gets converted to ETH to fulfill the purchase:
 
@@ -57,9 +87,19 @@ export const CrossChainNFTPurchase = () => {
       toChainId={42161} // Arbitrum
       toToken="ETH"
       toCalldata={purchaseCalldata}
-      renderInline={true}
+      onCheckoutComplete={({ sessionId }) => {
+        console.log('NFT purchase completed:', sessionId)
+        // Handle successful purchase
+      }}
+      onCheckoutError={({ sessionId, error }) => {
+        console.error('Purchase failed:', sessionId, error)
+      }}
       theme="auto"
-    />
+    >
+      <button className="nft-purchase-button">
+        Buy NFT (0.00002 ETH)
+      </button>
+    </TrailsWidget>
   )
 }
 ```

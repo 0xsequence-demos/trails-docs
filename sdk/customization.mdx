@@ -1,0 +1,268 @@
+---
+title: "Customization"
+description: "Complete guide to customizing the Trails widget appearance with CSS variables"
+sidebarTitle: "Customization"
+---
+
+## Overview
+
+The Trails widget is fully customizable through CSS variables, allowing you to match your brand and design system. You can customize colors, typography, spacing, border radius, shadows, and more.
+
+## CSS Variable Reference
+
+### Typography
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `--trails-font-family` | Font family for all text | `ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif` |
+
+### Border Radius
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `--trails-border-radius-widget` | Main widget container | `32px` |
+| `--trails-border-radius-button` | Primary buttons | `24px` |
+| `--trails-border-radius-input` | Input fields | `24px` |
+| `--trails-border-radius-dropdown` | Dropdown menus | `12px` |
+| `--trails-border-radius-container` | Generic containers | `8px` |
+| `--trails-border-radius-list` | Token lists | `8px` |
+| `--trails-border-radius-list-button` | List item buttons | `12px` |
+| `--trails-border-radius-large-button` | Large action buttons | `16px` |
+
+### Widget Structure
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `--trails-widget-border` | Main widget border | `none` |
+| `--trails-shadow` | Widget shadow | `0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)` |
+
+### Primary Colors
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `--trails-primary` | Primary brand color | `rgb(59 130 246)` |
+| `--trails-primary-hover` | Primary hover state | `rgb(37 99 235)` |
+| `--trails-primary-disabled` | Disabled primary elements | `rgb(209 213 219)` |
+| `--trails-primary-disabled-text` | Disabled text color | `rgb(107 114 128)` |
+
+### Background Colors
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `--trails-bg-primary` | Main background | `rgb(255 255 255)` |
+| `--trails-bg-secondary` | Secondary background | `rgb(249 250 251)` |
+| `--trails-bg-tertiary` | Tertiary background | `rgb(243 244 246)` |
+| `--trails-bg-card` | Card backgrounds | `rgb(255 255 255)` |
+| `--trails-bg-overlay` | Modal overlays | `rgb(255 255 255)` |
+
+### Text Colors
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `--trails-text-primary` | Primary text | `rgb(17 24 39)` |
+| `--trails-text-secondary` | Secondary text | `rgb(75 85 99)` |
+| `--trails-text-tertiary` | Tertiary text | `rgb(107 114 128)` |
+| `--trails-text-muted` | Muted text | `rgb(156 163 175)` |
+| `--trails-text-inverse` | Inverse text (on dark backgrounds) | `rgb(255 255 255)` |
+
+### Border Colors
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `--trails-border-primary` | Primary borders | `rgb(229 231 235)` |
+| `--trails-border-secondary` | Secondary borders | `rgb(209 213 219)` |
+| `--trails-border-tertiary` | Tertiary borders | `rgb(243 244 246)` |
+
+### Interactive States
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `--trails-hover-bg` | Hover background | `rgb(243 244 246)` |
+| `--trails-hover-text` | Hover text color | `rgb(17 24 39)` |
+| `--trails-focus-ring` | Focus ring color | `rgb(59 130 246)` |
+
+### Status Colors
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `--trails-success-bg` | Success background | `rgb(240 253 244)` |
+| `--trails-success-text` | Success text | `rgb(22 163 74)` |
+| `--trails-success-border` | Success border | `rgb(187 247 208)` |
+| `--trails-warning-bg` | Warning background | `rgb(255 251 235)` |
+| `--trails-warning-text` | Warning text | `rgb(217 119 6)` |
+| `--trails-warning-border` | Warning border | `rgb(253 230 138)` |
+| `--trails-error-bg` | Error background | `rgb(254 242 242)` |
+| `--trails-error-text` | Error text | `rgb(220 38 38)` |
+| `--trails-error-border` | Error border | `rgb(254 202 202)` |
+
+### Input Fields
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `--trails-input-bg` | Input background | `rgb(255 255 255)` |
+| `--trails-input-border` | Input border | `rgb(209 213 219)` |
+| `--trails-input-text` | Input text color | `rgb(17 24 39)` |
+| `--trails-input-placeholder` | Placeholder text | `rgb(156 163 175)` |
+| `--trails-input-focus-border` | Focus border color | `rgb(59 130 246)` |
+| `--trails-input-focus-ring` | Focus ring color | `rgb(59 130 246)` |
+
+### Dropdowns
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `--trails-dropdown-bg` | Dropdown background | `rgb(255 255 255)` |
+| `--trails-dropdown-border` | Dropdown border | `rgb(229 231 235)` |
+| `--trails-dropdown-text` | Dropdown text | `rgb(17 24 39)` |
+| `--trails-dropdown-hover-bg` | Dropdown item hover | `rgb(249 250 251)` |
+| `--trails-dropdown-selected-bg` | Selected item background | `rgb(243 244 246)` |
+| `--trails-dropdown-selected-text` | Selected item text | `rgb(17 24 39)` |
+| `--trails-dropdown-focus-border` | Dropdown focus border | `rgb(59 130 246)` |
+
+### Lists
+
+| Variable | Description | Default Value |
+|----------|-------------|---------------|
+| `--trails-list-bg` | List background | `rgb(255 255 255)` |
+| `--trails-list-border` | List border | `rgb(229 231 235)` |
+| `--trails-list-hover-bg` | List item hover | `rgb(249 250 251)` |
+
+## Typography Customization
+
+### Custom Fonts
+```tsx
+<TrailsWidget
+  mode="pay"
+  toAddress="0x..."
+  customCss={`
+    --trails-font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  `}
+/>
+```
+
+### Monospace Theme
+```tsx
+<TrailsWidget
+  mode="swap"
+  customCss={`
+    --trails-font-family: "Fira Code", "Monaco", "Consolas", monospace;
+  `}
+/>
+```
+
+## Border Radius Customization
+
+### Rounded Theme
+```tsx
+<TrailsWidget
+  mode="pay"
+  toAddress="0x..."
+  customCss={`
+    --trails-border-radius-widget: 32px;
+    --trails-border-radius-button: 24px;
+    --trails-border-radius-input: 20px;
+    --trails-border-radius-dropdown: 16px;
+  `}
+/>
+```
+
+### Square Theme
+```tsx
+<TrailsWidget
+  mode="fund"
+  toAddress="0x..."
+  customCss={`
+    --trails-border-radius-widget: 0px;
+    --trails-border-radius-button: 0px;
+    --trails-border-radius-input: 0px;
+    --trails-border-radius-dropdown: 0px;
+    --trails-border-radius-container: 0px;
+  `}
+/>
+```
+
+## Advanced Customization
+
+### Custom Shadows
+```tsx
+<TrailsWidget
+  mode="swap"
+  customCss={`
+    --trails-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  `}
+/>
+```
+
+### Glassmorphism Effect
+```tsx
+<TrailsWidget
+  mode="pay"
+  toAddress="0x..."
+  customCss={`
+    --trails-bg-primary: rgba(255, 255, 255, 0.1);
+    --trails-bg-secondary: rgba(255, 255, 255, 0.05);
+    --trails-border-primary: rgba(255, 255, 255, 0.2);
+    --trails-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  `}
+/>
+```
+
+## Best Practices
+
+### 1. Maintain Accessibility
+Ensure sufficient color contrast between text and backgrounds:
+```tsx
+// Good contrast example
+customCss={`
+  --trails-text-primary: rgb(17 24 39);
+  --trails-bg-primary: rgb(255 255 255);
+`}
+```
+
+### 2. Consistent Border Radius
+Use a consistent border radius scale:
+```tsx
+customCss={`
+  --trails-border-radius-widget: 16px;
+  --trails-border-radius-button: 12px;
+  --trails-border-radius-input: 8px;
+  --trails-border-radius-dropdown: 6px;
+`}
+```
+
+### 3. Brand Alignment
+Match your existing design system:
+```tsx
+// Example matching your brand colors
+customCss={{
+  '--trails-primary': 'var(--your-brand-primary)',
+  '--trails-bg-primary': 'var(--your-brand-background)',
+  '--trails-text-primary': 'var(--your-brand-text)',
+}}
+```
+
+### 4. Test in Both Light and Dark Modes
+Consider how your customizations work with the `theme` prop:
+```tsx
+<TrailsWidget
+  theme="dark"
+  customCss={`
+    /* Your dark theme customizations */
+  `}
+/>
+```
+
+## CSS Variable Inheritance
+
+The widget uses CSS custom properties (variables) that cascade through the component tree. You can override any variable at any level:
+
+```css
+/* Global override */
+:root {
+  --trails-primary: #your-brand-color;
+}
+
+/* Component-specific override */
+.my-widget-container {
+  --trails-primary: #different-color;
+}
+``` 

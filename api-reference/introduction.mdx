@@ -1,33 +1,186 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "API Reference"
+description: "Complete reference for the Trails SDK"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Welcome to the Trails SDK API Reference
 
-## Welcome
+The Trails SDK provides a comprehensive set of tools for building cross-chain applications with seamless token swapping, bridging, and payment functionality.
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+## Core Components
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+### TrailsWidget
+The main React component for integrating Trails functionality into your application.
 
-## Authentication
-
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
-
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
 ```
+
+**Props:**
+- `appId: string` - Your Sequence project access key (required)
+- `mode?: "pay" | "fund" | "earn" | "swap" | "receive"` - Widget operation mode
+- `toAddress?: string` - Destination address for payments
+- `toAmount?: string` - Exact amount for payments (pay mode)
+- `toChainId?: number | string` - Destination chain ID
+- `toToken?: string` - Destination token symbol or address
+- `toCalldata?: string` - Custom calldata for contract interactions
+- `gasless?: boolean` - Enable gasless transactions
+- `theme?: "light" | "dark" | "auto"` - Widget theme
+- `quoteProvider?: string` - Preferred quote provider
+- `onCheckoutComplete?: (data: { sessionId: string }) => void` - Success callback
+- `onCheckoutError?: (data: { sessionId: string; error: string }) => void` - Error callback
+- `onCheckoutStatusUpdate?: (data: { sessionId: string; transactionStates: TransactionState[] }) => void` - Transaction progress callback
+
+## Main Exports
+
+### Hooks
+
+```tsx
+// Chains
+import { useSupportedChains, getSupportedChains } from '0xtrails'
+
+// Tokens  
+import { useSupportedTokens, getSupportedTokens, useTokenList } from '0xtrails'
+
+// Balances
+import { 
+  useTokenBalances, 
+  useAccountTotalBalanceUsd,
+  useHasSufficientBalanceToken,
+  useHasSufficientBalanceUsd 
+} from '0xtrails'
+
+// Quotes & Swapping
+import { useQuote, prepareSend, TradeType } from '0xtrails'
+
+// Meta Transactions
+import { useMetaTxnsMonitor } from '0xtrails'
+
+// Advanced
+import { useTrails } from '0xtrails'
+```
+
+### Utilities
+
+```tsx
+// API Clients
+import { getAPIClient, useAPIClient } from '0xtrails'
+import { getIndexerGatewayClient, useIndexerGatewayClient } from '0xtrails'
+
+// Intents (Advanced)
+import {
+  calculateIntentAddress,
+  commitIntentConfig,
+  getIntentCallsPayloads,
+  sendOriginTransaction
+} from '0xtrails'
+
+// Relayers
+import { getRelayer, useRelayers } from '0xtrails'
+
+// Meta Transactions
+import { relayerSendMetaTx, getMetaTxnReceipt } from '0xtrails'
+
+// Transaction Utilities
+import { getTxTimeDiff } from '0xtrails'
+
+// Encoders
+import { getERC20TransferData } from '0xtrails'
+
+// Constants
+import { TRAILS_CONTRACT_PLACEHOLDER_AMOUNT } from '0xtrails'
+```
+
+## Type Definitions
+
+### Core Types
+
+```tsx
+export type TransactionState = {
+  chainId: number
+  transactionHash: string
+  state: 'pending' | 'confirmed' | 'failed'
+  explorerUrl: string
+  label: string
+  blockNumber?: number
+  decodedGuestModuleEvents?: Array<{ type: string; [key: string]: any }>
+  decodedTrailsTokenSweeperEvents?: Array<{ type: string; [key: string]: any }>
+}
+
+export type PrepareSendQuote = {
+  originAmountFormatted: string
+  originAmountDisplay: string
+  originAmountUsdDisplay: string
+  destinationAmountFormatted: string
+  destinationAmountDisplay: string
+  destinationAmountUsdDisplay: string
+  originToken: SupportedToken
+  destinationToken: SupportedToken
+  originChain: Chain
+  destinationChain: Chain
+  totalFeeAmountUsdDisplay: string
+  completionEstimateSeconds: number
+  transactionStates?: TransactionState[]
+  // ... additional quote properties
+}
+
+export enum TradeType {
+  EXACT_INPUT = 0,  // User specifies exact input amount
+  EXACT_OUTPUT = 1  // User specifies exact output amount
+}
+```
+
+### Token & Chain Types
+
+```tsx
+export type SupportedToken = {
+  id: string
+  symbol: string
+  name: string
+  contractAddress: string
+  decimals: number
+  chainId: number
+  chainName: string
+  imageUrl: string
+}
+
+export type Chain = {
+  id: number
+  name: string
+  chainId: number
+  rpcUrls: string[]
+  nativeCurrency: {
+    name: string
+    symbol: string
+    decimals: number
+  }
+  blockExplorerUrls?: string[]
+  imageUrl?: string
+}
+```
+
+## Quick Start
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+
+// Basic payment widget
+<TrailsWidget
+  mode="pay"
+  toAddress="0x..."
+  toAmount="1"
+  toChainId={8453}
+  toToken="USDC"
+>
+  <button>Pay 1 USDC</button>
+</TrailsWidget>
+
+// Swap widget
+<TrailsWidget 
+  mode="swap"
+>
+  <button>Swap Tokens</button>
+</TrailsWidget>
+```
+
+For detailed examples and advanced usage, see the [Examples](/examples) section.

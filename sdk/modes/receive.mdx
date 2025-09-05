@@ -1,0 +1,62 @@
+---
+title: "Receive Mode"
+description: "Generate QR codes for receiving payments with the Trails SDK"
+sidebarTitle: "Receive"
+---
+
+## Overview
+
+Receive mode generates QR codes that others can scan to send payments to a specified address. This mode is ideal any scenario where you want to make it easy for others to pay you.
+
+## Key Features
+
+- **QR code generation**: Automatically generates scannable QR codes
+- **Cross-chain compatible**: Accept payments from any supported chain
+- **Flexible amounts**: Fixed amounts or user-defined amounts
+- **Mobile-friendly**: Optimized for mobile wallet scanning
+- **Multiple token support**: Accept payments in various tokens
+
+## Basic Usage
+
+### QR Code Payment Request
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+
+export const QRPaymentRequest = () => {
+  return (
+    <TrailsWidget
+      mode="receive"
+      toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1" // Your address
+      toAmount="25"
+      toChainId={8453} // Base
+      toToken="USDC"
+      onCheckoutComplete={({ sessionId }) => {
+        console.log('Payment received:', sessionId)
+      }}
+    >
+      <button className="qr-button">
+        Show QR Code - Request $25 USDC
+      </button>
+    </TrailsWidget>
+  )
+}
+```
+
+### Flexible Amount QR Code
+
+Allow payers to choose the amount:
+
+```tsx
+<TrailsWidget
+  mode="receive"
+  toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1"
+  toChainId={8453} // Base
+  toToken="USDC"
+  onCheckoutComplete={({ sessionId }) => {
+    console.log('Payment received:', sessionId)
+  }}
+>
+  <button>Generate Payment QR Code</button>
+</TrailsWidget>
+```

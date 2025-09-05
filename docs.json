@@ -62,7 +62,7 @@
               "sdk/configuration",
               {
                 "group": "Modes",
-                "pages": ["sdk/modes/pay", "sdk/modes/fund"]
+                "pages": ["sdk/modes/pay", "sdk/modes/fund", "sdk/modes/swap", "sdk/modes/receive"]
               },
               "sdk/theming",
               "sdk/gasless",
