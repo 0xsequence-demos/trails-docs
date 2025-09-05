@@ -1,5 +1,5 @@
 ---
-title: "API Reference"
+title: "Overview"
 description: "Complete reference for the Trails SDK"
 ---
 
@@ -159,28 +159,5 @@ export type Chain = {
 }
 ```
 
-## Quick Start
-
-```tsx
-import { TrailsWidget } from '0xtrails/widget'
-
-// Basic payment widget
-<TrailsWidget
-  mode="pay"
-  toAddress="0x..."
-  toAmount="1"
-  toChainId={8453}
-  toToken="USDC"
->
-  <button>Pay 1 USDC</button>
-</TrailsWidget>
-
-// Swap widget
-<TrailsWidget 
-  mode="swap"
->
-  <button>Swap Tokens</button>
-</TrailsWidget>
-```
 
 For detailed examples and advanced usage, see the [Examples](/examples) section.

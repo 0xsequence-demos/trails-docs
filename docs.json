@@ -35,7 +35,9 @@
               "examples/pay",
               "examples/swap",
               "examples/fund",
-              "examples/earn"
+              "examples/earn",
+              "examples/receive",
+              "examples/gasless"
             ]
           },
           {
@@ -67,6 +69,19 @@
               "sdk/theming",
               "sdk/gasless",
               "sdk/hooks"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API reference",
+        "icon": "terminal",
+        "description": "How to use the Example Co. API",
+        "groups": [
+          {
+            "group": "API reference",
+            "pages": [
+              "api-reference/introduction"
             ]
           }
         ]

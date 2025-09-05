@@ -1,0 +1,58 @@
+---
+title: 'Gasless Transactions'
+description: 'Examples for enabling gasless flows via 4337 paymasters or Sequence'
+icon: 'wind'
+---
+
+## Gasless Flows
+
+Enable gasless execution by either configuring 4337 paymasters per-chain or leveraging Sequence gasless. Below are minimal examples for both approaches.
+
+### 4337 Paymaster (per-chain)
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+
+export const GaslessWithPaymaster = () => (
+  <TrailsWidget
+    mode="pay"
+    gasless={true}
+    paymasterUrls={[
+      { chainId: 8453, url: 'https://paymaster.example.com' }
+    ]}
+    toAddress="0x1234567890123456789012345678901234567890"
+    toAmount="1"
+    toChainId={8453}
+    toToken="USDC"
+  >
+    <button>Pay gasless (USDC on Base)</button>
+  </TrailsWidget>
+)
+```
+
+### Sequence Gasless
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+
+export const GaslessWithSequence = () => (
+  <TrailsWidget
+    mode="pay"
+    gasless={true}
+    toAddress="0x1234567890123456789012345678901234567890"
+    toAmount="0.1"
+    toChainId={8453}
+    toToken="USDC"
+  >
+    <button>Pay gasless via Sequence</button>
+  </TrailsWidget>
+)
+```
+
+### Notes
+
+- Paymaster URLs must be 4337-compatible (e.g., Alchemy, Thirdweb, Pimlico, ZeroDev).
+- Configure per-chain endpoints as needed.
+- For production, pin SDK versions and secure your paymaster.
+
+
