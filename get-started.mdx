@@ -60,9 +60,9 @@ To install on your own application:
 
 While we recommend using the React component, you can also embed via a script tag in a non-React site.
 
-```js
+```html
 <div id="trails"></div>
-<script src="/js/trails.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/0xtrails@latest/dist/umd/trails.min.js"></script>
 <script>
   TrailsWidget.render(document.getElementById('trails'), {
     toAddress: '0x...',
@@ -71,4 +71,11 @@ While we recommend using the React component, you can also embed via a script ta
     toToken: '0xUSDC...'
   })
 </script>
-``` 
+```
+
+### Available CDNs
+
+- **unpkg**: `https://unpkg.com/0xtrails@latest/dist/umd/trails.min.js`
+- **jsDelivr**: `https://cdn.jsdelivr.net/npm/0xtrails@latest/dist/umd/trails.min.js`
+
+For production use, pin to a specific version by replacing `@latest` with `@1.0.0` or your desired version. 

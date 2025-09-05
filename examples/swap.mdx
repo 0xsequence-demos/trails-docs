@@ -4,7 +4,6 @@ description: 'Leverage trails to swap & bridge tokens cross-chain seamlessly for
 icon: 'arrows-rotate'
 ---
 
-
 ## Chain Abstraction Token Swapping
 
 Trails enables seamless token swapping across multiple blockchain networks, allowing users to exchange tokens without manually bridging assets or dealing with multiple DEXs.
@@ -22,62 +21,188 @@ We optimize the UX flow, integrated as a simple widget for your application to e
 
 ## Examples
 
-_Modes: **pay** = exact destination amount (exact-output); **fund** = deposit/top-up where the user chooses how much to send. See [Pay](/sdk/modes/pay) and [Fund](/sdk/modes/fund)._ 
-
 ### Simple Cross-Chain Token Swap
 
-Leveraging the Trails widget for a cross-chain swap that pays 0.1 USDC on Base:
+The most basic swap implementation using the dedicated swap mode:
 
 ```tsx
 import { TrailsWidget } from '0xtrails/widget'
 
-export const CrossChainSwap = () => {
+export const BasicSwap = () => {
   return (
     <TrailsWidget
-      toAddress="0x12c4A952b46bEcaD0663f76357d3776ba11566E1" // Recipients's wallet address
-      toAmount="0.1"
-      toChainId={8453} // Base
-      toToken="USDC"
-      theme="auto"
+      mode="swap"
+      onCheckoutComplete={({ sessionId }) => {
+        console.log('Swap completed:', sessionId)
+      }}
+      onCheckoutError={({ sessionId, error }) => {
+        console.error('Swap failed:', sessionId, error)
+      }}
     >
-      <button className="custom-button-styles">
-        Swap to USDC on Base
+      <button className="swap-button">
+        Swap Tokens
       </button>
     </TrailsWidget>
   )
 }
 ```
 
-Stablecoins are a great option to move between chains or execute swaps since they typically have high liquidity and very low slippage so are great for large values. We are compatible with nearly any stablecoin with onchain liquidity to tap into.
+### Swap with Custom Theme
 
-### Stablecoin Cross-Chain Swapping
+Customize the appearance to match your brand:
 
 ```tsx
 import { TrailsWidget } from '0xtrails/widget'
 
-export const StablecoinSwap = () => {
+export const ThemedSwap = () => {
   return (
     <TrailsWidget
-      toAddress="0x..." // Recipient address
-      toAmount="1000" // 1000 USDT
-      toChainId={42161} // Arbitrum
-      toToken="USDT"
-      theme="auto"
+=      mode="swap"
+      theme="dark"
+      onCheckoutComplete={({ sessionId }) => {
+        console.log('Themed swap completed:', sessionId)
+      }}
     >
-      <div className="swap-button">
-        Swap to USDT on Arbitrum
+      <div className="custom-swap-trigger">
+        <span>🔄</span>
+        <span>Swap Tokens</span>
       </div>
     </TrailsWidget>
   )
 }
 ```
 
+### Advanced Swap with Custom Quote Provider
+
+Use a specific quote provider for swaps:
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+
+export const AdvancedSwap = () => {
+  return (
+    <TrailsWidget
+      mode="swap"
+      quoteProvider="lifi"
+      onCheckoutComplete={({ sessionId }) => {
+        console.log('Advanced swap completed:', sessionId)
+        // Handle post-swap logic
+      }}
+      onCheckoutStatusUpdate={({ sessionId, transactionStates }) => {
+        // Track each step of the swap
+        transactionStates.forEach((state, index) => {
+          console.log(`Step ${index + 1}: ${state.label} - ${state.state}`)
+        })
+      }}
+      onCheckoutError={({ sessionId, error }) => {
+        console.error('Swap error:', sessionId, error)
+        // Handle error state
+      }}
+    >
+      <button className="advanced-swap-button">
+        Advanced Swap
+      </button>
+    </TrailsWidget>
+  )
+}
+```
+
+## Using the useQuote Hook
+
+For more control over the swap process, use the `useQuote` hook directly:
+
+```tsx
+import { useQuote, TradeType } from '0xtrails'
+import { useWalletClient, useAccount } from 'wagmi'
+import { useState } from 'react'
+
+export const CustomSwapComponent = () => {
+  const { data: walletClient } = useWalletClient()
+  const { address } = useAccount()
+  const [fromToken, setFromToken] = useState('0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48') // USDC on Ethereum
+  const [toToken, setToToken] = useState('0x833589fcd6edb6e08f4c7c32d4f71b54bda02913') // USDC on Base
+  const [amount, setAmount] = useState('1000000') // 1 USDC
+
+  const { quote, swap, isLoadingQuote, quoteError } = useQuote({
+    walletClient,
+    fromTokenAddress: fromToken,
+    fromChainId: 1, // Ethereum
+    toTokenAddress: toToken,
+    toChainId: 8453, // Base
+    swapAmount: amount,
+    tradeType: TradeType.EXACT_INPUT,
+    toAddress: address,
+    slippageTolerance: '0.005', // 0.5%
+    onStatusUpdate: (states) => {
+      console.log('Swap progress:', states)
+    },
+  })
+
+  const handleSwap = async () => {
+    if (!swap) return
+    
+    try {
+      const result = await swap()
+      console.log('Swap result:', result)
+    } catch (error) {
+      console.error('Swap failed:', error)
+    }
+  }
+
+  if (isLoadingQuote) {
+    return <div>Loading quote...</div>
+  }
+
+  if (quoteError) {
+    return <div>Error getting quote: {String(quoteError)}</div>
+  }
+
+  if (!quote) {
+    return <div>No quote available</div>
+  }
+
+  return (
+    <div className="swap-component">
+      <div className="quote-info">
+        <h3>Swap Quote</h3>
+        <p>From: {quote.originAmountFormatted} {quote.originToken.symbol} on {quote.originChain.name}</p>
+        <p>To: {quote.destinationAmountFormatted} {quote.destinationToken.symbol} on {quote.destinationChain.name}</p>
+        <p>Fee: {quote.totalFeeAmountUsdDisplay}</p>
+        <p>Estimated time: {quote.completionEstimateSeconds}s</p>
+      </div>
+      
+      <button onClick={handleSwap} className="execute-swap-button">
+        Execute Swap
+      </button>
+    </div>
+  )
+}
+```
+
+## Swap Modes Comparison
+
+| Mode | Use Case | User Input | Best For |
+|------|----------|------------|----------|
+| **swap** | Open-ended swapping | User selects both tokens and amounts | DEX-like interfaces, trading apps |
+| **pay** | Exact output payment | User pays exact amount specified | E-commerce, bill payments |
+| **fund** | Deposit/top-up | User chooses amount to send | Wallet funding, account top-ups |
 
 ## Integration Benefits for Swaps with Trails
 
 - **Unified Liquidity**: Access tokens across all supported chains in one transaction
-- **High Performance Balance Retrieval**: A high-performant indexer is natively integrated to query the entirety of a user's balance for smooth UX and price retrieval.
+- **High Performance Balance Retrieval**: A high-performant indexer is natively integrated to query the entirety of a user's balance for smooth UX and price retrieval
 - **Reduced Complexity**: Eliminate manual bridging and multi-step swaps (Approval and Transfer)
 - **Customized Branding**: Brand or theme the widget however you'd like to be native to your protocol or application
 - **Seamless UX**: Automatic routing finds optimal swap paths for low slippage for improved UX
+- **Gasless Options**: Support for gasless transactions to reduce friction
+- **Real-time Quotes**: Live pricing and route optimization
+- **Cross-chain Native**: Built from the ground up for multi-chain operations
+
+## Supported Quote Providers
+
+- **Auto**: Automatically selects the best provider
+- **LiFi**: Cross-chain liquidity aggregation
+- **Custom**: Integrate your own quote provider
+
+Choose the provider that best fits your needs or let the system automatically select the optimal one.
 

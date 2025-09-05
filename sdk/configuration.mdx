@@ -1,42 +1,330 @@
 ---
 title: Configuration
+description: "Complete configuration options for the Trails SDK"
 ---
 
 ## Configuration Options
 
 Trails is easy to get started, however we have deep configuration options to address most use cases.
 
-| Prop                        | Type                                                      | Required | Default   | Description                                                                                                   |
-|-----------------------------|-----------------------------------------------------------|----------|-----------|---------------------------------------------------------------------------------------------------------------|
-| `toAddress`                 | `string`                                                  | Yes       | —         | Prefill the recipient/destination address. |
-| `toAmount`                  | `string`                                                  | Yes       | —         | Prefill the amount to send (e.g., "0.1"). |
-| `toChainId`                 | `number \| string`                                        | Yes       | —         | Prefill the destination chain ID. |
-| `toToken`                   | `string`                                                  | Yes       | —         | Prefill the destination token contract address (e.g., `0x...`). |
-| `toCalldata`                | `string`                                                  | No       | —         | Optional calldata for contract interactions at the destination chain. |
-| `renderInline`              | `boolean`                                                 | No       | `true`    | `true` renders inline; `false` renders a button that opens the modal. |
-| `theme`                     | `'light' \| 'dark' \| 'auto'`                               | No       | `'auto'`  | Color theme; `auto` follows system. |
-| `walletOptions`             | `string[]`                                                | No       | `["injected", "privy"]` | Wallet providers to offer. |
-| `onOriginConfirmation`      | `(txHash: string, chainId: number) => void`               | No       | —         | Called when the origin transaction confirms. |
-| `onDestinationConfirmation` | `(txHash: string, chainId: number) => void`               | No       | —         | Called when the destination transaction confirms. |
-| `privyAppId`                | `string`                                                  | No       | —         | Privy App ID (if using Privy). |
-| `privyClientId`             | `string`                                                  | No       | —         | Privy Client ID (if using Privy). |
-| `gasless`                   | `boolean`                                                 | No       | false         | Enables gasless flow when a paymaster is configured. |
-| `paymasterUrls`             | `Array<{ chainId: number; url: string }>`                 | No       | —         | Configure per-chain paymaster endpoints for gasless. Simply pass in the paymaster URLs for a 4337-compatible bundler.  Requires `gasless`. |
-| `appId`                     | `string`                                                  | No      | —         | Your appId key. Generate one on the [Sequence Builder](https://sequence.build/). |
-| `mode`                      | `'fund' \| 'pay'`                                | No       | `'pay'`         | The operation mode: `'fund'` for deposit actions (into chains, vaults, LPs, etc.), `'pay'` for payment use cases (swaps, NFT purchases, etc.). |
-| `customCss`                 | `string`                                                  | No       | —         | Custom CSS styles to apply to the component. |
-| `quoteProvider`             | `'lifi' \| 'relay' \| 'cctp' \| 'auto'`                  | No       | `'auto'`  | The quote provider to use for price quotes. `'auto'` selects the best provider automatically. |
+### Core Props
 
-## Custom Button Example
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `appId` | `string` | Yes | — | Your Sequence project access key |
+| `mode` | `"pay" \| "fund" \| "earn" \| "swap" \| "receive"` | No | `"pay"` | Widget operation mode |
+| `toAddress` | `string` | No | — | Destination address for payments |
+| `toAmount` | `string` | No | — | Exact amount for payments (used in pay mode) |
+| `toChainId` | `number \| string` | No | — | Destination chain ID |
+| `toToken` | `string` | No | — | Destination token symbol or contract address |
+| `toCalldata` | `string` | No | — | Custom calldata for contract interactions |
 
-When using `renderInline={false}`, you can provide a custom button to trigger opening up the modal:
+### UI & Rendering Options
 
-```jsx
-import { TrailsWidget } from '0xtrails/widget'
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `renderInline` | `boolean` | No | `false` | Render widget inline instead of as a modal |
+| `children` | `React.ReactNode` | No | — | Custom button content (when not renderInline) |
+| `buttonText` | `string` | No | Auto-generated | Custom text for the trigger button |
+| `theme` | `"light" \| "dark" \| "auto"` | No | `"auto"` | Color theme; `auto` follows system preference |
+| `customCss` | `string \| Record<string, string>` | No | — | Custom CSS styles to apply to the component |
 
-<TrailsWidget renderInline={false}>
-  <button className="custom-button-styles">
-    Pay with Trails
+### Wallet & Connection Options
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `walletConnectProjectId` | `string` | No | — | WalletConnect project ID for WalletConnect integration |
+
+### Transaction Options
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `gasless` | `boolean` | No | `false` | Enable gasless transactions |
+| `paymasterUrls` | `Array<{ chainId: number; url: string }>` | No | — | Configure per-chain paymaster endpoints for gasless transactions |
+| `quoteProvider` | `string` | No | `"auto"` | Preferred quote provider ("lifi", "auto", etc.) |
+| `slippageTolerance` | `number \| string` | No | — | Slippage tolerance for swaps |
+
+### Sequence Configuration
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `sequenceUseV3Relayers` | `boolean` | No | — | Use Sequence v3 relayers |
+| `sequenceIndexerUrl` | `string` | No | — | Custom Sequence indexer URL |
+| `sequenceApiUrl` | `string` | No | — | Custom Sequence API URL |
+| `sequenceEnv` | `"local" \| "cors-anywhere" \| "dev" \| "prod"` | No | — | Sequence environment configuration |
+
+### Event Handlers
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `onOriginConfirmation` | `(data: { txHash: string; chainId: number; sessionId: string }) => void` | No | — | Called when origin transaction is confirmed |
+| `onDestinationConfirmation` | `(data: { txHash: string; chainId: number; sessionId: string }) => void` | No | — | Called when destination transaction is confirmed |
+| `onCheckoutStart` | `(data: { sessionId: string }) => void` | No | — | Called when checkout process starts |
+| `onCheckoutQuote` | `(data: { sessionId: string; quote: any }) => void` | No | — | Called when quote is received |
+| `onCheckoutComplete` | `(data: { sessionId: string }) => void` | No | — | Called when checkout completes successfully |
+| `onCheckoutError` | `(data: { sessionId: string; error: string }) => void` | No | — | Called when checkout encounters an error |
+| `onCheckoutStatusUpdate` | `(data: { sessionId: string; transactionStates: TransactionState[] }) => void` | No | — | Called when transaction status updates |
+
+## Mode Configurations
+
+### Pay Mode
+Used for exact output payments (e.g., NFT purchases, bills):
+
+```tsx
+<TrailsWidget
+  mode="pay"
+  toAddress="0x..."
+  toAmount="1"
+  toChainId={8453}
+  toToken="USDC"
+  onCheckoutComplete={(result) => console.log('Payment completed')}
+/>
+```
+
+### Fund Mode  
+Used for deposits where user chooses amount:
+
+```tsx
+<TrailsWidget
+  mode="fund"
+  toAddress="0x..."
+  toChainId={8453}
+  toToken="USDC"
+  onCheckoutComplete={(result) => console.log('Funding completed')}
+/>
+```
+
+### Swap Mode
+Used for open-ended token swapping:
+
+```tsx
+<TrailsWidget
+  mode="swap"
+  onCheckoutComplete={(result) => console.log('Swap completed')}
+/>
+```
+
+### Earn Mode
+Used for yield farming and staking:
+
+```tsx
+<TrailsWidget
+  mode="earn"
+  toAddress="0x..." // Staking contract
+  toChainId={1}
+  toToken="ETH"
+  onCheckoutComplete={(result) => console.log('Staking completed')}
+/>
+```
+
+### Receive Mode
+Used for requesting payments:
+
+```tsx
+<TrailsWidget
+  mode="receive"
+  toAddress="0x..." // Your address
+  toAmount="10"
+  toChainId={8453}
+  toToken="USDC"
+/>
+```
+
+## Gasless Configuration
+
+Enable gasless transactions by providing paymaster URLs:
+
+```tsx
+<TrailsWidget
+  mode="pay"
+  gasless={true}
+  paymasterUrls={[
+    { chainId: 8453, url: "https://paymaster.base.org" },
+    { chainId: 42161, url: "https://paymaster.arbitrum.org" }
+  ]}
+  // ... other props
+/>
+```
+
+## Custom Theming
+
+### Theme Selection
+```tsx
+<TrailsWidget
+  theme="dark" // or "light" or "auto"
+  // ... other props
+/>
+```
+
+### Custom CSS
+```tsx
+<TrailsWidget
+  customCss={`
+    .trails-widget {
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .trails-button {
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    }
+  `}
+  // ... other props
+/>
+```
+
+### Custom CSS as Object
+```tsx
+<TrailsWidget
+  customCss={{
+    '--trails-primary-color': '#ff6b6b',
+    '--trails-secondary-color': '#4ecdc4',
+    '--trails-border-radius': '12px'
+  }}
+  // ... other props
+/>
+```
+
+## Smart Contract Interactions
+
+Execute custom contract calls with payments:
+
+```tsx
+import { encodeFunctionData } from 'viem'
+
+const calldata = encodeFunctionData({
+  abi: contractABI,
+  functionName: 'mintNFT',
+  args: [recipient, tokenId]
+})
+
+<TrailsWidget
+  mode="pay"
+  toAddress="0x..." // Contract address
+  toAmount="0.1"
+  toChainId={1}
+  toToken="ETH"
+  toCalldata={calldata}
+  onCheckoutComplete={(result) => {
+    console.log('NFT minted:', result)
+  }}
+/>
+```
+
+## Event Handling Examples
+
+### Complete Event Handling
+```tsx
+<TrailsWidget
+  mode="pay"
+  toAddress="0x..."
+  toAmount="1"
+  toChainId={8453}
+  toToken="USDC"
+  onOriginConfirmation={({ txHash, chainId, sessionId }) => {
+    console.log('Origin tx confirmed:', { txHash, chainId, sessionId })
+  }}
+  onDestinationConfirmation={({ txHash, chainId, sessionId }) => {
+    console.log('Destination tx confirmed:', { txHash, chainId, sessionId })
+  }}
+  onCheckoutStatusUpdate={({ sessionId, transactionStates }) => {
+    transactionStates.forEach((state, index) => {
+      console.log(`Step ${index + 1}: ${state.label} - ${state.state}`)
+      if (state.state === 'confirmed') {
+        console.log('Transaction confirmed:', state.transactionHash)
+      }
+    })
+  }}
+  onCheckoutComplete={({ sessionId }) => {
+    console.log('Transaction completed successfully:', sessionId)
+  }}
+  onCheckoutError={({ sessionId, error }) => {
+    console.error('Transaction failed:', sessionId, error)
+    // Handle error (show notification, retry logic, etc.)
+  }}
+/>
+```
+
+## Quote Provider Configuration
+
+### Auto Selection (Recommended)
+```tsx
+<TrailsWidget
+  quoteProvider="auto" // Automatically selects best provider
+  // ... other props
+/>
+```
+
+### Specific Provider
+```tsx
+<TrailsWidget
+  quoteProvider="lifi" // Use LiFi for cross-chain swaps
+  // ... other props
+/>
+```
+
+## Advanced Configuration
+
+### Slippage Configuration
+```tsx
+<TrailsWidget
+  mode="swap"
+  slippageTolerance={0.5} // 0.5% slippage tolerance
+  // ... other props
+/>
+```
+
+## Rendering Options
+
+### Modal (Default)
+```tsx
+<TrailsWidget
+  renderInline={false} // Default - shows as modal
+  buttonText="Pay with Trails"
+  // ... other props
+/>
+```
+
+### Inline
+```tsx
+<TrailsWidget
+  renderInline={true} // Renders directly in page
+  // ... other props
+/>
+```
+
+### Custom Button
+```tsx
+<TrailsWidget
+  renderInline={false}
+  // ... other props
+>
+  <button className="custom-pay-button">
+    💳 Pay with Crypto
   </button>
-</TrailsComponent>
+</TrailsWidget>
+```
+
+## Type Definitions
+
+```tsx
+export type TransactionState = {
+  chainId: number
+  transactionHash: string
+  state: 'pending' | 'confirmed' | 'failed'
+  explorerUrl: string
+  label: string
+  blockNumber?: number
+}
+
+export type Mode = "pay" | "fund" | "earn" | "swap" | "receive"
+
+export type Theme = "light" | "dark" | "auto"
+
+export type RelayerEnv = "local" | "cors-anywhere" | "dev" | "prod"
+
+export interface TrailsWidgetRef {
+  openModal: () => void
+  closeModal: () => void
+  isModalOpen: boolean
+}
 ```

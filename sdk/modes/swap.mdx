@@ -1,0 +1,154 @@
+---
+title: "Swap Mode"
+description: "Enable cross-chain token swapping with the Trails SDK"
+sidebarTitle: "Swap"
+---
+
+## Overview
+
+Swap mode enables users to exchange tokens across different blockchains seamlessly. Unlike pay mode (exact output) or fund mode (user-defined input), swap mode provides a flexible interface where users can select both input and output tokens and amounts.
+
+## Key Features
+
+- **Cross-chain swapping**: Swap tokens between different blockchains
+- **Dynamic input/output**: Users control both source and destination amounts
+- **Real-time quotes**: Live pricing and optimal routing
+- **Gasless options**: Support for gasless transactions
+- **Multiple quote providers**: Access to various liquidity sources
+
+## Basic Usage
+
+### Simple Swap Widget
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+
+export const BasicSwap = () => {
+  return (
+    <TrailsWidget
+      mode="swap"
+      onCheckoutComplete={({ sessionId }) => {
+        console.log('Swap completed:', sessionId)
+      }}
+    >
+      <button className="swap-button">
+        Swap Tokens
+      </button>
+    </TrailsWidget>
+  )
+}
+```
+
+## Using the useQuote Hook
+
+For more control over the swap process, use the `useQuote` hook directly:
+
+```tsx
+import { useQuote, TradeType } from '0xtrails'
+import { useWalletClient, useAccount } from 'wagmi'
+import { useState } from 'react'
+
+export const CustomSwapInterface = () => {
+  const { data: walletClient } = useWalletClient()
+  const { address } = useAccount()
+  
+  const [fromToken, setFromToken] = useState('0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48') // USDC
+  const [toToken, setToToken] = useState('0x833589fcd6edb6e08f4c7c32d4f71b54bda02913') // USDC Base
+  const [amount, setAmount] = useState('1000000') // 1 USDC
+  const [tradeType, setTradeType] = useState(TradeType.EXACT_INPUT)
+
+  const { quote, swap, isLoadingQuote, quoteError } = useQuote({
+    walletClient,
+    fromTokenAddress: fromToken,
+    fromChainId: 1, // Ethereum
+    toTokenAddress: toToken,
+    toChainId: 8453, // Base
+    swapAmount: amount,
+    tradeType,
+    toAddress: address,
+    slippageTolerance: '0.005', // 0.5%
+    onStatusUpdate: (states) => {
+      console.log('Swap progress:', states)
+    },
+  })
+
+  const handleSwap = async () => {
+    if (!swap) return
+    
+    try {
+      const result = await swap()
+      console.log('Swap completed:', result)
+    } catch (error) {
+      console.error('Swap failed:', error)
+    }
+  }
+
+  if (isLoadingQuote) {
+    return <div>Loading quote...</div>
+  }
+
+  if (quoteError) {
+    return <div>Error: {String(quoteError)}</div>
+  }
+
+  if (!quote) {
+    return <div>No quote available</div>
+  }
+
+  return (
+    <div className="swap-interface">
+      <div className="quote-display">
+        <h3>Swap Quote</h3>
+        <div>
+          From: {quote.originAmountFormatted} {quote.originToken.symbol}
+        </div>
+        <div>
+          To: {quote.destinationAmountFormatted} {quote.destinationToken.symbol}
+        </div>
+        <div>
+          Fee: {quote.totalFeeAmountUsdDisplay}
+        </div>
+        <div>
+          Rate: 1 {quote.originToken.symbol} = {quote.destinationTokenRate} {quote.destinationToken.symbol}
+        </div>
+      </div>
+      
+      <button onClick={handleSwap} className="execute-button">
+        Execute Swap
+      </button>
+    </div>
+  )
+}
+```
+
+## Trade Types
+
+Swap mode supports two trade types:
+
+### EXACT_INPUT
+User specifies the exact amount of input tokens to swap:
+
+```tsx
+import { TradeType } from '0xtrails'
+
+// User wants to swap exactly 100 USDC
+const { quote } = useQuote({
+  // ... other props
+  swapAmount: '100000000', // 100 USDC (6 decimals)
+  tradeType: TradeType.EXACT_INPUT,
+})
+```
+
+### EXACT_OUTPUT
+User specifies the exact amount of output tokens to receive:
+
+```tsx
+import { TradeType } from '0xtrails'
+
+// User wants to receive exactly 0.1 ETH
+const { quote } = useQuote({
+  // ... other props
+  swapAmount: '100000000000000000', // 0.1 ETH (18 decimals)
+  tradeType: TradeType.EXACT_OUTPUT,
+})
+```

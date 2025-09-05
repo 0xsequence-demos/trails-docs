@@ -1,0 +1,179 @@
+---
+title: "Earn Mode"
+description: "Enable yield farming and staking with the Trails SDK"
+sidebarTitle: "Earn"
+---
+
+## Overview
+
+Earn mode enables users to stake tokens and participate in yield farming opportunities across different DeFi protocols. Users can deposit tokens into staking contracts, liquidity pools, or yield farming protocols while Trails handles the cross-chain complexity automatically.
+
+## Key Features
+
+- **Cross-chain staking**: Stake tokens from any supported chain into protocols on other chains
+- **Protocol integration**: Support for major DeFi protocols like Aave, Compound, and more
+- **Dynamic calldata**: Automatically generate contract calls for staking operations
+- **Yield optimization**: Access to multiple yield farming opportunities
+- **Gas optimization**: Minimize transaction costs through intelligent routing
+
+## Basic Usage
+
+### Aave Lending
+
+Deposit tokens into Aave lending pools:
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+import { encodeFunctionData } from 'viem'
+
+export const AaveStaking = () => {
+  // Aave V3 Pool contract address on Arbitrum
+  const AAVE_POOL = "0x794a61358D6845594F94dc1DB02A252b5b4814aD"
+  
+  // USDC token address on Arbitrum
+  const USDC_ADDRESS = "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+  
+  // Generate deposit calldata for Aave
+  const depositCalldata = encodeFunctionData({
+    abi: [
+      {
+        name: "supply",
+        type: "function",
+        inputs: [
+          { name: "asset", type: "address" },
+          { name: "amount", type: "uint256" },
+          { name: "onBehalfOf", type: "address" },
+          { name: "referralCode", type: "uint16" },
+        ],
+        outputs: [],
+        stateMutability: "nonpayable",
+      },
+    ],
+    functionName: "supply",
+    args: [
+      USDC_ADDRESS,
+      "1000000", // 1 USDC (6 decimals)
+      "0x...", // Your address
+      0, // No referral
+    ],
+  })
+
+  return (
+    <TrailsWidget
+      mode="earn"
+      toAddress={AAVE_POOL}
+      toAmount="1"
+      toChainId={42161} // Arbitrum
+      toToken="USDC"
+      toCalldata={depositCalldata}
+      onCheckoutComplete={({ sessionId }) => {
+        console.log('Aave deposit completed:', sessionId)
+      }}
+    >
+      <button className="aave-stake-button">
+        Deposit to Aave (1 USDC)
+      </button>
+    </TrailsWidget>
+  )
+}
+```
+
+### Dynamic Amount Staking
+
+Let users choose how much to stake:
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+import { TRAILS_CONTRACT_PLACEHOLDER_AMOUNT } from '0xtrails'
+import { encodeFunctionData } from 'viem'
+
+export const DynamicStaking = () => {
+  // Generate calldata with placeholder amount
+  const stakingCalldata = encodeFunctionData({
+    abi: [
+      {
+        name: "stake",
+        type: "function",
+        inputs: [{ name: "amount", type: "uint256" }],
+        outputs: [],
+        stateMutability: "nonpayable",
+      },
+    ],
+    functionName: "stake",
+    args: [TRAILS_CONTRACT_PLACEHOLDER_AMOUNT], // Will be replaced with actual amount
+  })
+
+  return (
+    <TrailsWidget
+      mode="earn"
+      toAddress="0x..." // Staking contract
+      toChainId={1}
+      toToken="ETH"
+      toCalldata={stakingCalldata}
+      onCheckoutComplete={({ sessionId }) => {
+        console.log('Dynamic staking completed:', sessionId)
+      }}
+    >
+      <button className="dynamic-stake-button">
+        Stake ETH (Choose Amount)
+      </button>
+    </TrailsWidget>
+  )
+}
+```
+
+## Use Cases
+
+### DeFi Yield Farming
+- **Liquidity Mining**: Provide liquidity to DEXs and earn rewards
+- **Lending Protocols**: Earn interest by lending tokens on Aave, Compound
+- **Staking Rewards**: Participate in protocol governance and earn staking rewards
+
+### Cross-Chain Opportunities
+- **Chain Arbitrage**: Find the best yields across different chains
+- **Protocol Shopping**: Compare rates across multiple DeFi protocols
+- **Risk Diversification**: Spread assets across chains and protocols
+
+### Liquid Staking
+- **Ethereum**: Stake ETH while maintaining liquidity
+- **Layer 2 Staking**: Participate in L2 consensus mechanisms
+- **Validator Services**: Delegate to professional validators
+
+## Security Considerations
+
+- **Contract Verification**: Always verify staking contract addresses
+- **Protocol Audits**: Use well-audited DeFi protocols
+- **Risk Assessment**: Understand the risks of each protocol
+- **Slashing Risks**: Be aware of potential validator slashing in PoS systems
+
+## Supported Protocols
+
+Trails earn mode works with any staking or yield farming contract that accepts token deposits:
+
+- **Aave**: Lending and borrowing protocol
+- **Yearn**: Yield optimization protocol
+- **Morpho**: Lending and borrowing protocol
+- **Custom Contracts**: Any contract with deposit/stake functions that accepts onBehalfOf
+
+## Error Handling
+
+```tsx
+<TrailsWidget
+  mode="earn"
+  toAddress="0x..."
+  onCheckoutError={({ sessionId, error }) => {
+    console.error('Staking failed:', error)
+    
+    // Handle specific error types
+    if (error.includes('insufficient balance')) {
+      setError('Insufficient balance for staking')
+    } else if (error.includes('slippage')) {
+      setError('Price impact too high, try a smaller amount')
+    } else {
+      setError('Staking failed, please try again')
+    }
+  }}
+/>
+```
+
+For more advanced staking patterns and protocol integrations, see our [Advanced Examples](/examples) section. 

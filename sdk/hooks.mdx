@@ -1,10 +1,10 @@
 ---
 title: Hooks
-description: "React Hooks available in the Trails SDK"
+description: "React Hooks and utilities available in the Trails SDK"
 sidebarTitle: "Hooks"
 ---
 
-All hooks and helpers available  from the `0xtrails` unless stated otherwise.
+All hooks and utilities are available from the `0xtrails` package unless stated otherwise.
 
 ## Chains
 
@@ -12,13 +12,13 @@ All hooks and helpers available  from the `0xtrails` unless stated otherwise.
 import { getSupportedChains, useSupportedChains } from '0xtrails'
 ```
 
-- getSupportedChains(): Promise\<Chain\[\]\>
-- useSupportedChains(): \{ chains: Chain\[\] \| undefined, isLoadingChains: boolean \}
+- `getSupportedChains()`: `Promise<Chain[]>`
+- `useSupportedChains()`: `{ supportedChains: Chain[], isLoadingChains: boolean }`
 
 Chain data structure:
 
 ```ts
-export type Chain = {
+type Chain = {
   id: number
   name: string
   chainId: number
@@ -29,6 +29,7 @@ export type Chain = {
     decimals: number
   }
   blockExplorerUrls?: string[]
+  imageUrl?: string
 }
 ```
 
@@ -36,7 +37,7 @@ Utility:
 
 ```ts
 import { getChainInfo } from '0xtrails'
-const chain = getChainInfo(8453)
+const chain = getChainInfo(8453) // Base chain info
 ```
 
 ## Tokens
@@ -45,14 +46,14 @@ const chain = getChainInfo(8453)
 import { getSupportedTokens, useSupportedTokens, useTokenList } from '0xtrails'
 ```
 
-- useTokenList(): \{ tokens: SupportedToken\[\] \| undefined, isLoadingTokens: boolean \}
-- useSupportedTokens(): \{ supportedTokens?: SupportedToken\[\], isLoadingTokens: boolean \}
-- getSupportedTokens(): Promise\<SupportedToken\[\]\>
+- `useTokenList()`: `{ tokens: SupportedToken[] | undefined, isLoadingTokens: boolean }`
+- `useSupportedTokens({ chainId?: number })`: `{ supportedTokens: SupportedToken[], isLoadingTokens: boolean }`
+- `getSupportedTokens()`: `Promise<SupportedToken[]>`
 
 Token data structure:
 
 ```ts
-export type SupportedToken = {
+type SupportedToken = {
   id: string
   symbol: string
   name: string
@@ -67,49 +68,116 @@ export type SupportedToken = {
 Additional helpers:
 
 ```ts
-import { useTokenInfo } from '0xtrails'
-// Returns basic info for an ERC-20 by address and optional chainId
-```
+import { useTokenInfo, useTokenAddress } from '0xtrails'
 
-Note: Images and metadata are cached (in-memory + localStorage) with built-in staleness windows for fast UX.
+// Returns basic info for an ERC-20 by address and chainId
+const { tokenInfo, isLoading, error } = useTokenInfo({
+  address: '0x...',
+  chainId: 8453
+})
+
+// Get token address by symbol and chain
+const tokenAddress = useTokenAddress({
+  chainId: 8453,
+  tokenSymbol: 'USDC'
+})
+```
 
 ## Balances
 
 ```ts
 import {
   useTokenBalances,
+  getAccountTotalBalanceUsd,
   useAccountTotalBalanceUsd,
+  getHasSufficientBalanceToken,
   useHasSufficientBalanceToken,
+  getHasSufficientBalanceUsd,
   useHasSufficientBalanceUsd,
 } from '0xtrails'
 ```
 
-- useTokenBalances(address): returns sorted token balances enriched with USD price
-- useAccountTotalBalanceUsd(address): returns total USD balance across tokens
-- useHasSufficientBalanceUsd(address, targetUsd)
-- useHasSufficientBalanceToken(address, tokenAddress, tokenAmount, chainId)
+Balance hooks and utilities:
 
-Example:
+- `useTokenBalances(address)`: Returns sorted token balances enriched with USD price
+- `useAccountTotalBalanceUsd(address)`: Returns total USD balance across tokens
+- `useHasSufficientBalanceUsd(address, targetUsd)`: Check if account has sufficient USD balance
+- `useHasSufficientBalanceToken(address, tokenAddress, tokenAmount, chainId)`: Check token balance
+
+Balance data structures:
+
+```ts
+type TokenBalance = {
+  contractAddress: string
+  accountAddress: string
+  tokenID: string
+  balance: string
+  chainId: number
+  contractType: string
+  blockHash: string
+  blockNumber: number
+  updateID: number
+  contractInfo: {
+    chainId: number
+    contractAddress: string
+    contractType: string
+    decimals: number
+    logoURI: string
+    name: string
+    symbol: string
+    extensions?: {
+      link?: string
+      description?: string
+      ogImage?: string
+    }
+  }
+}
+```
+
+Example usage:
 
 ```tsx
-const { totalBalanceUsd } = useAccountTotalBalanceUsd(address)
-const { hasSufficientBalanceToken } = useHasSufficientBalanceToken(
-  address,
-  '0xToken',
-  '2.5',
-  8453,
-)
+import { useTokenBalances, useAccountTotalBalanceUsd } from '0xtrails'
+
+const WalletBalance = ({ address }: { address: string }) => {
+  const { tokenBalances, isLoading } = useTokenBalances(address)
+  const { totalBalanceUsd } = useAccountTotalBalanceUsd(address)
+
+  if (isLoading) return <div>Loading balances...</div>
+
+  return (
+    <div>
+      <h3>Total Balance: ${totalBalanceUsd}</h3>
+      {tokenBalances?.map((token) => (
+        <div key={`${token.chainId}-${token.contractAddress}`}>
+          {token.contractInfo.symbol}: {token.balance}
+        </div>
+      ))}
+    </div>
+  )
+}
 ```
 
-## Quotes and Swap
+## Quotes and Swapping
 
 ```ts
-import { useQuote, TradeType, type SwapReturn } from '0xtrails'
+import { 
+  useQuote, 
+  TradeType,
+  type UseQuoteReturn,
+  type UseQuoteProps,
+  type SwapReturn,
+  type Quote
+} from '0xtrails'
 ```
 
+### useQuote Hook
+
+The `useQuote` hook provides real-time quotes for token swaps and cross-chain transfers:
+
 ```ts
-export type UseQuoteProps = {
-  walletClient?: any
+type UseQuoteProps = {
+  walletClient?: WalletClient
   fromTokenAddress?: string | null
   fromChainId?: number | null
   toTokenAddress?: string | null
@@ -120,76 +188,117 @@ export type UseQuoteProps = {
   slippageTolerance?: string | number | null
   onStatusUpdate?: (txs: TransactionState[]) => void | null
 }
-```
 
-```ts
-export type UseQuoteReturn = {
-  quote: {
-    fromAmount: string
-    fromAmountMin: string
-    toAmount: string
-    toAmountMin: string
-    originToken: SupportedToken
-    destinationToken: SupportedToken
-    originChain: Chain
-    destinationChain: Chain
-    fees: { feeTokenAddress: string | null; totalFeeAmount: string | null; totalFeeAmountUsd: string | null; totalFeeAmountUsdDisplay: string | null }
-    slippageTolerance: string
-    priceImpact: string
-    completionEstimateSeconds: number
-    transactionStates?: TransactionState[]
-    originTokenRate?: string
-    destinationTokenRate?: string
-  } | null
+type UseQuoteReturn = {
+  quote: Quote | null
   swap: (() => Promise<SwapReturn | null>) | null
   isLoadingQuote: boolean
   quoteError: unknown
 }
 ```
 
-Usage:
-
-```tsx
-const { data: walletClient } = useWalletClient()
-const { address } = useAccount()
-
-const { quote, swap, isLoadingQuote, quoteError } = useQuote({
-  walletClient,
-  fromTokenAddress,
-  fromChainId,
-  toTokenAddress,
-  toChainId,
-  swapAmount,
-  tradeType: TradeType.EXACT_OUTPUT,
-  toRecipient: address!,
-  slippageTolerance: '0.03',
-  onStatusUpdate: (txs) => console.log(txs),
-})
-```
-
-## Orchestration Hook (Advanced)
+### Trade Types
 
 ```ts
-import { useTrails, type WagmiAccount } from '0xtrails'
-```
-
-High-level flow the hook manages:
-
-- Create intent (quotes and preconditions)
-- Commit intent config
-- Execute origin transaction
-- Monitor destination chain meta-transactions
-
-Config:
-
-```ts
-type UseTrailsConfig = {
-  account: WagmiAccount
-  disableAutoExecute?: boolean
-  env: 'local' | 'cors-anywhere' | 'dev' | 'prod'
-  useV3Relayers?: boolean
-  sequenceProjectAccessKey?: string
+enum TradeType {
+  EXACT_INPUT = 'EXACT_INPUT',  // User specifies exact input amount
+  EXACT_OUTPUT = 'EXACT_OUTPUT' // User specifies exact output amount
 }
 ```
 
-Returns a comprehensive object including `createIntent`, `commitIntentConfig`, `sendOriginTransaction`, `sendMetaTxn`, status flags, committed intent addresses, transaction state and more. See the Orchestration page for a guided UI flow. 
+Usage example:
+
+```tsx
+import { useQuote, TradeType } from '0xtrails'
+import { useWalletClient, useAccount } from 'wagmi'
+
+const SwapComponent = () => {
+  const { data: walletClient } = useWalletClient()
+  const { address } = useAccount()
+
+  const { quote, swap, isLoadingQuote, quoteError } = useQuote({
+    walletClient,
+    fromTokenAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', // USDC
+    fromChainId: 1, // Ethereum
+    toTokenAddress: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913', // USDC
+    toChainId: 8453, // Base
+    swapAmount: '1000000', // 1 USDC
+    tradeType: TradeType.EXACT_INPUT,
+    toRecipient: address,
+    slippageTolerance: '0.005', // 0.5%
+    onStatusUpdate: (states) => {
+      console.log('Transaction states:', states)
+    },
+  })
+
+  const handleSwap = async () => {
+    if (!swap) return
+    
+    try {
+      const result = await swap()
+      console.log('Swap completed:', result)
+    } catch (error) {
+      console.error('Swap failed:', error)
+    }
+  }
+
+  if (isLoadingQuote) return <div>Getting quote...</div>
+  if (quoteError) return <div>Error: {String(quoteError)}</div>
+  if (!quote) return <div>No quote available</div>
+
+  return (
+    <div>
+      <div>
+        From: {quote.originAmountFormatted} {quote.originToken.symbol}
+      </div>
+      <div>
+        To: {quote.destinationAmountFormatted} {quote.destinationToken.symbol}
+      </div>
+      <div>
+        Fee: {quote.totalFeeAmountUsdDisplay}
+      </div>
+      <button onClick={handleSwap}>
+        Execute Swap
+      </button>
+    </div>
+  )
+}
+```
+
+## Constants
+
+```ts
+import { TRAILS_CONTRACT_PLACEHOLDER_AMOUNT } from '0xtrails'
+```
+
+### TRAILS_CONTRACT_PLACEHOLDER_AMOUNT
+
+This constant provides a placeholder value for amounts when encoding calldata in fund mode. It's used to replace dynamic output amounts during contract execution.
+
+**Use Case**: When creating calldata for fund mode transactions where the final amount isn't known until execution time, use this placeholder in your encoded function calls. The Trails system will replace it with the actual dynamic amount during contract execution.
+
+**Example**:
+```tsx
+import { encodeFunctionData } from 'viem'
+import { TRAILS_CONTRACT_PLACEHOLDER_AMOUNT } from '0xtrails'
+
+// Encode calldata with placeholder amount
+const calldata = encodeFunctionData({
+  abi: stakingABI,
+  functionName: 'stake',
+  args: [TRAILS_CONTRACT_PLACEHOLDER_AMOUNT] // Will be replaced with actual amount
+})
+
+// Use in fund mode widget
+<TrailsWidget
+  mode="fund"
+  toAddress="0x..." // Staking contract
+  toCalldata={calldata}
+  toChainId={1}
+  toToken="ETH"
+>
+  <button>Stake ETH</button>
+</TrailsWidget>
+```
+
+This pattern is essential for fund mode transactions where users choose their input amount, but the contract needs to receive the exact output amount after any swaps or bridging operations. 
