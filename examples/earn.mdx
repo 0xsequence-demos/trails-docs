@@ -9,13 +9,38 @@ icon: 'wallet'
 
 A variety of DeFi applications enable users to earn yield by depositing liquidity into their protocol. This is a complex task as users must evaluate which protocols have the best yield *for each chain and asset* that also meets their risk profile. Then find a bridge, manually move their liquidity to the desired chain, potentially swap to the vault or pool asset, and finally interact with the protocol.
 
-Trails simplifies this by natively integrating with DeFi protocols for easy integration. Additionally, developers can specify any arbitrary logic and pass it to trails for more complex or custom flows.
+Trails simplifies this by natively integrating with DeFi protocols for easy integration - highlighting APY, TVL and other metrics important for depositors on core protocols. Additionally, developers can specify any arbitrary logic and pass it to trails for more complex or custom flows.
 
 For users, all the complexity is handled for them including swapping and bridging to the corresponding vault or pool token in a single transaction to immediately begin earning yield.
 
-## Depositing USDC into Aave on Base
+## Examples
 
-This example shows how to use the Trails widget to deposit USDC into Aave's lending pool on Base where the user can utilize any token from any chain which automatically swaps to the corresponding pool token.
+### Deposit into a user-selected Aave or Morpho vault
+
+Trails has integrated multiple DeFi pools and vaults across several protocols such as Aave and Morpho that your users can select from out of the box.
+
+<CodeGroup>
+```tsx AaveDeposit.tsx
+import { TrailsWidget } from '0xtrails/widget'
+
+export const App = () => {
+  return (
+    <TrailsWidget
+      mode="earn"
+      renderInline={true}
+      theme="auto"
+    />
+  )
+}
+```
+</CodeGroup>
+
+
+### Deposit into a specific Aave USDC pool on Base
+
+You can also use Trails lending pool that you define. The user can select any token they hold in their wallet from any supported chain to automatically swap to the corresponding pool token for a deposit. The calldata can be changed to support virtually any function and contract that you specify.
+
+For example, depositing USDC into an Aave pool on Base:
 
 <CodeGroup>
 ```tsx AaveDeposit.tsx
@@ -33,13 +58,14 @@ export const AaveDepositExample = () => {
     functionName: 'depositETH',
     args: [
       "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5", // pool address
-      "0x97c4a952b46becad0663f76357d3776ba11566e1", // onBehalfOf
+      "0x97c4a952b46becad0663f76357d3776ba11566e1", // user's wallet address
       0, // referralCode
     ],
   })
 
   return (
     <TrailsWidget
+      mode="earn"
       toAddress={AAVE_POOL_CONTRACT}
       toAmount="100" // 100 USDC
       toChainId={8453} // Base

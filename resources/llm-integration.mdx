@@ -17,32 +17,55 @@ Before you begin, ensure you have:
 - A supported IDE (Cursor or Claude Desktop)
 - npm or yarn package manager
 
-### Installation Steps
+### Trails MCP server URL
 
-1. Open the [Trails MCP docs](https://docs.trails.build/mcp) and follow the installation steps for your IDE.
+Your Trails MCP server is available at:
 
-2. When prompted, select your preferred MCP Client:
-   - Cursor
-   - Claude Desktop
+`https://docs.trails.build/mcp`
 
-3. The installation process will automatically configure the Trails MCP Server for your selected application.
+### Connect in Cursor
 
-### Using the MCP Server
+1. Use <kbd>Command</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> on Windows) to open the command palette.
+2. Search for "Open MCP settings".
+3. Select **Add custom MCP** to open the `mcp.json` file.
+4. In `mcp.json`, add the Trails server:
 
-Once installed, you can start using the AI assistance in your IDE. Here's how:
+```json
+{
+  "mcpServers": {
+    "Trails": {
+      "url": "https://docs.trails.build/mcp"
+    }
+  }
+}
+```
 
-1. Open your IDE (Cursor or Claude Desktop)
-2. Start typing your query related to Trails development
-3. The AI agent will process your request and provide relevant assistance
+5. In Cursor chat, ask "What tools do you have available?" to confirm the Trails MCP server is listed.
+
+### Connect in Claude
+
+1. Navigate to the [Connectors](https://claude.ai/settings/connectors) page in Claude settings.
+2. Select **Add custom connector**.
+3. Add the Trails MCP server:
+   - Name: `Trails`
+   - URL: `https://docs.trails.build/mcp`
+4. Select **Add**.
+5. In a Claude chat, select the attachments button (the plus icon).
+6. Select the Trails MCP server.
+
+See the [Model Context Protocol docs](https://modelcontextprotocol.io/docs/tutorials/use-remote-mcp-server#connecting-to-a-remote-mcp-server) for more details.
+
+
+See the [Cursor documentation](https://docs.cursor.com/en/context/mcp#installing-mcp-servers) for more details.
 
 ### Example Queries
 
 You can ask questions like:
-- "Create a script to query token balances and metadata for address 0x8e3E38fe7367dd3b52D1e281E4e8400447C8d8B9"
-- "How do I integrate the Trails SDK?"
-- "Show me how to fetch transaction history for a wallet"
+- "How would I add a DeFi vault for USDC on Aave to my react app using Trails?"
+- "What theming options are available for Trails?"
+- "What chains does trails support?"
 
 When your query is being processed, you'll see an indication like:
 ```
-> Calling MCP tool
+> Called SearchTrails
 ```
