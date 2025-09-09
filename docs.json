@@ -35,7 +35,9 @@
               "examples/pay",
               "examples/swap",
               "examples/fund",
-              "examples/earn"
+              "examples/earn",
+              "examples/receive",
+              "examples/gasless"
             ]
           },
           {
@@ -48,7 +50,7 @@
           },
           {
             "group": "Resources",
-            "pages": ["resources/supported-chains"]
+            "pages": ["resources/supported-chains", "resources/llm-integration"]
           }
         ]
       },
@@ -70,6 +72,18 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "API reference",
+        "description": "Trails API Referencing",
+        "groups": [
+          {
+            "group": "API reference",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          }
+        ]
       }
     ]
   },
@@ -83,6 +97,14 @@
         "label": "Support",
         "href": "https://t.me/build_with_trails"
       }
+    ]
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude"
     ]
   }
 }

@@ -8,7 +8,6 @@ icon: 'money-bill'
 
 Trails seamlessly enables users to deposit funds into your chain, app, or protocol with optimized UX flows and native integrations with multiple liquidity sources to optimize routes for low-slippage. Users can fund from any token they hold across any supported chain, eliminating the need for manual bridging and swapping.
 
-
 Traditional funding flows require users to:
 - Bridge tokens manually to the target chain
 - Swap to the required deposit token
@@ -16,7 +15,7 @@ Traditional funding flows require users to:
 - Wait for bridge confirmations
 - Navigate complex DeFi interfaces
 
-Trails simplifies this by allowing users to deposit funds using any token from any supported chain in a single transaction, automatically handling all bridging, swapping, routing, and execution logic.
+Trails simplifies this by allowing users to deposit funds using any token from any supported chain in a single transaction, automatically handling all bridging, swapping, routing, and execution logic where the user deposit with a variable or fixed amount.
 
 ## Use Cases
 - Deposit into a perpetual exchange for leverage trading
@@ -29,11 +28,11 @@ Trails simplifies this by allowing users to deposit funds using any token from a
 
 ### Depositing USDC into Base
 
-This example shows how to use the Trails widget to enable a user to deposit into a chain with any token, in this case USDC on Base:
+This example shows how to use the Trails widget to enable a user to deposit into a chain with any token, in this case USDC on Base with a fixed amount:
 
 <CodeGroup>
 
-```tsx SimpleDeposit.tsx
+```tsx SimpleStaticDeposit.tsx
 import { TrailsWidget } from '0xtrails/widget'
 
 export const BaseDeposit = () => {
@@ -51,14 +50,115 @@ export const BaseDeposit = () => {
 ```
 </CodeGroup>
 
+### Depositing Fixed Amount into a DeFi Yield Vault
 
-## Benefits
+Trails is able to call any smart contract function on the destination chain. A common pattern is to fund a DeFi vault, for example depositing into an Aave pool on Base:
 
-- **Increased TVL**: Enable users to fund from any chain, dramatically increasing your potential user base
-- **Reduced Friction**: Eliminate complex bridging and swapping steps that cause user drop-off
-- **Universal Access**: Users can fund using any token they hold across supported chains
-- **Optimized Routes**: Automatic routing finds the most efficient paths for deposits for low-slippage
-- **Custom Branding**: Fully customizable widget that matches your protocol's design
-- **Real-time Balance**: High-performance indexer shows users their available balances across all chains
-- **Single Transaction**: All complexity handled in one user confirmation
+<CodeGroup>
+```tsx AaveDeposit.tsx
+import { TrailsWidget } from '0xtrails/widget'
+import { encodeFunctionData } from 'viem'
+import { aaveABI } from './abi.ts'
+
+export const AaveDepositExample = () => {
+  // Aave V3 Pool contract on Base
+  const AAVE_POOL_CONTRACT = "0xa0d9C1E9E48Ca30c8d8C3B5D69FF5dc1f6DFfC24"
+  
+  // Encode the deposit function call on Aave
+  const depositCalldata = encodeFunctionData({
+    abi: aaveABI,
+    functionName: 'depositETH',
+    args: [
+      "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5", // pool address
+      "0x97...", // receiver's address
+      0, // referralCode
+    ],
+  })
+
+  return (
+    <TrailsWidget
+      toAddress={AAVE_POOL_CONTRACT}
+      toAmount="100" // 100 USDC
+      toChainId={8453} // Base
+      toToken="USDC"
+      toCalldata={depositCalldata}
+      theme="auto"
+    />
+  )
+}
+```
+
+```typescript abi.ts
+export const aaveABI = [
+  {
+    type: "function",
+    name: "depositETH",
+    stateMutability: "payable",
+    inputs: [
+      { name: "pool", type: "address" },
+      { name: "onBehalfOf", type: "address" },
+      { name: "referralCode", type: "uint16" },
+    ],
+    outputs: [],
+  },
+] as const
+```
+</CodeGroup>
+
+### Depositing variable amount into a DeFi Yield Vault
+
+Additionally, Trails is easily integrated with virtually any ERC-4626 yield vault. For many use cases, you can simple encode the static calldata directly and pass it to Trails directly. However, for user-selected amounts where the amount is part of the calldata, you must encode it with a placeholder amount so the widget replaces it with the exact bridged/swapped output at execution time which we have a handy utility for to identify the data to replace.
+
+For example, a user can select any amount with any token to deposit into a USDC yearn vault on Katana:
+
+<CodeGroup>
+```tsx YearnDeposit.tsx
+import { TrailsWidget } from '0xtrails/widget'
+import { TRAILS_CONTRACT_PLACEHOLDER_AMOUNT } from '0xtrails'
+import { encodeFunctionData } from 'viem'
+import { yearnVaultABI } from './abi.ts'
+
+export const YearnDepositExample = () => {
+  // ERC-4626 vault contract on destination chain
+  const YEARN_VAULT_CONTRACT = "0x80c34BD3A3569E126e7055831036aa7b212cB159" // USDC Yearn Vault on Katana - replace with target vault address
+
+  // Encode the deposit call with placeholder amount which will be replaced at execution time automatically
+  const depositCalldata = encodeFunctionData({
+    abi: yearnVaultABI,
+    functionName: 'deposit',
+    args: [
+      TRAILS_CONTRACT_PLACEHOLDER_AMOUNT, // amount (auto-filled at runtime based on user's input)
+      "0x...", // receiver address
+    ],
+  })
+
+  return (
+    <TrailsWidget
+      mode="fund"
+      toAddress={YEARN_VAULT_CONTRACT}
+      toChainId={747474} // Katana
+      toToken="USDC"
+      toCalldata={depositCalldata}
+      theme="auto"
+    />
+  )
+}
+```
+
+```typescript abi.ts
+export const yearnVaultABI = [
+  {
+    type: "function",
+    name: "deposit",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "amount", type: "uint256" },
+      { name: "receiver", type: "address" },
+    ],
+    outputs: [{ name: "shares", type: "uint256" }],
+  },
+] as const
+```
+</CodeGroup>
+
 
