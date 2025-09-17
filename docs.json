@@ -45,7 +45,8 @@
             "pages": [
               "architecture/how-it-works",
               "architecture/protocol",
-              "architecture/wallet-compatibility"
+              "architecture/wallet-compatibility",
+              "architecture/pricing-fees"
             ]
           },
           {
