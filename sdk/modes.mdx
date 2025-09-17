@@ -1,9 +1,9 @@
 ---
 title: Modes
-description: Overview of Pay and Fund modes
+description: Overview of Pay, Fund, and Earn modes
 ---
 
-The Trails widget supports two modes optimized for different use cases, each using a different trade type approach.
+The Trails widget supports three modes optimized for different use cases, each using a different trade type approach.
 
 ## Mode Overview
 
@@ -19,12 +19,12 @@ The Trails widget supports two modes optimized for different use cases, each usi
 - **Best For**: Protocol deposits, chain funding, investment scenarios
 - **Logic**: User spends exact `toAmount` → Destination gets whatever results
 
-## Simple Way to Think About It
+### Earn Mode - Protocol Deposits
+- **Use Case**: DeFi deposits and yield opportunities into vaults and pools
+- **Trade Type**: Exact Input (user specifies the deposit amount)
+- **Best For**: Aave/Morpho vaults, lending pools, strategy vaults
+- **Logic**: User spends exact `toAmount` → Trails handles bridge/swap → Executes deposit call
 
-```
-Fund = exact_input trade type
-Pay = exact_output trade type
-```
 
 ## When to Use Each Mode
 
@@ -35,19 +35,25 @@ Pay = exact_output trade type
 - Any scenario where the recipient must receive an exact amount
 
 **Use Fund Mode when:**
-- Users want to deposit a specific budget amount
-- Funding protocols where the exact input matters
+- Funding protocols with a variable amount to an app
 - Investment scenarios where users allocate specific amounts
 - Chain onboarding where users want to spend a set amount
 
+**Use Earn Mode when:**
+- You want users to deposit directly into integrated DeFi protocols
+- Highlighting APY/TVL and letting users pick a target vault/pool
+
 ## Configuration
 
-Both modes require the same core parameters:
+All modes require the same core parameters:
 - `toAddress`: Destination address
 - `toAmount`: Amount (input for Fund, output for Pay)
 - `toChainId`: Destination chain
 - `toToken`: Destination token
 
+- `toCalldata`: Optional protocol function calldata for a specific function calls
+
 Learn more about each mode:
-- [Pay Mode](/sdk/modes/pay) - Exact output for payments
-- [Fund Mode](/sdk/modes/fund) - Exact input for deposits 
+- [Pay Mode](/sdk/modes/pay)
+- [Fund Mode](/sdk/modes/fund)
+- [Earn Mode](/sdk/modes/earn)
