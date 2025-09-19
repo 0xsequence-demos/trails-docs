@@ -1,0 +1,48 @@
+---
+title: 'Query Transaction History'
+description: 'Retrieve account transaction history for an address with the Trails SDK.'
+icon: 'clock'
+---
+
+Trails comes with a built in high-performant indexer which you can leverage seamlessly to retrieve information about a user's transaction history.
+
+
+## Wallet Transaction History
+
+For example, querying a user's transaction history for a specific chain using their connected wallet address:
+
+```tsx
+import { useEffect, useState } from 'react'
+import { useAccount } from 'wagmi'
+import { getAccountTransactionHistory } from '0xtrails'
+
+// Retrieve a user's transaction history on Polygon
+export function retrieveTransactionHistory({ chainId = 137 }: { chainId?: number }) {
+  const { address } = useAccount()
+  const [txs, setTxs] = useState<any[]>([])
+
+  useEffect(() => {
+    if (!address) return
+    getAccountTransactionHistory({ chainId, accountAddress: address })
+      .then(r => setTxs(r.transactions ?? []))
+  }, [address, chainId])
+
+  return (
+    <ul>
+      {txs.map((tx) => (
+        <li key={tx.txnHash}>
+          {tx.txnHash} | chain {tx.chainId} | block #{tx.blockNumber} | {tx.timestamp}
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+For more information, see:
+
+- [useGetTransactionHistory hook](/sdk/hooks#usegettransactionhistory)
+
+
+
+
