@@ -302,3 +302,78 @@ const calldata = encodeFunctionData({
 ```
 
 This pattern is essential for fund mode transactions where users choose their input amount, but the contract needs to receive the exact output amount after any swaps or bridging operations. 
+
+
+### useGetTransactionHistory
+
+Hook for fetching transaction history from a user's wallet address for a specific chain.
+
+```tsx
+import { useGetTransactionHistory } from '0xtrails'
+```
+
+Usage:
+
+```tsx
+import { useGetTransactionHistory } from '0xtrails'
+
+function TransactionList() {
+  const { data, isLoading, error } = useGetTransactionHistory({
+    chainId: 1,
+    accountAddress: '0x123...',
+    // Optional:
+    // pageSize: 10,
+    // includeMetadata: true,
+    // page: 0,
+  })
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {String(error)}</div>
+
+  return (
+    <div>
+      {data?.transactions?.map(tx => (
+        <div key={tx.txnHash}>
+          Transaction: {tx.txnHash} | Block: {tx.blockNumber} | Time: {tx.timestamp}
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+Types:
+
+```ts
+export type TransactionHistoryItemFromAPI = {
+  txnHash: string
+  blockNumber: number
+  blockHash: string
+  chainId: number
+  metaTxnID: string | null
+  transfers: Transfer[]
+  timestamp: string
+}
+
+export type TransactionHistoryItem = TransactionHistoryItemFromAPI & {
+  explorerUrl?: string
+  chainName?: string
+}
+
+export type TransactionHistoryResponse = {
+  page: {
+    column: string
+    pageSize: number
+    more: boolean
+  }
+  transactions: TransactionHistoryItem[]
+}
+
+export type GetAccountTransactionHistoryParams = {
+  chainId: number
+  accountAddress: string
+  pageSize?: number
+  includeMetadata?: boolean
+  page?: number
+}
+```

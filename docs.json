@@ -37,7 +37,8 @@
               "examples/fund",
               "examples/earn",
               "examples/receive",
-              "examples/gasless"
+              "examples/gasless",
+              "examples/transaction-history"
             ]
           },
           {
