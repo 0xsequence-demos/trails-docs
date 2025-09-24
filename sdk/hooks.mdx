@@ -194,6 +194,7 @@ type UseQuoteReturn = {
   swap: (() => Promise<SwapReturn | null>) | null
   isLoadingQuote: boolean
   quoteError: unknown
+  refetchQuote: (() => Promise<void>) | null
 }
 ```
 
@@ -216,7 +217,7 @@ const SwapComponent = () => {
   const { data: walletClient } = useWalletClient()
   const { address } = useAccount()
 
-  const { quote, swap, isLoadingQuote, quoteError } = useQuote({
+  const { quote, swap, isLoadingQuote, quoteError, refetchQuote } = useQuote({
     walletClient,
     fromTokenAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', // USDC
     fromChainId: 1, // Ethereum
@@ -230,6 +231,14 @@ const SwapComponent = () => {
       console.log('Transaction states:', states)
     },
   })
+
+  // Quotes can become stale; refetch every ~30 seconds
+  useEffect(() => {
+    const id = setInterval(() => {
+      refetchQuote?.()
+    }, 30000)
+    return () => clearInterval(id)
+  }, [refetchQuote])
 
   const handleSwap = async () => {
     if (!swap) return
