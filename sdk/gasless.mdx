@@ -8,8 +8,9 @@ Enable gasless execution by providing a paymaster per-chain or using Sequence ga
 
 ```tsx
 <TrailsWidget
+  gasless={true}
   paymasterUrls={[
-    { chainId: 8453, url: 'https://paymaster.example.com' }, // provide your paymaster URL
+    { chainId: 8453, url: 'https://paymaster.example.com' },
     // { chainId: 42161, url: 'https://...' },
   ]}
   toAddress="0x1234567890123456789012345678901234567890"
