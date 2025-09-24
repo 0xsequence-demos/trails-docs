@@ -42,7 +42,7 @@ To install on your own application:
     export const PaymentExample = () => {
       return (
         <TrailsWidget
-          toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1"
+          toAddress="0x97c4A952b46bEcaD0663f76357d3776ba11566E1" // recipient address
           toAmount="1" 
           toChainId={8453}
           toToken="USDC"
@@ -150,8 +150,8 @@ The widget supports several modes for different use cases:
 - **`pay`** - Exact output amount (user pays exactly what's specified)
 - **`fund`** - Deposit/top-up (user chooses amount to send)
 - **`swap`** - Cross-chain token swapping
-- **`earn`** - Yield farming and staking
-- **`receive`** - Request payments
+- **`earn`** - Integrated yield farming and staking - bundled with existing integrations
+- **`receive`** - Request payments via QR code
 
 ## Script Import
 
