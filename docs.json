@@ -12,7 +12,17 @@
     "dark": "#15803D"
   },
   "favicon": "/favicon.ico",
+  
   "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Playground",
+          "icon": "square-terminal",
+          "href": "https://demo.trails.build/widget"
+        }
+      ]
+    },
     "tabs": [
       {
         "tab": "Home",
