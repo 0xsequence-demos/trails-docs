@@ -40,15 +40,21 @@
             "pages": ["overview/1-click-payments", "overview/chain-abstraction"]
           },
           {
+            "group": "Use Cases",
+            "pages": [
+              "use-cases/pay",
+              "use-cases/swap",
+              "use-cases/fund",
+              "use-cases/earn"
+            ]
+          },
+          {
             "group": "Examples",
             "pages": [
-              "examples/pay",
-              "examples/swap",
-              "examples/fund",
-              "examples/earn",
               "examples/receive",
               "examples/gasless",
-              "examples/transaction-history"
+              "examples/transaction-history",
+              "examples/x402"
             ]
           },
           {
