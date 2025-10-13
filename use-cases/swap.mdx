@@ -4,7 +4,7 @@ description: 'Leverage trails to swap & bridge tokens cross-chain seamlessly for
 icon: 'arrows-rotate'
 ---
 
-## Chain Abstraction Token Swapping
+## Swap Tokens with Trails
 
 Trails enables seamless token swapping across multiple blockchain networks, allowing users to exchange tokens without manually bridging assets or dealing with multiple DEXs.
 
@@ -17,13 +17,13 @@ Traditional cross-chain swapping requires users to:
 - Pay gas fees on each chain
 - Wait for bridge confirmations
 
-We optimize the UX flow, integrated as a simple widget for your application to enable swaps across multiple liquidity sources with any token in the user's wallet. All interactions executed in a single confirmation for the user. Notably, this works across any wallet or application, ERC-7702 is not required for batching transactions.
+We optimize the UX flow, integrated as a simple widget for your application to enable swaps across multiple liquidity sources with any token in the user's wallet. All interactions executed in a single confirmation for the user. Notably, this works across any wallet or application, ERC-7702 or 4337 is not required for batching transactions.
 
 ## Examples
 
 ### Simple Cross-Chain Token Swap
 
-The most basic swap implementation using the dedicated swap mode:
+Basic  using the dedicated swap mode:
 
 ```tsx
 import { TrailsWidget } from '0xtrails/widget'
@@ -57,7 +57,7 @@ import { TrailsWidget } from '0xtrails/widget'
 export const ThemedSwap = () => {
   return (
     <TrailsWidget
-=      mode="swap"
+=     mode="swap"
       theme="dark"
       onCheckoutComplete={({ sessionId }) => {
         console.log('Themed swap completed:', sessionId)
@@ -83,7 +83,7 @@ export const AdvancedSwap = () => {
   return (
     <TrailsWidget
       mode="swap"
-      quoteProvider="lifi"
+      quoteProvider="cctp"
       onCheckoutComplete={({ sessionId }) => {
         console.log('Advanced swap completed:', sessionId)
         // Handle post-swap logic
@@ -109,7 +109,7 @@ export const AdvancedSwap = () => {
 
 ## Using the useQuote Hook
 
-For more control over the swap process, use the `useQuote` hook directly:
+For more control over the swap process for headless implementations, use the `useQuote` hook directly:
 
 ```tsx
 import { useQuote, TradeType } from '0xtrails'
@@ -179,14 +179,6 @@ export const CustomSwapComponent = () => {
 }
 ```
 
-## Swap Modes Comparison
-
-| Mode | Use Case | User Input | Best For |
-|------|----------|------------|----------|
-| **swap** | Open-ended swapping | User selects both tokens and amounts | DEX-like interfaces, trading apps |
-| **pay** | Exact output payment | User pays exact amount specified | E-commerce, bill payments |
-| **fund** | Deposit/top-up | User chooses amount to send | Wallet funding, account top-ups |
-
 ## Integration Benefits for Swaps with Trails
 
 - **Unified Liquidity**: Access tokens across all supported chains in one transaction
@@ -194,15 +186,8 @@ export const CustomSwapComponent = () => {
 - **Reduced Complexity**: Eliminate manual bridging and multi-step swaps (Approval and Transfer)
 - **Customized Branding**: Brand or theme the widget however you'd like to be native to your protocol or application
 - **Seamless UX**: Automatic routing finds optimal swap paths for low slippage for improved UX
-- **Gasless Options**: Support for gasless transactions to reduce friction
+- **Gasless & Alt-fee token options**: Support for gasless or alternative gas tokens like USDC for transactions to reduce friction
 - **Real-time Quotes**: Live pricing and route optimization
-- **Cross-chain Native**: Built from the ground up for multi-chain operations
+- **Chain Abstraction**: Built from the ground up to support multichain environments and abstract underlying chains.
 
-## Supported Quote Providers
-
-- **Auto**: Automatically selects the best provider
-- **LiFi**: Cross-chain liquidity aggregation
-- **Custom**: Integrate your own quote provider
-
-Choose the provider that best fits your needs or let the system automatically select the optimal one.
 

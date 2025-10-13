@@ -11,20 +11,18 @@ Trails revolutionizes crypto purchases by enabling users to buy NFTs, RWAs, or a
 For example, if a user wants to purchase an NFT that is listed in USDC on Arbitrum, trails will automatically detect the funds the user currently holds in their wallet across all chains, presents those as options to fulfill the payment, and automatically handles any bridging, swapping, or execution logic if necessary to complete the transaction.
 
 ## Use Cases
-- Purchase & mint an NFT directly from a marketplace on any chain
+
+Payment flows in Trails are modeled as exact output by default.
+
+- "I want to receive exactly 10 USDC tokens on the destination, and I'll send out 1.01 USDC on the origin chain."
+
+Ideal for use cases such as the following:
+
+- Purchase and/or mint an NFT directly from a marketplace on any chain
 - Use crypto to make a purchase at an ecommerce platform
 - Buy an onchain token representing a real-world asset (RWA)
+- Make an [x402 payment](/examples/x402) in any token from any chain
 - Execute smart contract calls with payment
-
-## Enhanced User Experience for NFT Marketplaces
-
-By integrating Trails, merchants dramatically reduce friction for buyers who would otherwise need to:
-- Bridge tokens manually to the target chain
-- Swap to the required payment token
-- Pay multiple gas fees across different networks
-- Wait for bridge confirmations
-
-Instead, users can directly take an action using their existing token balances from any supported chain.
 
 ## Examples
 
