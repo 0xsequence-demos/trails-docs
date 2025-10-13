@@ -53,6 +53,7 @@
             "pages": [
               "examples/receive",
               "examples/gasless",
+              "examples/wallet-compatibility",
               "examples/transaction-history",
               "examples/x402"
             ]
@@ -62,7 +63,6 @@
             "pages": [
               "architecture/how-it-works",
               "architecture/protocol",
-              "architecture/wallet-compatibility",
               "architecture/pricing-fees"
             ]
           },
