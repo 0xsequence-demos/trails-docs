@@ -1,0 +1,28 @@
+---
+title: 'Pay Gas with Any Token'
+description: 'Users can pay gas in any permit-compatible, non-native token'
+icon: 'wind'
+---
+
+## Pay Gas with non-native tokens
+
+Trails is able to support paying gas in any permit-compatible (EIP-2612) token which includes popular options and many stablecoins such as USDC and USDT. 
+
+The user will be prompted initially with an approval for the token and every subsequent transaction will be a single confirmation.
+
+```tsx
+import { TrailsWidget } from '0xtrails/widget'
+
+export const PayWithAnyToken = () => (
+  <TrailsWidget
+    mode="pay"
+    gasless={true}
+    toAddress="0x1234567890123456789012345678901234567890"
+    toAmount="1"
+    toChainId={8453} // Base
+    toToken="USDC"
+  >
+    <button>Pay with USDC on Base</button>
+  </TrailsWidget>
+)
+```
