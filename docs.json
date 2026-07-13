@@ -67,6 +67,7 @@
               "architecture/pricing-fees",
               "architecture/alt-fee-tokens",
               "architecture/unified-liquidity",
+              "architecture/edge-alt-vms",
               "architecture/smart-contracts"
             ]
           },
