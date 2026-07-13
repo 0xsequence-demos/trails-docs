@@ -141,7 +141,7 @@ Edge chains (non-EVM / alternative VMs — see [Supported Chains](/resources/sup
 | `useIntentRecover` / `useIntentRecoverWithAddress` | EVM only |
 
 <Note>
-**Execution model.** Paying *from* an edge chain (edge as origin) requires the matching edge wallet adapter registered on `TrailsProvider` plus a connected edge wallet — a viem `walletClient` cannot sign an edge-chain transaction. See [Adapters](/sdk/adapters/overview). Paying *to* an edge chain (edge as destination) works with a standard EVM wallet and an edge recipient address — no adapter needed.
+**Execution model.** Paying *from* an edge chain (edge as origin) requires the matching edge wallet adapter registered on `TrailsProvider` plus a connected edge wallet — a viem `walletClient` cannot sign an edge-chain transaction. See [Adapters](/sdk/adapters/overview) (currently the [Solana adapter](/sdk/adapters/solana)). Paying *to* an edge chain (edge as destination) works with a standard EVM wallet and an edge recipient address — no adapter needed.
 </Note>
 
 ## Chains

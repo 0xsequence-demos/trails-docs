@@ -25,7 +25,7 @@ Edge support is asymmetric. What an integration needs depends on whether the edg
 | **What the user signs** | A transaction in their edge-chain wallet | Nothing on the edge chain |
 | **Recipient** | — | An edge-chain address |
 
-**Why origin needs an adapter.** A non-EVM chain uses its own signing scheme and transaction format — an EVM `walletClient` (viem) cannot produce a valid signature for it. Executing an edge-origin transaction therefore requires an ecosystem-native signer, supplied by the edge wallet adapter registered on `TrailsProvider`. Without it, edge-origin execution is unavailable and the SDK surfaces an explicit error.
+**Why origin needs an adapter.** A non-EVM chain uses its own signing scheme and transaction format — an EVM `walletClient` (viem) cannot produce a valid signature for it. Executing an edge-origin transaction therefore requires an ecosystem-native signer, supplied by the edge wallet adapter registered on `TrailsProvider` (currently the [Solana adapter](/sdk/adapters/solana)). Without it, edge-origin execution is unavailable and the SDK surfaces an explicit error.
 
 **Why destination does not.** When an edge chain is only the destination, the user still signs a single EVM origin transaction as usual. Trails routes the value across the edge rail and settles to the edge-chain recipient address — no edge wallet or adapter is involved on the user's side.
 
@@ -55,7 +55,7 @@ The SDK's `Token` and `Chain` types are chain-agnostic, so the same shapes carry
 The edge-rail model is designed to grow without changing integration code:
 
 - New edge chains appear in the query results and quote paths as their rails go live.
-- Each ecosystem ships its own wallet adapter for edge-origin signing — see [Adapters](/sdk/adapters/overview).
+- Each ecosystem ships its own wallet adapter for edge-origin signing — see [Adapters](/sdk/adapters/overview) (e.g. the [Solana adapter](/sdk/adapters/solana)).
 - The per-hook support matrix in [Hooks → Edge chains](/sdk/hooks#edge-chains) is organized by capability, not by chain, so it applies to any edge chain.
 
 <Note>
