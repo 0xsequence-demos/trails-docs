@@ -1,0 +1,146 @@
+---
+title: "0xtrails@0.17.0"
+description: "Release notes for the 0xtrails SDK v0.17.0 — introducing Solana (SVM) support"
+---
+
+_Released July 21, 2026_
+
+This release covers changes after `0xtrails@0.16.0` through `0xtrails@0.17.0`.
+
+The headline of this release is **Solana support** — the first time Trails routes to and from a non-EVM chain. This is delivered through Trails' new
+[edge rail](/architecture/edge-alt-vms) model, so Solana slots into the same intent lifecycle, hooks, and widget you already use.
+
+## Highlights
+
+- **Solana (SVM) support** — pay *from* Solana (Solana → EVM) and *to* Solana (EVM → Solana), powered by [edge rails](/architecture/edge-alt-vms).
+- **New package `@0xtrails/svm`** exporting `svmAdapter`, with built-in [Wallet Standard](https://github.com/wallet-standard/wallet-standard)
+auto-detection (Phantom, Solflare, Backpack, …).
+- **Unified EVM + Solana wallet connection** — one tabbed connect flow, with Solana wallets shown in the connected-wallets list and disconnect controls.
+- **Gasless transactions** in `useTrailsSendTransaction`.
+- **Recover-funds screen** for failed intents in transaction history.
+- New bridge route providers: **LayerZero Transfer (`LZ_TRANSFER`)**, **OIF**, and **Hyperlane**.
+- Migrated to [Solana Kit (`@solana/kit`)](https://github.com/anza-xyz/kit) internally and moved the SDK build to `tsdown` for faster builds and better tree-shaking.
+
+## Introducing Solana
+
+Solana is Trails' first **edge chain** — a non-EVM ecosystem reached through an [edge rail](/architecture/edge-alt-vms) rather than a separate protocol. The intent
+is still anchored in the EVM orchestration described in [How Trails Works](/architecture/how-it-works); the Solana leg sits at the *edge* of the flow, as either
+the origin the user funds from or the destination funds settle into.
+
+### What you can build
+
+| Direction | Wallet the user needs | SDK adapter |
+|--|--|--|
+| **Solana → EVM** (edge as origin) | A Solana wallet | Required — [`svmAdapter`](/sdk/adapters/solana) |
+| **EVM → Solana** (edge as destination) | A standard EVM wallet | Not required — just an SVM recipient address |
+
+Paying **from** Solana requires an ecosystem-native signer, because a viem `walletClient` can't sign a Solana transaction — supply it with `svmAdapter`.
+Paying **to** Solana works with a plain EVM wallet: the user signs one EVM origin transaction and Trails settles to the Solana recipient. See
+[Edge & Alternative VMs](/architecture/edge-alt-vms#origin-vs-destination) for the full model.
+
+### Add it to your widget
+
+`svmAdapter` from `@0xtrails/svm` registers the SVM edge plugin and provides the Solana wallet context. Auto-detection needs no app-level Solana provider:
+
+```tsx
+import { Fund } from '0xtrails'
+import { svmAdapter } from '@0xtrails/svm'
+
+<Fund
+  to={{ recipient: '0x...', token: 'USDC', chain: 'polygon', amount: '100' }}
+  apiKey="YOUR_API_KEY"
+  adapters={[
+    // Use your own private RPC for production
+    svmAdapter({ rpcUrls: ['https://api.mainnet-beta.solana.com'] }),
+  ]}
+/>
+```
+
+EVM and Solana adapters compose — pass both and both wallet families work in the same widget. The adapter also accepts a bring-your-own-wallet
+handle for the modern `@solana/react-hooks` stack or the legacy `@solana/wallet-adapter-react` stack. See the [Solana Adapter](/sdk/adapters/solana)
+guide for every integration style and the [Adapters overview](/sdk/adapters/overview) for how adapters compose.
+
+### Hooks are edge-aware
+
+Solana is supported at the **quote and execution layer**. Pass an edge chain (by name or its ecosystem-native chain ID, e.g. `101` for Solana) anywhere
+these hooks accept an EVM chain — `useQuote`, `useTrailsSendTransaction`, `useIntentTransactionHistory`, `getChainInfo`, and `useTokenInfo`. The chain/token *list* and
+*balance* utilities remain EVM-only. See [Hooks → Edge chains](/sdk/hooks#edge-chains) for the exact per-hook support matrix,
+and [Tokens & Chains](/sdk/tokens-and-chains#edge-chains) for the chain-agnostic `Chain`/`Token` shapes.
+
+### Under the hood
+
+Edge routes are quoted through a new API path, [`QuoteIntentEdge`](/api-reference/endpoints/quote-intent-edge), which pairs the standard `QuoteIntentRequest`
+with an `edge` request describing the rail (`SOLANA`), mode (`ORIGIN` / `DESTINATION`), and Solana-side token/address. If you use `useQuote` or the widget
+you don't call this directly — the SDK selects the edge path automatically when a route touches Solana. It's available for direct API integrations that need it.
+
+For the current list of edge chains (Solana today, Tron TBA) and their tokens, see [Supported Chains → Edge Chains](/resources/supported-chains#edge-chains).
+
+## New Package
+
+- Add [`@0xtrails/svm`](/sdk/adapters/solana), exporting `svmAdapter` for Solana (SVM) wallet support. Install it alongside `0xtrails`:
+
+  ```bash
+  pnpm add 0xtrails @0xtrails/svm
+  ```
+
+## Features
+
+### Solana / SVM
+
+- Add Solana as a payment **origin** (Solana → EVM) and **destination** (EVM → Solana) via the edge relay.
+- Add Solana wallet support with a unified connection flow for EVM and SVM wallets.
+- Auto-detect Solana Wallet Standard providers (Phantom, Solflare, Backpack, …).
+- Add Solana wallets to the Settings connected-wallets list with disconnect controls.
+
+### Quotes, Intents, and Transactions
+
+- Add gasless transaction support to `useTrailsSendTransaction`.
+- Add a recover-funds screen for failed intents in transaction history.
+- Add fund **exact-output** mode for precise destination amounts.
+- Add **LayerZero Transfer (`LZ_TRANSFER`)** and **OIF** bridge provider options.
+- Add **Hyperlane** bridge provider scenarios.
+- Show swap and bridge route providers in transaction details and history.
+
+### Widget and Checkout UX
+
+- Add a recipient picker with a pulsating prompt for clearer guidance.
+- Add a refresh button to the token selectors.
+- Add a theme creator tool in the demo for customizing widget appearance.
+
+## Improvements
+
+- Make **wagmi 3** the default for the built-in EVM wallet integration.
+- Migrate to [Solana Kit (`@solana/kit`)](https://github.com/anza-xyz/kit) for improved Solana integration.
+- Migrate the SDK build to `tsdown` for faster builds and better tree-shaking.
+- Unify the wallet connection flow with a tabbed EVM / Solana interface, and hide the SVM tab when Solana edge is not enabled by the API.
+- Auto-sync the selected origin/destination chain with the connected wallet and recipient address types.
+- Require an EVM wallet connection before allowing Solana wallet connections.
+- Centralize chain resolution, wallet icons, and payment-source mapping across the widget.
+- Improve quote input error detection for edge amount limits.
+- Improve widget loading and error states for exchange integrations.
+- Support object params for the sufficient-balance hooks.
+- Hide the approval prompt for embedded wallets, and hide the "Add wallet" option from the fund-methods screen via prop.
+
+## Fixes
+
+- Fix Solana destination recipient sync and validation.
+- Fix wallet cancellations on Solana being treated as retryable errors.
+- Fix duplicate Solana destination fill state in the transaction timeline.
+- Fix SOL price fetching in Pay mode.
+- Fix Solana appearing in the Swap destination chain filter without the SVM plugin.
+- Fix multi-wallet connection regressions for EVM and SVM, and multiple accounts from the same wallet provider not displaying correctly.
+- Fix transaction states on finished intents and edge receipt sync.
+- Fix same-chain / same-token transfers with calldata for exact input and output.
+- Fix salt-based EIP-712 domains for Polygon USDT permit signatures.
+- Fix EVM signer address resolution when the wallet client is unset.
+- Reject destination calls with empty calldata.
+- Fix `waitIntentReceipt` abort on widget close or navigation.
+- Fix the token selector showing all wallet tokens when API search is enabled.
+- Fix embedded wallet fee-confirmation hangs and the connect-wallet close button behavior.
+- Fix the clipboard copy fallback for older browsers.
+
+## Breaking Changes
+
+- **Drop v1 intent protocol support** — only v2 intents are supported. If you're still on v1, follow the [v1.5 migration guide](/resources/v1-5-migration).
+- **Remove the native Coinbase and Safe wallet connectors** — use WalletConnect instead.
+- **Remove the `react-motion` dependency** from widget animations.
