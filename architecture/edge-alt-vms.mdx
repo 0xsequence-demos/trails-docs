@@ -1,0 +1,63 @@
+---
+title: 'Edge & Alternative VMs'
+description: 'How Trails extends beyond EVM to non-EVM chains via edge rails'
+icon: 'circle-nodes'
+---
+
+Trails routes across more than one virtual machine. Beyond EVM networks, it reaches **alternative VMs** — non-EVM ecosystems such as SVM chains — through a mechanism called **edge rails**. Every alternative-VM chain is an edge chain.
+
+This page explains the model. For the current list of supported edge chains, see [Supported Chains](/resources/supported-chains). For which SDK hooks are edge-aware, see [Hooks → Edge chains](/sdk/hooks#edge-chains).
+
+## Edge rails
+
+An **edge rail** is the route that connects a non-EVM ecosystem to the EVM intent graph. Trails does not run a separate protocol per VM; instead, an edge chain sits at the *edge* of a flow — as the origin the user funds from, or the destination funds settle into — while the intent itself is anchored in the EVM-based orchestration described in [How Trails Works](/architecture/how-it-works).
+
+Because the model is keyed on the *rail*, not the specific chain, new alternative VMs are added by registering a new edge rail rather than by reworking the routing layer.
+
+## Origin vs. destination
+
+Edge support is asymmetric. What an integration needs depends on whether the edge chain is the **origin** (where funds come from) or the **destination** (where funds land).
+
+| | Origin (pay *from* an edge chain) | Destination (pay *to* an edge chain) |
+|--|--|--|
+| **Wallet required** | An edge-chain wallet (non-EVM) | A standard EVM wallet |
+| **SDK adapter** | Required — the matching edge wallet [adapter](/sdk/adapters/overview) | Not required |
+| **What the user signs** | A transaction in their edge-chain wallet | Nothing on the edge chain |
+| **Recipient** | — | An edge-chain address |
+
+**Why origin needs an adapter.** A non-EVM chain uses its own signing scheme and transaction format — an EVM `walletClient` (viem) cannot produce a valid signature for it. Executing an edge-origin transaction therefore requires an ecosystem-native signer, supplied by the edge wallet adapter registered on `TrailsProvider` (currently the [Solana adapter](/sdk/adapters/solana)). Without it, edge-origin execution is unavailable and the SDK surfaces an explicit error.
+
+**Why destination does not.** When an edge chain is only the destination, the user still signs a single EVM origin transaction as usual. Trails routes the value across the edge rail and settles to the edge-chain recipient address — no edge wallet or adapter is involved on the user's side.
+
+## Execution flow
+
+An edge-origin transaction follows the same intent lifecycle as an EVM flow (see [How Trails Works](/architecture/how-it-works)), with the origin leg executed on the edge chain:
+
+1. **Quote.** The route is quoted across the edge rail. Edge origin and destination are both quoted through the same intent quote path; edge chains are addressed by their ecosystem-native chain ID.
+2. **Origin execution.** The user signs and submits the origin transaction with their edge-chain wallet via the edge adapter. Funds enter the edge rail.
+3. **Bridging & settlement.** Value crosses into the EVM intent graph (or vice-versa for edge destinations) and settles to the recipient, exactly as in a standard Trails flow.
+
+<Note>
+An edge-origin intent still designates an EVM address as the intent's refund owner, even though the user funds from a non-EVM wallet. This is an internal detail of how the intent is anchored; the funding and signing happen on the edge chain.
+</Note>
+
+## Addresses and tokens
+
+Edge chains use their ecosystem-native conventions rather than EVM ones:
+
+- **Addresses** follow the edge chain's own format (for example, base58 rather than `0x`-prefixed hex).
+- **Native and token identifiers** use the edge chain's native scheme. Trails resolves known edge tokens from a built-in catalog rather than the EVM supported-tokens API.
+
+The SDK's `Token` and `Chain` types are chain-agnostic, so the same shapes carry both EVM and edge data. See [Tokens & Chains](/sdk/tokens-and-chains) for the SDK-side utilities.
+
+## Adding new alternative VMs
+
+The edge-rail model is designed to grow without changing integration code:
+
+- New edge chains appear in the query results and quote paths as their rails go live.
+- Each ecosystem ships its own wallet adapter for edge-origin signing — see [Adapters](/sdk/adapters/overview) (e.g. the [Solana adapter](/sdk/adapters/solana)).
+- The per-hook support matrix in [Hooks → Edge chains](/sdk/hooks#edge-chains) is organized by capability, not by chain, so it applies to any edge chain.
+
+<Note>
+Need an alternative VM that isn't listed yet? [Contact us](https://t.me/build_with_trails) to request it.
+</Note>

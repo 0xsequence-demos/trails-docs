@@ -34,6 +34,15 @@ Trails supports the following mainnet chains with full cross-chain routing capab
 Berachain, Sonic, Monad, and Somnia are newly integrated chains shipping with v1.5. Route coverage and supported token pairs will expand over time.
 </Note>
 
+## Edge Chains
+
+Trails supports **edge chains** — non-EVM ecosystems reached through edge rails that settle into any supported EVM chain and back. Every alternative-VM chain is an edge chain. These chains use their ecosystem-native chain IDs and address formats.
+
+| Chain | VM | Chain ID | Native Token | Status |
+|-------|-----|----------|--------------|--------|
+| Solana | SVM | 101 | SOL | ✅ Supported |
+| Tron | TVM | — | TRX | 🚧 Coming soon (TBA) |
+
 ## Stablecoin Details
 
 ### USDC Availability
@@ -49,6 +58,7 @@ USDC is available on most major chains. Chains with CCTP support enable native U
 | Polygon | `0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359` | ✓ |
 | Avalanche | `0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E` | ✓ |
 | BNB Chain | `0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d` | - |
+| Solana | `EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v` | - |
 
 ### USDT Availability
 
@@ -60,6 +70,11 @@ USDC is available on most major chains. Chains with CCTP support enable native U
 | Polygon | `0xc2132D05D31c914a87C6611C10748AEb04B58e8F` |
 | Avalanche | `0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7` |
 | BNB Chain | `0x55d398326f99059fF775485246999027B3197955` |
+| Solana | `Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB` |
+
+<Note>
+Addresses on **Solana** are base58 SPL mint addresses, not EVM contract addresses. Solana routes via edge rails rather than CCTP.
+</Note>
 
 ## Supported Bridges and Liquidity
 

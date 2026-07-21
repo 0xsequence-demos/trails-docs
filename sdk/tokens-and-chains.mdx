@@ -7,6 +7,16 @@ description: "Working with supported tokens and chains in the Trails SDK"
 
 The Trails SDK provides utilities to query supported chains and tokens across the network. These functions help you build dynamic UIs that adapt to available options.
 
+## Edge Chains
+
+Trails extends beyond EVM networks to **edge chains** — non-EVM ecosystems reached through *edge rails*. All alternative-VM chains are edge chains: funding from an edge-chain wallet settles into any supported EVM chain, and back, with Trails handling the cross-ecosystem routing.
+
+Edge chains are handled at the quote and execution layer — `useQuote` and `useTrailsSendTransaction` accept an edge chain anywhere they accept an EVM chain, and the `Chain` and `Token` types are chain-agnostic. Edge chains use their ecosystem-native chain IDs and address formats rather than EVM conventions. Not every hook is edge-aware: the chain/token list and balance utilities below are EVM-only. See [Hooks → Edge chains](/sdk/hooks#edge-chains) for the exact per-hook support matrix and the edge execution model.
+
+<Note>
+For the current list of supported edge chains and their tokens, see [Supported Chains](/resources/supported-chains).
+</Note>
+
 ## Chain Utilities
 
 ```ts

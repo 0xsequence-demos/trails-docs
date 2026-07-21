@@ -121,6 +121,29 @@ Added in [`0xtrails@0.16.0`](/sdk/changelog/0xtrails-0.16.0). Adapters are a **w
 
 Hooks-based integrations do not use adapters. Supply wallet state directly to hooks such as `useQuote` and `useTrailsSendTransaction` via `walletClient` and `address` from your own wallet stack (wagmi, viem, ethers, etc.).
 
+## Edge chains
+
+Edge chains (non-EVM / alternative VMs — see [Supported Chains](/resources/supported-chains)) are supported at the **quote and execution layer**, not uniformly across every hook. Chain-family handling is transparent to the hooks that support it — pass an edge chain via `ChainIdentifier` (name or chain ID) the same way you pass an EVM chain.
+
+| Hook / utility | Edge chains |
+|----------------|-------------|
+| `useQuote` (`from.chain` / `to.chain`) | ✅ Supported |
+| `useTrailsSendTransaction` | ✅ Supported |
+| `useIntentTransactionHistory` | ✅ Supported (pass the edge address) |
+| `getChainInfo`, `useTokenInfo` | ✅ Supported |
+| `useSupportedChains` / `getSupportedChains` | EVM only |
+| `useSupportedTokens` / `useTokenList` / `getSupportedTokens` | EVM only |
+| `getAllChains`, `useTokenAddress` | EVM only |
+| Balance hooks (`useTokenBalances`, `useAccountTotalBalanceUsd`, `useHasSufficientBalance*`) | EVM only |
+| `usePublicClient` / `usePublicClientGetter` | EVM only (edge chains use ecosystem-native RPC, not viem) |
+| `useAccountTransactionHistory` / `getAccountTransactionHistory` | EVM only |
+| Earn hooks (`useEarnMarkets`, `useEarnProviders`, `useEarnBalances`) | EVM only |
+| `useIntentRecover` / `useIntentRecoverWithAddress` | EVM only |
+
+<Note>
+**Execution model.** Paying *from* an edge chain (edge as origin) requires the matching edge wallet adapter registered on `TrailsProvider` plus a connected edge wallet — a viem `walletClient` cannot sign an edge-chain transaction. See [Adapters](/sdk/adapters/overview) (currently the [Solana adapter](/sdk/adapters/solana)). Paying *to* an edge chain (edge as destination) works with a standard EVM wallet and an edge recipient address — no adapter needed.
+</Note>
+
 ## Chains
 
 ```ts
