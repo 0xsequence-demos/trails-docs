@@ -5,8 +5,6 @@ description: "Release notes for the 0xtrails SDK v0.17.0 — introducing Solana 
 
 _Released July 21, 2026_
 
-This release covers changes after `0xtrails@0.16.0` through `0xtrails@0.17.0`.
-
 The headline of this release is **Solana support** — the first time Trails routes to and from a non-EVM chain. This is delivered through Trails' new
 [edge rail](/architecture/edge-alt-vms) model, so Solana slots into the same intent lifecycle, hooks, and widget you already use.
 
@@ -18,8 +16,7 @@ auto-detection (Phantom, Solflare, Backpack, …).
 - **Unified EVM + Solana wallet connection** — one tabbed connect flow, with Solana wallets shown in the connected-wallets list and disconnect controls.
 - **Gasless transactions** in `useTrailsSendTransaction`.
 - **Recover-funds screen** for failed intents in transaction history.
-- New bridge route providers: **LayerZero Transfer (`LZ_TRANSFER`)**, **OIF**, and **Hyperlane**.
-- Migrated to [Solana Kit (`@solana/kit`)](https://github.com/anza-xyz/kit) internally and moved the SDK build to `tsdown` for faster builds and better tree-shaking.
+- New bridge route providers: **Hyperlane**.
 
 ## Introducing Solana
 
@@ -97,7 +94,6 @@ For the current list of edge chains (Solana today, Tron TBA) and their tokens, s
 - Add gasless transaction support to `useTrailsSendTransaction`.
 - Add a recover-funds screen for failed intents in transaction history.
 - Add fund **exact-output** mode for precise destination amounts.
-- Add **LayerZero Transfer (`LZ_TRANSFER`)** and **OIF** bridge provider options.
 - Add **Hyperlane** bridge provider scenarios.
 - Show swap and bridge route providers in transaction details and history.
 
@@ -141,6 +137,7 @@ For the current list of edge chains (Solana today, Tron TBA) and their tokens, s
 
 ## Breaking Changes
 
-- **Drop v1 intent protocol support** — only v2 intents are supported. If you're still on v1, follow the [v1.5 migration guide](/resources/v1-5-migration).
+- **Drop v1 intent protocol support** — only v2 intents are supported. If you're still on v1, follow
+the [v1.5 migration guide](/resources/v1-5-migration).
 - **Remove the native Coinbase and Safe wallet connectors** — use WalletConnect instead.
 - **Remove the `react-motion` dependency** from widget animations.
