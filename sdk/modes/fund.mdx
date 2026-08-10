@@ -252,11 +252,11 @@ The widget shows a pending state while the exchange processes the withdrawal. Se
 
 ### Protocol deposit with dynamic calldata
 
-For ERC-4626 vaults and staking contracts where the deposit amount is a function parameter, use `TRAILS_ROUTER_PLACEHOLDER_AMOUNT`. Trails replaces it with the actual bridged/swapped output at execution time.
+For ERC-4626 vaults and staking contracts where the deposit amount is a function parameter, use `TRAILS_HYDRATE_PLACEHOLDER_AMOUNT`. Trails replaces it with the actual bridged/swapped output at execution time.
 
 ```tsx
 import { Fund } from '0xtrails/widget'
-import { TRAILS_ROUTER_PLACEHOLDER_AMOUNT } from '0xtrails'
+import { TRAILS_HYDRATE_PLACEHOLDER_AMOUNT } from '0xtrails'
 import { encodeFunctionData } from 'viem'
 
 const depositCalldata = encodeFunctionData({
@@ -271,7 +271,7 @@ const depositCalldata = encodeFunctionData({
     outputs: [{ name: 'shares', type: 'uint256' }],
   }],
   functionName: 'deposit',
-  args: [TRAILS_ROUTER_PLACEHOLDER_AMOUNT, '0xReceiverAddress'],
+  args: [TRAILS_HYDRATE_PLACEHOLDER_AMOUNT, '0xReceiverAddress'],
 })
 
 <Fund
@@ -287,7 +287,7 @@ const depositCalldata = encodeFunctionData({
 ```
 
 <Note>
-Use `TRAILS_ROUTER_PLACEHOLDER_AMOUNT` when the deposit amount is a function parameter and the user selects the amount. Do not use it for functions that read balance internally (e.g. `depositAll()`).
+Use `TRAILS_HYDRATE_PLACEHOLDER_AMOUNT` when the deposit amount is a function parameter and the user selects the amount. Do not use it for functions that read balance internally (e.g. `depositAll()`).
 </Note>
 
 ## See also

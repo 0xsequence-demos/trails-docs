@@ -921,10 +921,10 @@ const { data: providers } = useMeldServiceProviders({
 ## Constants
 
 ```ts
-import { TRAILS_ROUTER_PLACEHOLDER_AMOUNT } from '0xtrails'
+import { TRAILS_HYDRATE_PLACEHOLDER_AMOUNT } from '0xtrails'
 ```
 
-### TRAILS_ROUTER_PLACEHOLDER_AMOUNT
+### TRAILS_HYDRATE_PLACEHOLDER_AMOUNT
 
 This constant provides a placeholder value for amounts when encoding calldata in fund mode. It's used to replace dynamic output amounts during contract execution.
 
@@ -934,13 +934,13 @@ This constant provides a placeholder value for amounts when encoding calldata in
 ```tsx
 import { Fund } from '0xtrails/widget'
 import { encodeFunctionData } from 'viem'
-import { TRAILS_ROUTER_PLACEHOLDER_AMOUNT } from '0xtrails'
+import { TRAILS_HYDRATE_PLACEHOLDER_AMOUNT } from '0xtrails'
 
 export const Example = () => {
     const calldata = encodeFunctionData({
         abi: stakingABI,
         functionName: 'stake',
-        args: [TRAILS_ROUTER_PLACEHOLDER_AMOUNT] // Will be replaced with actual amount
+        args: [TRAILS_HYDRATE_PLACEHOLDER_AMOUNT] // Will be replaced with actual amount
     })
 
     return (
@@ -1707,7 +1707,6 @@ These are advanced functions for direct intent management. Most developers shoul
 
 ```ts
 import {
-  calculateOriginAndDestinationIntentAddresses,
   commitIntent,
   sendOriginTransaction,
 } from '0xtrails'
@@ -1723,30 +1722,11 @@ type OriginCallParams = {
   chainId: number
 }
 
-type RouteProvider = 'AUTO' | 'CCTP' | 'RELAY' | 'SUSHI' | 'ZEROX'
-
 type TrailsFee = {
   amount: bigint
   amountUsd: number
   token: Token
 }
-```
-
-### calculateOriginAndDestinationIntentAddresses
-
-Calculates both origin and destination intent addresses.
-
-**Signature**:
-```ts
-function calculateOriginAndDestinationIntentAddresses(
-  params: IntentParams
-): Promise<{ originAddress: string; destinationAddress: string }>
-```
-
-**Usage**:
-```ts
-const { originAddress, destinationAddress } =
-  await calculateOriginAndDestinationIntentAddresses(params)
 ```
 
 ### commitIntent
