@@ -173,6 +173,14 @@
             ]
           },
           {
+            "group": "Protocol",
+            "pages": [
+              "api-reference/endpoints/get-supported-intent-protocols",
+              "api-reference/endpoints/get-default-intent-protocol",
+              "api-reference/endpoints/get-protocol-contracts"
+            ]
+          },
+          {
             "group": "Earn",
             "pages": [
               "api-reference/endpoints/yield-get-markets",

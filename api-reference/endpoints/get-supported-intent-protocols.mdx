@@ -1,0 +1,48 @@
+---
+title: GetSupportedIntentProtocols
+openapi: ../trails-api.gen.json post /rpc/Trails/GetSupportedIntentProtocols
+---
+
+## Overview
+
+`GetSupportedIntentProtocols` returns the intent-protocol versions the Trails API currently serves. Each version identifies a different orchestration + contracts stack; a quote produced for `v1_5` cannot be committed against `v1` and vice versa.
+
+Use this alongside [`GetDefaultIntentProtocol`](/api-reference/endpoints/get-default-intent-protocol) and [`GetProtocolContracts`](/api-reference/endpoints/get-protocol-contracts) to negotiate the correct version at runtime instead of hardcoding it.
+
+## Request
+
+`GetSupportedIntentProtocols` takes no parameters.
+
+## Response
+
+- **versions** (`IntentProtocolVersion[]`) — supported versions in no particular order. Members: `v1`, `v1_5`.
+
+## Example
+
+```typescript
+const response = await fetch(
+  'https://trails-api.sequence.app/rpc/Trails/GetSupportedIntentProtocols',
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Access-Key': 'YOUR_ACCESS_KEY',
+    },
+    body: JSON.stringify({}),
+  },
+)
+
+const { versions } = await response.json()
+console.log('Supported intent protocols:', versions)
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="GetDefaultIntentProtocol" icon="check" href="/api-reference/endpoints/get-default-intent-protocol">
+    Get the API's current default protocol version
+  </Card>
+  <Card title="GetProtocolContracts" icon="file-contract" href="/api-reference/endpoints/get-protocol-contracts">
+    Resolve on-chain contract addresses for a protocol version
+  </Card>
+</CardGroup>

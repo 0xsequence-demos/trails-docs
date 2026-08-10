@@ -1,0 +1,59 @@
+---
+title: GetProtocolContracts
+openapi: ../trails-api.gen.json post /rpc/Trails/GetProtocolContracts
+---
+
+## Overview
+
+`GetProtocolContracts` returns the deployed Trails contract addresses for a given intent-protocol version. Use it when a client needs the router / entrypoint / router-shim / utils addresses for the version it is about to commit an intent against, instead of hardcoding an address that may drift when a new protocol version rolls out.
+
+<Note>
+This replaces the deprecated `GetTrailsContracts` endpoint. `GetProtocolContracts` accepts an explicit `intentProtocol` parameter, so a single client can serve multiple protocol versions concurrently.
+</Note>
+
+## Request Parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `intentProtocol` | `IntentProtocolVersion` | No | Protocol version to resolve contracts for. Values: `v1`, `v1_5`. Defaults to the API's [current default](/api-reference/endpoints/get-default-intent-protocol) when omitted. |
+
+## Response
+
+- **TrailsContracts** (object)
+  - **trailsIntentEntrypointAddress** (string)
+  - **trailsRouterAddress** (string)
+  - **trailsRouterShimAddress** (string)
+  - **trailsUtilsAddress** (string)
+
+The response is a single object; addresses are deterministic across chains via the ERC-2470 Singleton Factory.
+
+## Example
+
+```typescript
+const response = await fetch(
+  'https://trails-api.sequence.app/rpc/Trails/GetProtocolContracts',
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Access-Key': 'YOUR_ACCESS_KEY',
+    },
+    body: JSON.stringify({ intentProtocol: 'v1_5' }),
+  },
+)
+
+const { TrailsContracts } = await response.json()
+console.log('Entrypoint:', TrailsContracts.trailsIntentEntrypointAddress)
+console.log('Utils:', TrailsContracts.trailsUtilsAddress)
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="GetSupportedIntentProtocols" icon="list" href="/api-reference/endpoints/get-supported-intent-protocols">
+    List every supported intent-protocol version
+  </Card>
+  <Card title="GetDefaultIntentProtocol" icon="check" href="/api-reference/endpoints/get-default-intent-protocol">
+    Discover the API's current default version
+  </Card>
+</CardGroup>
