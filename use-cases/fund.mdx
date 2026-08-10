@@ -116,12 +116,12 @@ export function YearnDepositButton({ recipient }: { recipient: `0x${string}` }) 
 
 ### Depositing into a custom contract
 
-For protocols not covered by composable actions, use `TRAILS_ROUTER_PLACEHOLDER_AMOUNT` in `to.calldata`:
+For protocols not covered by composable actions, use `TRAILS_HYDRATE_PLACEHOLDER_AMOUNT` in `to.calldata`:
 
 <CodeGroup>
 ```tsx CustomVaultDeposit.tsx
 import { Fund } from '0xtrails/widget'
-import { TRAILS_ROUTER_PLACEHOLDER_AMOUNT } from '0xtrails'
+import { TRAILS_HYDRATE_PLACEHOLDER_AMOUNT } from '0xtrails'
 import { encodeFunctionData } from 'viem'
 import { customVaultABI } from './abi.ts'
 
@@ -132,7 +132,7 @@ export const CustomVaultDeposit = () => {
     abi: customVaultABI,
     functionName: 'deposit',
     args: [
-      TRAILS_ROUTER_PLACEHOLDER_AMOUNT, // replaced with actual output at execution
+      TRAILS_HYDRATE_PLACEHOLDER_AMOUNT, // replaced with actual output at execution
       "0x...",                          // receiver address
     ],
   })

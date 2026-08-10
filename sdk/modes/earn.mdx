@@ -153,11 +153,11 @@ const supplyCalldata = encodeFunctionData({
 
 ### ERC-4626 vault with dynamic amount
 
-Use `TRAILS_ROUTER_PLACEHOLDER_AMOUNT` when the deposit amount is a parameter and the user selects it:
+Use `TRAILS_HYDRATE_PLACEHOLDER_AMOUNT` when the deposit amount is a parameter and the user selects it:
 
 ```tsx
 import { Earn } from '0xtrails/widget'
-import { TRAILS_ROUTER_PLACEHOLDER_AMOUNT } from '0xtrails'
+import { TRAILS_HYDRATE_PLACEHOLDER_AMOUNT } from '0xtrails'
 import { encodeFunctionData } from 'viem'
 
 const depositCalldata = encodeFunctionData({
@@ -172,7 +172,7 @@ const depositCalldata = encodeFunctionData({
     outputs: [{ name: 'shares', type: 'uint256' }],
   }],
   functionName: 'deposit',
-  args: [TRAILS_ROUTER_PLACEHOLDER_AMOUNT, '0xUserAddress'],
+  args: [TRAILS_HYDRATE_PLACEHOLDER_AMOUNT, '0xUserAddress'],
 })
 
 <Earn
@@ -189,7 +189,7 @@ const depositCalldata = encodeFunctionData({
 ```
 
 <Note>
-Use `TRAILS_ROUTER_PLACEHOLDER_AMOUNT` when:
+Use `TRAILS_HYDRATE_PLACEHOLDER_AMOUNT` when:
 - Deposit amount is a function parameter
 - User selects the deposit amount
 - Amount needs to reflect post-swap/bridge output
@@ -235,13 +235,13 @@ Use `useEarnMarkets` to discover available market IDs. See [Markets and Provider
 
 ## Calldata reference
 
-### When to use `TRAILS_ROUTER_PLACEHOLDER_AMOUNT`
+### When to use `TRAILS_HYDRATE_PLACEHOLDER_AMOUNT`
 
 ```tsx
 // Correct — dynamic amount in calldata
 encodeFunctionData({
   functionName: 'deposit',
-  args: [TRAILS_ROUTER_PLACEHOLDER_AMOUNT, userAddress],
+  args: [TRAILS_HYDRATE_PLACEHOLDER_AMOUNT, userAddress],
 })
 
 // Correct — function reads balance directly, no placeholder needed
@@ -251,7 +251,7 @@ encodeFunctionData({
 })
 ```
 
-`TRAILS_ROUTER_PLACEHOLDER_AMOUNT` is `uint256.max` internally. Trails replaces it with the actual output amount at execution time.
+`TRAILS_HYDRATE_PLACEHOLDER_AMOUNT` is `uint256.max` internally. Trails replaces it with the actual output amount at execution time.
 
 ## See also
 

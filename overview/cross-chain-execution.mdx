@@ -64,7 +64,7 @@ Deposit into an Aave lending pool on Arbitrum using tokens from any chain:
 
 ```tsx
 import { Fund } from '0xtrails/widget'
-import { TRAILS_ROUTER_PLACEHOLDER_AMOUNT } from '0xtrails'
+import { TRAILS_HYDRATE_PLACEHOLDER_AMOUNT } from '0xtrails'
 import { encodeFunctionData } from 'viem'
 
 const supplyCalldata = encodeFunctionData({
@@ -83,7 +83,7 @@ const supplyCalldata = encodeFunctionData({
   functionName: 'supply',
   args: [
     '0xUSDCAddress',
-    TRAILS_ROUTER_PLACEHOLDER_AMOUNT, // Replaced with actual amount at execution
+    TRAILS_HYDRATE_PLACEHOLDER_AMOUNT, // Replaced with actual amount at execution
     '0xUserAddress',
     0,
   ],
@@ -111,7 +111,7 @@ When the function parameters are known in advance:
 - Any function where amount isn't a parameter
 
 ### Dynamic Calldata
-When the amount needs to be determined at execution time, use `TRAILS_ROUTER_PLACEHOLDER_AMOUNT`:
+When the amount needs to be determined at execution time, use `TRAILS_HYDRATE_PLACEHOLDER_AMOUNT`:
 - ERC-4626 vault deposits
 - Lending protocol supplies
 - Any function with an `amount` parameter that should match bridged funds
