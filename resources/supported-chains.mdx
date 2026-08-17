@@ -41,7 +41,7 @@ Trails supports **edge chains** — non-EVM ecosystems reached through edge rail
 | Chain | VM | Chain ID | Native Token | Status |
 |-------|-----|----------|--------------|--------|
 | Solana | SVM | 101 | SOL | ✅ Supported |
-| Tron | TVM | — | TRX | 🚧 Coming soon (TBA) |
+| Tron | TVM | 728126428 | TRX | ✅ Supported |
 
 ## Stablecoin Details
 
@@ -71,9 +71,10 @@ USDC is available on most major chains. Chains with CCTP support enable native U
 | Avalanche | `0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7` |
 | BNB Chain | `0x55d398326f99059fF775485246999027B3197955` |
 | Solana | `Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB` |
+| Tron | `TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t` |
 
 <Note>
-Addresses on **Solana** are base58 SPL mint addresses, not EVM contract addresses. Solana routes via edge rails rather than CCTP.
+Addresses on **Solana** are base58 SPL mint addresses and on **Tron** are base58 TRC-20 contract addresses, not EVM contract addresses. Solana and Tron route via edge rails rather than CCTP.
 </Note>
 
 ## Supported Bridges and Liquidity
