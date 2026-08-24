@@ -92,6 +92,7 @@
                   "sdk/adapters/overview",
                   "sdk/adapters/wagmi",
                   "sdk/adapters/solana",
+                  "sdk/adapters/tron",
                   "sdk/adapters/eip-1193",
                   "sdk/adapters/dynamic",
                   "sdk/adapters/thirdweb"

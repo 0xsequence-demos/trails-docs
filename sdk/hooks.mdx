@@ -1635,6 +1635,10 @@ import { useCommitIntent, useExecuteIntent } from '0xtrails'
 
 ### useCommitIntent
 
+<Warning>
+**Deprecated since `0xtrails@0.18.0`.** The SDK send flow no longer calls `CommitIntent` — non-edge intents execute directly from `QUOTED` via `useExecuteIntent`, and origin-mode edge intents arm via [`ExecuteIntentEdge`](/api-reference/endpoints/execute-intent-edge). `useCommitIntent` (and the `commitIntentFn` / `skipCommit` send options) remain exported for existing integrations but are no longer invoked by `send()`.
+</Warning>
+
 ```tsx
 const { mutate: commitIntent, isPending, isError, error, data } = useCommitIntent()
 
@@ -1730,6 +1734,10 @@ type TrailsFee = {
 ```
 
 ### commitIntent
+
+<Warning>
+**Deprecated since `0xtrails@0.18.0`.** The SDK's `send()` no longer invokes `commitIntent`. New integrations should call [`executeIntent`](/api-reference/endpoints/execute-intent) directly on the `QUOTED` intent returned by [`useQuote`](#usequote), or [`executeIntentEdge`](/api-reference/endpoints/execute-intent-edge) for origin-mode edge intents. The export remains for existing integrations but is no longer invoked internally.
+</Warning>
 
 Commits an intent to the blockchain.
 

@@ -1,0 +1,87 @@
+---
+title: "0xtrails@0.18.0"
+description: "Release notes for the 0xtrails SDK v0.18.0 — introducing Tron (TVM) support and a leaner send flow"
+---
+
+_Released August 18, 2026_
+
+The headline of this release is **Tron support** — Trails' second non-EVM edge chain — plus a **leaner send flow** that skips `CommitIntent` for new integrations.
+
+## Highlights
+
+- **Tron (TVM) support** — pay *from* Tron (Tron → EVM) and *to* Tron (EVM → Tron) via [edge rails](/architecture/edge-alt-vms), same intent lifecycle and widget you already use.
+- **New package [`@0xtrails/tvm`](/sdk/adapters/tron)** exporting `tronAdapter`, with TronLink / OKX / TokenPocket / Trust / MetaMask (Tron) / WalletConnect auto-detection.
+- **Leaner send flow** — `CommitIntent` is skipped for new integrations. Non-edge sends call [`ExecuteIntent`](/api-reference/endpoints/execute-intent) directly on a `QUOTED` intent, and edge sends arm via [`ExecuteIntentEdge`](/api-reference/endpoints/execute-intent-edge) before the user pays on the edge chain.
+
+## Introducing Tron
+
+Tron joins Solana as an edge chain reached through an [edge rail](/architecture/edge-alt-vms). The intent is still anchored in the EVM orchestration described in [How Trails Works](/architecture/how-it-works); the Tron leg sits at the edge as either the origin the user funds from or the destination funds settle into.
+
+### What you can build
+
+| Direction | Wallet the user needs | SDK adapter |
+|--|--|--|
+| **Tron → EVM** (edge as origin) | A Tron wallet | Required — [`tronAdapter`](/sdk/adapters/tron) |
+| **EVM → Tron** (edge as destination) | A standard EVM wallet | Not required — just a Tron recipient address |
+
+Paying **from** Tron requires an ecosystem-native signer, because a viem `walletClient` can't sign a Tron transaction — supply it with `tronAdapter`. Paying **to** Tron works with a plain EVM wallet: the user signs one EVM origin transaction and Trails settles to the Tron recipient. See [Edge & Alternative VMs](/architecture/edge-alt-vms#origin-vs-destination) for the full model.
+
+### Add it to your widget
+
+`tronAdapter` from `@0xtrails/tvm` registers the TVM edge plugin and provides the Tron wallet context. Auto-detection needs no app-level Tron provider:
+
+```tsx
+import { Fund } from '0xtrails'
+import { tronAdapter } from '@0xtrails/tvm'
+
+<Fund
+  to={{ recipient: '0x...', token: 'USDC', chain: 'polygon', amount: '100' }}
+  apiKey="YOUR_API_KEY"
+  adapters={[tronAdapter()]}
+/>
+```
+
+EVM, Solana, and Tron adapters compose — pass any combination and all three wallet families work in the same widget. See the [Tron Adapter](/sdk/adapters/tron) guide and the [Adapters overview](/sdk/adapters/overview) for how adapters compose.
+
+### Discover it at runtime
+
+Use [`GetEdges`](/api-reference/endpoints/get-edges) to check whether Tron (`TRON`) is enabled on the deployment and in which modes (`ORIGIN`, `DESTINATION`, or both). See [Supported Chains → Edge Chains](/resources/supported-chains#edge-chains) for the current list of Tron tokens.
+
+## Send flow: `CommitIntent` is out
+
+Since 0.18.0 the SDK does not call `CommitIntent` on its send path:
+
+- **Non-edge intents** (EVM → EVM): `send()` calls [`ExecuteIntent`](/api-reference/endpoints/execute-intent) directly after `useQuote` produces a `QUOTED` intent. `ExecuteIntent` now accepts `QUOTED` intents.
+- **Origin-mode edge intents** (Solana → EVM, Tron → EVM): `send()` calls [`ExecuteIntentEdge(intentId)`](/api-reference/endpoints/execute-intent-edge) before the user pays on the edge chain. The server resolves and validates the edge quote from the intent and starts Relay fill monitoring after the arm.
+
+`CommitIntent` stays behaviorally stable on the API for older SDK versions and existing direct-API integrations; only the SDK's send path stopped invoking it.
+
+### Deprecations
+
+The following exports remain published but are **deprecated** and no longer invoked by the SDK:
+
+- `commitIntent()` — standalone function
+- `useCommitIntent()` — React mutation hook
+- `commitIntentFn` — the send option that overrode the client-side commit call
+- `skipCommit` — the send option that skipped the client-side commit call
+
+<Note>
+This release requires a trails-api deployment that executes `QUOTED` intents directly. Deployments running the [`ExecuteIntentEdge`](/api-reference/endpoints/execute-intent-edge)-capable release (August 2026 onward) satisfy this — see the [trails-api release branch](https://github.com/0xsequence/trails-api/tree/release).
+</Note>
+
+## New package
+
+- Add [`@0xtrails/tvm`](/sdk/adapters/tron), exporting `tronAdapter` for Tron (TVM) wallet support. Install it alongside `0xtrails`:
+
+  ```bash
+  pnpm add 0xtrails @0xtrails/tvm
+  ```
+
+## Improvements
+
+- Forward `TrailsWidget` composable `actions` through widget payment forms so destination calls execute instead of falling back to a plain payment transfer.
+
+## Patch releases
+
+- **0.18.1** — Include `dist/` in the published `@0xtrails/api` package. Releases 0.18.0 shipped without the built output under pnpm 11.22.0.
+- **0.18.2** — Minor fix in the Tron connector.
