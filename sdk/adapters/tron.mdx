@@ -1,0 +1,93 @@
+---
+title: Tron Adapter
+description: "Accept or send payments from Tron wallets with the tronAdapter from @0xtrails/tvm, auto-detect TronLink and other TVM wallets or bring your own Tron wallet stack."
+sidebarTitle: "Tron"
+---
+
+`tronAdapter` from `@0xtrails/tvm` adds Tron (TVM) support to the Trails widget. It registers the TVM edge plugin and provides the Tron wallet context when passed through `adapters`.
+
+Two integration styles are supported: built-in Tron wallet auto-detection (TronLink, OKX, TokenPocket, Trust, MetaMask on Tron, and WalletConnect), or bring your own Tron wallet.
+
+## Install
+
+```bash
+pnpm add 0xtrails @0xtrails/tvm
+```
+
+## Auto-detection (no Tron provider needed)
+
+The simplest setup — the adapter discovers Tron wallets on its own. No app-level Tron wallet provider is required:
+
+```tsx
+import { Fund } from '0xtrails'
+import { tronAdapter } from '@0xtrails/tvm'
+
+<Fund
+  to={{ recipient: '0x...', token: 'USDC', chain: 'polygon', amount: '100' }}
+  apiKey="YOUR_API_KEY"
+  adapters={[tronAdapter()]}
+/>
+```
+
+Auto-detection options:
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `preferredWalletId` | `string` | Wallet id to select/connect first (matched against adapter name) |
+| `silentReconnect` | `boolean` | Silently reconnect previously trusted wallets. Defaults to `true` |
+
+## Bring your own wallet
+
+Pass a `wallet` handle if your app already manages Tron wallet state:
+
+```tsx
+import { Fund } from '0xtrails'
+import { tronAdapter } from '@0xtrails/tvm'
+
+function Checkout() {
+  const wallet = /* your Tron wallet, see @0xtrails/tvm's CreateTronWalletInput */
+
+  return (
+    <Fund
+      apiKey="YOUR_API_KEY"
+      adapters={[tronAdapter({ wallet })]}
+      to={{ recipient: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', token: 'USDT', chain: 'tron', amount: '100' }}
+    />
+  )
+}
+```
+
+## Compose with other adapters
+
+EVM, Solana, and Tron adapters compose — pass any combination and every wallet family works in the same widget:
+
+```tsx
+import { evmAdapter } from '0xtrails'
+import { svmAdapter } from '@0xtrails/svm'
+import { tronAdapter } from '@0xtrails/tvm'
+
+const adapters = [
+  evmAdapter({
+    wallets: { id: 'browser', name: 'Browser Wallet', provider: () => window.ethereum ?? null },
+  }),
+  svmAdapter({ rpcUrls: ['https://api.mainnet-beta.solana.com'] }),
+  tronAdapter(),
+]
+```
+
+## Options reference
+
+```ts
+tronAdapter({
+  // Bring-your-own-wallet mode
+  wallet,            // Tron wallet handle (CreateTronWalletInput)
+
+  // Auto-detection mode
+  preferredWalletId, // preferred wallet to select/connect first
+  silentReconnect,   // silently reconnect trusted wallets (default: true)
+})
+```
+
+<Info>
+Tron address formats and TRC-20 token addresses use Tron's base58 encoding — see the [Supported Chains → Edge Chains](/resources/supported-chains#edge-chains) table for representative Tron token addresses.
+</Info>

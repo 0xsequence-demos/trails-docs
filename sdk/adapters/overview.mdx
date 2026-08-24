@@ -15,6 +15,7 @@ Omit adapters entirely and Trails uses its **built-in EVM wallet runtime**, your
 | [`wagmiAdapter`](/sdk/adapters/wagmi) | `@0xtrails/adapter-wagmi` | Your app uses wagmi (v2 or v3), or a wagmi-based stack such as [Dynamic](/sdk/adapters/dynamic), Privy, or Sequence Connect |
 | [`evmAdapter`](/sdk/adapters/eip-1193) | `0xtrails` (built in) | You have a raw EIP-1193 provider — `window.ethereum`, an embedded wallet, or any SDK that can expose one |
 | [`svmAdapter`](/sdk/adapters/solana) | `@0xtrails/svm` | You want to accept or send payments from Solana wallets |
+| [`tronAdapter`](/sdk/adapters/tron) | `@0xtrails/tvm` | You want to accept or send payments from Tron wallets |
 
 Wallet SDKs that can produce an EIP-1193 provider don't need a dedicated adapter — they plug into `evmAdapter` directly. See the [thirdweb](/sdk/adapters/thirdweb) guide for a complete example of this pattern.
 
@@ -32,17 +33,19 @@ const adapters = [wagmiAdapter()]
 ```
 ## Mixing adapters
 
-You can pass several adapters together. EVM adapters compose into one wallet runtime; Solana adapters stack alongside, so EVM and Solana wallets work in the same widget:
+You can pass several adapters together. EVM adapters compose into one wallet runtime; Solana and Tron adapters stack alongside, so EVM, Solana, and Tron wallets work in the same widget:
 
 ```tsx
 import { evmAdapter } from '0xtrails'
 import { svmAdapter } from '@0xtrails/svm'
+import { tronAdapter } from '@0xtrails/tvm'
 
 const adapters = [
   evmAdapter({
     wallets: { id: 'browser', name: 'Browser Wallet', provider: () => window.ethereum ?? null },
   }),
   svmAdapter({ rpcUrls: ['https://api.mainnet-beta.solana.com'] }),
+  tronAdapter(),
 ]
 ```
 
@@ -52,3 +55,4 @@ const adapters = [
 2. **App on wagmi?** Use [`wagmiAdapter`](/sdk/adapters/wagmi). One package supports wagmi 2 and wagmi 3. Wagmi-based wallet SDKs such as [Dynamic](/sdk/adapters/dynamic) (Fireblocks embedded wallets) plug in the same way — no custom Trails code needed.
 3. **Embedded or custom wallet that speaks EIP-1193?** Use [`evmAdapter`](/sdk/adapters/eip-1193). This covers wallet SDKs that expose an EIP-1193 provider directly, such as [thirdweb](/sdk/adapters/thirdweb).
 4. **Solana?** Add [`svmAdapter`](/sdk/adapters/solana).
+5. **Tron?** Add [`tronAdapter`](/sdk/adapters/tron).
