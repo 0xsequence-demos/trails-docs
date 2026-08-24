@@ -4,12 +4,6 @@
     "title": "Trails API",
     "version": ""
   },
-  "servers": [
-    {
-      "url": "https://trails-api.sequence.app",
-      "description": "Trails API"
-    }
-  ],
   "components": {
     "securitySchemes": {
       "ApiKeyAuth": {
@@ -1780,11 +1774,20 @@
           "initTransactionHash": {
             "type": "string"
           },
+          "initChainId": {
+            "type": "number"
+          },
           "fillTransactionHash": {
             "type": "string"
           },
+          "fillChainId": {
+            "type": "number"
+          },
           "refundTransactionHash": {
             "type": "string"
+          },
+          "refundChainId": {
+            "type": "number"
           },
           "edgeTokenMetadata": {
             "$ref": "#/components/schemas/TokenMetadata"
@@ -1931,6 +1934,9 @@
           },
           "timedRefundUnlockTimestamp": {
             "type": "number"
+          },
+          "pausableSapientSignerAddress": {
+            "type": "string"
           },
           "trailsContracts": {
             "$ref": "#/components/schemas/TrailsContracts"
@@ -5049,11 +5055,20 @@
           "initTransactionHash": {
             "type": "string"
           },
+          "initChainId": {
+            "type": "number"
+          },
           "fillTransactionHash": {
             "type": "string"
           },
+          "fillChainId": {
+            "type": "number"
+          },
           "refundTransactionHash": {
             "type": "string"
+          },
+          "refundChainId": {
+            "type": "number"
           },
           "transactionStates": {
             "type": "array",
@@ -5126,6 +5141,32 @@
         }
       },
       "ExecuteIntentResponse": {
+        "type": "object",
+        "required": [
+          "intentId",
+          "intentStatus"
+        ],
+        "properties": {
+          "intentId": {
+            "type": "string"
+          },
+          "intentStatus": {
+            "$ref": "#/components/schemas/IntentStatus"
+          }
+        }
+      },
+      "ExecuteIntentEdgeRequest": {
+        "type": "object",
+        "required": [
+          "intentId"
+        ],
+        "properties": {
+          "intentId": {
+            "type": "string"
+          }
+        }
+      },
+      "ExecuteIntentEdgeResponse": {
         "type": "object",
         "required": [
           "intentId",
@@ -7532,7 +7573,8 @@
         "tags": [
           "Trails"
         ],
-        "summary": "",
+        "summary": "DEPRECATED for new integrations; behaviorally stable for existing ones.",
+        "description": "New clients call ExecuteIntent directly after QuoteIntent (edge flows arm\nvia ExecuteIntentEdge). Existing callers keep the full legacy contract:\nvalidate, atomically arm origin edge quotes, write QUOTED -> COMMITTED.\n",
         "requestBody": {
           "content": {
             "application/json": {
@@ -7733,6 +7775,190 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ExecuteIntentResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Client error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorWebrpcEndpoint"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorWebrpcRequestFailed"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorWebrpcBadRoute"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorWebrpcBadMethod"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorWebrpcBadRequest"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorWebrpcClientAborted"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorWebrpcStreamLost"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorUnauthorized"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorPermissionDenied"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorSessionExpired"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMethodNotFound"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorRequestConflict"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorAborted"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorGeoblocked"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorRateLimited"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorProjectNotFound"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorAccessKeyNotFound"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorAccessKeyMismatch"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorInvalidOrigin"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorInvalidService"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorUnauthorizedUser"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorQuotaExceeded"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorQuotaRateLimit"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorNoDefaultKey"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorMaxAccessKeys"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorAtLeastOneKey"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorTimeout"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorInvalidArgument"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorUnavailable"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorQueryFailed"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorIntentStatus"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorIntentProtocolDeprecated"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorNotFound"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorUnsupportedNetwork"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorClientOutdated"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorIntentsSkipped"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorQuoteExpired"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorHighPriceImpact"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorIntentsDisabled"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorWebrpcBadResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorWebrpcServerPanic"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorWebrpcInternalError"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorUnexpected"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ErrorChainNodeHealth"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rpc/Trails/ExecuteIntentEdge": {
+      "post": {
+        "operationId": "Trails-ExecuteIntentEdge",
+        "tags": [
+          "Trails"
+        ],
+        "summary": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecuteIntentEdgeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecuteIntentEdgeResponse"
                 }
               }
             }

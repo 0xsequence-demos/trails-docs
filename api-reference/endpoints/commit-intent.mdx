@@ -3,6 +3,10 @@ title: CommitIntent
 openapi: ../trails-api.gen.json post /rpc/Trails/CommitIntent
 ---
 
+<Warning>
+**Deprecated for new integrations.** As of `0xtrails@0.18.0`, the SDK skips `CommitIntent` and calls [`ExecuteIntent`](/api-reference/endpoints/execute-intent) directly on a `QUOTED` intent (or [`ExecuteIntentEdge`](/api-reference/endpoints/execute-intent-edge) for origin-mode edge intents). The endpoint stays behaviorally stable for existing integrations that still call it.
+</Warning>
+
 ## Overview
 
 The `CommitIntent` endpoint commits an intent to the Trails system, reserving the quote and preparing it for execution. This is a required step between getting a quote and executing the transaction.
