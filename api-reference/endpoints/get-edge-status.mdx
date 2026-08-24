@@ -16,9 +16,12 @@ The `GetEdgeStatus` endpoint returns the current status of an edge rail leg crea
 ## Response
 
 - **status** (string): The edge rail status. Maps to the `EdgeStatus` enum values: `PENDING`, `DEPOSITED`, `FILLED`, `REFUNDED`, `FAILED`.
-- **initTransactionHash** (string, optional): The transaction hash that initiated the edge leg (deposit on the non-EVM origin chain, or handoff transfer for destination mode).
-- **fillTransactionHash** (string, optional): The transaction hash that filled the edge leg.
-- **refundTransactionHash** (string, optional): The transaction hash that refunded the edge leg when it could not be filled.
+- **initTransactionHash** (string, optional): The Relay deposit (origin-side) transaction hash — on the rail chain when `mode = ORIGIN`, on the EVM handoff chain when `mode = DESTINATION`. Pair it with `initChainId`, never with the rail chain unconditionally.
+- **initChainId** (number, optional): Chain the init transaction executed on (Relay's origin side).
+- **fillTransactionHash** (string, optional): The Relay fill (destination-side) transaction hash — on the rail chain when `mode = DESTINATION`, on the intent's EVM origin chain when `mode = ORIGIN`. Pair it with `fillChainId`.
+- **fillChainId** (number, optional): Chain the fill transaction executed on (Relay's destination side).
+- **refundTransactionHash** (string, optional): The Relay refund transaction hash. Refunds return on Relay's origin side (same chain as the init transaction). Pair it with `refundChainId`.
+- **refundChainId** (number, optional): Chain the refund transaction executed on (Relay's origin side).
 - **transactionStates** (array, optional): Detailed per-transaction state info.
 - **failReason** (string, optional): Populated when the edge rail failed.
 

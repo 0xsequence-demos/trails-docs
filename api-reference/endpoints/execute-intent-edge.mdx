@@ -1,0 +1,88 @@
+---
+title: ExecuteIntentEdge
+openapi: ../trails-api.gen.json post /rpc/Trails/ExecuteIntentEdge
+---
+
+## Overview
+
+The `ExecuteIntentEdge` endpoint arms an origin-mode edge intent — a cross-chain intent whose origin is a non-EVM chain (Solana or Tron) quoted through [`QuoteIntentEdge`](/api-reference/endpoints/quote-intent-edge). Arming is the client's "user is proceeding" signal and starts server-side monitoring of the external rail: once Trails observes the deposit fill, execution completes without any further client call.
+
+Call `ExecuteIntentEdge` **before** the user pays on the edge chain. No deposit hash is attached — the fill is discovered server-side. Re-arming an already-armed intent is an idempotent success.
+
+## When to use it
+
+- **Origin-mode edge intents** (Solana → EVM, Tron → EVM): call this after `QuoteIntentEdge` and before prompting the user to sign on the edge chain.
+- **Destination-mode edge intents** (EVM → Solana, EVM → Tron): do **not** call this. Destination-mode arming happens atomically inside [`ExecuteIntent`](/api-reference/endpoints/execute-intent) when the origin transaction is submitted.
+- **Non-edge intents** (EVM → EVM): call [`ExecuteIntent`](/api-reference/endpoints/execute-intent) directly.
+
+## Request Parameters
+
+### Required Fields
+
+- **intentId** (string): The unique identifier returned from `QuoteIntentEdge`. The edge quote is resolved and validated server-side from the intent; no `edgeId` is required here.
+
+## Response
+
+- **intentId** (string): The intent identifier.
+- **intentStatus** (`IntentStatus`): The current intent status. Arming does not itself transition the intent — the intent stays in a pre-execution status (typically `QUOTED`) until the edge monitor observes the fill and internally invokes `ExecuteIntent`.
+
+## Example
+
+```typescript
+import { TrailsApi } from '@0xtrails/api'
+
+const trailsApi = new TrailsApi('YOUR_API_KEY')
+
+// 1. Quote an edge intent (e.g. Solana → Base)
+const { intent, edgeId } = await trailsApi.quoteIntentEdge({
+  intent: {
+    ownerAddress: '0x0709CF2d5D4f3D38f5948d697fE64d7FB3639Eb1',
+    originChainId: 0,
+    destinationChainId: 8453,
+    destinationTokenAddress: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+    destinationToAddress: '0x0709CF2d5D4f3D38f5948d697fE64d7FB3639Eb1',
+    destinationTokenAmount: 100000000n,
+  },
+  edge: {
+    rail: 'SOLANA',
+    mode: 'ORIGIN',
+    originChainId: 1399811149,
+    originAddress: 'AbC...',
+    originTokenAddress: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+  },
+})
+
+// 2. Arm the intent before the user pays on Solana
+await trailsApi.executeIntentEdge({ intentId: intent.id })
+
+// 3. Prompt the user to sign the Solana deposit
+//    (the server watches for the fill and completes execution)
+
+// 4. Track completion
+const receipt = await trailsApi.waitIntentReceipt({ intentId: intent.id })
+```
+
+## Errors
+
+- **`ErrInvalidArgument`**: `intentId` is missing, the intent has no origin edge quote, or the edge quote is in a terminal state.
+- **`ErrNotFound`**: The intent does not exist.
+- **`ErrIntentStatus`**: The intent is no longer in a pre-execution status (already executing, aborted, or completed).
+- **`ErrQuoteExpired`**: The quote's validity window has elapsed. Request a fresh quote and arm again.
+- **`ErrIntentsDisabled`**: Intents are disabled on this deployment.
+
+## Notes
+
+<Info>
+`ExecuteIntentEdge` replaces the arming behavior of the deprecated [`CommitIntent`](/api-reference/endpoints/commit-intent) call for edge intents in the SDK send flow.
+</Info>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="GetEdgeStatus" icon="signal" href="/api-reference/endpoints/get-edge-status">
+    Track the external rail leg's status
+  </Card>
+  <Card title="WaitIntentReceipt" icon="clock" href="/api-reference/endpoints/wait-intent-receipt">
+    Stream the inner intent's receipt updates
+  </Card>
+</CardGroup>
