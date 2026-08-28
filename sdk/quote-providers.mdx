@@ -23,6 +23,7 @@ Trails integrates with multiple liquidity sources and bridge providers to find t
 - **`WETH`**: Wrap/unwrap ETH ↔ WETH on the same chain
 - **`SOMNIA_EXCHANGE`**: Uses Somnia Exchange for swaps on Somnia
 - **`SOMNIA_SWAP`**: Uses Somnia Swap for swaps on Somnia
+- **`EVERLONG`**: Uses Everlong for same-chain swaps on Katana
 
 ## Configuration
 
@@ -182,6 +183,18 @@ Native swap providers on Somnia (chain id `5031`). Used for on-chain swaps withi
 ```tsx
 <Swap apiKey="YOUR_API_KEY" swapProvider="SOMNIA_EXCHANGE" />
 <Swap apiKey="YOUR_API_KEY" swapProvider="SOMNIA_SWAP" />
+```
+
+### Everlong
+
+Native swap provider on Katana (chain id `747474`). Used for same-chain swaps between Everlong-listed tokens.
+
+- Same-chain swaps only; not used for bridging
+- Exact-input (`tradeType: "EXACT_INPUT"`) only — exact-output is not supported
+- Requires explicit `swapProvider="EVERLONG"`; not currently selected by AUTO
+
+```tsx
+<Swap apiKey="YOUR_API_KEY" swapProvider="EVERLONG" />
 ```
 
 ## Best Practices
