@@ -59,19 +59,19 @@ const quoteResponse = await trailsApi.quoteIntent({
     }
 })
 
-// Commit the intent
-const { intentId } = await trailsApi.commitIntent({
-  intent: quoteResponse.intent
-})
-
-// Execute the intent
+// Execute the intent directly from QUOTED — no separate commit step
+const { intent } = quoteResponse
 await trailsApi.executeIntent({
-  intentId
+  intentId: intent.intentId
 })
 
 // Monitor completion
-const receipt = await trailsApi.waitIntentReceipt({ intentId })
+const receipt = await trailsApi.waitIntentReceipt({ intentId: intent.intentId })
 ```
+
+<Note>
+For Solana or Tron origins, use `trailsApi.quoteIntentEdge()` and `trailsApi.executeIntentEdge()` instead. See [ExecuteIntentEdge](/api-reference/endpoints/execute-intent-edge).
+</Note>
 
 ## TypeScript Support
 
@@ -82,8 +82,9 @@ The SDK is written in TypeScript and includes complete type definitions for all 
 All SDK methods correspond directly to the Trails API endpoints. For detailed information about request parameters, response formats, and advanced options, refer to the endpoint documentation:
 
 - [QuoteIntent](/api-reference/endpoints/quote-intent) - Get quotes for cross-chain transactions
-- [CommitIntent](/api-reference/endpoints/commit-intent) - Lock in rates
-- [ExecuteIntent](/api-reference/endpoints/execute-intent) - Execute transactions
+- [ExecuteIntent](/api-reference/endpoints/execute-intent) - Execute a quoted intent (EVM origin)
+- [ExecuteIntentEdge](/api-reference/endpoints/execute-intent-edge) - Arm a Solana or Tron origin edge intent for execution
+- [CommitIntent](/api-reference/endpoints/commit-intent) - Legacy commit step (deprecated for new integrations)
 - [WaitIntentReceipt](/api-reference/endpoints/wait-intent-receipt) - Monitor completion
 - [GetIntent](/api-reference/endpoints/get-intent) - Retrieve intent details
 - [GetIntentReceipt](/api-reference/endpoints/get-intent-receipt) - Get transaction receipt

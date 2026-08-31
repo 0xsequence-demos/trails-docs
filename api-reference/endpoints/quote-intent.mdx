@@ -98,12 +98,16 @@ console.log('Quote:', quote);
 ## Quote Expiration
 
 <Warning>
-Quotes expire **5 minutes** after being issued. You must commit the intent using `CommitIntent` before the quote expires, or you'll need to request a new quote.
+Quotes expire **5 minutes** after being issued. You must call `ExecuteIntent` (or `ExecuteIntentEdge` for a Solana/Tron origin) before the quote expires, or you'll need to request a new quote.
 </Warning>
 
 ## Next Steps
 
 After receiving a quote:
-1. Review the quote details, fees, and estimated amounts
-2. Use `CommitIntent` to commit the intent before the quote expires (5-minute window)
+1. Review the quote details, fees, and estimated amounts.
+2. Call [`ExecuteIntent`](/api-reference/endpoints/execute-intent) with the `intent.intentId` from the response to execute directly from `QUOTED`. For a Solana or Tron origin, call [`ExecuteIntentEdge`](/api-reference/endpoints/execute-intent-edge) first to arm fill monitoring, then have the user deposit on the edge chain.
+
+<Note>
+`CommitIntent` is deprecated for new integrations. Existing callers may still commit before executing; new integrations should skip it and call `ExecuteIntent` directly on the quoted intent. See [CommitIntent](/api-reference/endpoints/commit-intent) for details.
+</Note>
 

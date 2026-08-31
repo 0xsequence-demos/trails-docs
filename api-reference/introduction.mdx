@@ -113,28 +113,16 @@ Use `EXACT_INPUT` when you know how much you want to spend, and `EXACT_OUTPUT` w
   </Step>
 
   <Step>
-    ### Commit the Intent
-    Lock in the quote by committing the intent with the fetched contract addresses. This reserves the rates.
+    ### (Legacy) Commit the Intent
 
-```typescript
-const commitResponse = await fetch('https://trails-api.sequence.app/rpc/Trails/CommitIntent', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-Access-Key': 'YOUR_ACCESS_KEY'
-  },
-  body: JSON.stringify({ intent })
-});
+    <Note>
+    `CommitIntent` is deprecated for new integrations. New integrations skip this step and call `ExecuteIntent` directly on the quoted intent — `ExecuteIntent` accepts `QUOTED` intents and folds in the same validation `CommitIntent` used to perform. Existing callers may still commit before executing.
+    </Note>
 
-const { intentId } = await commitResponse.json();
-
-console.log('Intent committed:', intentId);
-```
-
-You cannot change the contents of the intent, or the server will reject the commit. The `intent` object contains everything needed to relay and execute the intent.
+    The `intent` object contains everything needed to execute the intent and the server rejects mutated payloads, so pass it back unchanged.
 
 <Warning>
-Quotes expire **5 minutes** after being issued. Once committed, you have **10 minutes** to call `ExecuteIntent`. If either window expires, you'll need to request a new quote.
+Quotes expire **5 minutes** after being issued. Call `ExecuteIntent` (or `ExecuteIntentEdge` for Solana/Tron origins) within this window, or request a new quote. Legacy callers that commit first have **10 minutes** after commit to execute.
 </Warning>
   </Step>
 
@@ -549,11 +537,11 @@ Quotes have strict time limits:
 | Stage | Time Limit | What Happens |
 |-------|------------|--------------|
 | Quote validity | 5 minutes | Quote expires, request a new one |
-| After CommitIntent | 10 minutes | Must call ExecuteIntent within this window |
-| Intent execution | N/A | Trails handles execution timing |
+| After ExecuteIntent / ExecuteIntentEdge | N/A | Trails handles execution timing |
+| Legacy: After CommitIntent | 10 minutes | Must call ExecuteIntent within this window |
 
 <Tip>
-Always check quote expiration before committing. The `intent.expiresAt` timestamp indicates when the quote becomes invalid.
+Always check quote expiration before executing. The `intent.expiresAt` timestamp indicates when the quote becomes invalid.
 </Tip>
 
 ## Rate Limiting

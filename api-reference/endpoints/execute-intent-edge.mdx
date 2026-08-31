@@ -1,0 +1,85 @@
+---
+title: ExecuteIntentEdge
+openapi: ../trails-api.gen.json post /rpc/Trails/ExecuteIntentEdge
+---
+
+## Overview
+
+The `ExecuteIntentEdge` endpoint arms an origin-mode edge intent (Solana or Tron origin) for execution. It flips the intent's edge status so the server-side edge monitor begins watching for the Relay fill on the edge chain and completes execution on the EVM side once funds arrive.
+
+Call it **before** the user pays on the edge chain. `ExecuteIntentEdge` takes only the `intentId` — no deposit hash, no `edgeId`. The edge quote is resolved and validated from the intent, and the fill transaction hash is discovered server-side.
+
+<Note>
+This endpoint is idempotent. Re-arming an already-armed intent succeeds and returns the current status.
+</Note>
+
+## When to use
+
+- Solana → EVM payment (edge as origin)
+- Tron → EVM payment (edge as origin)
+
+For EVM origins, call [`ExecuteIntent`](/api-reference/endpoints/execute-intent) instead. For EVM → Solana or EVM → Tron (edge as destination), the origin call is a plain EVM intent — use `ExecuteIntent` there too.
+
+## Request Parameters
+
+### Required Fields
+
+- **intentId** (string): The intent identifier from `QuoteIntentEdgeResponse.intent.intentId`
+
+## Response
+
+- **intentId** (string): The intent identifier
+- **intentStatus** (IntentStatus): The current intent status after arming
+
+## Edge Intent Lifecycle
+
+```
+QuoteIntentEdge → ExecuteIntentEdge → user deposits on edge chain
+                                    → server observes Relay fill
+                                    → EVM execution + Receipt
+```
+
+Because the edge deposit is initiated by the user's Solana/Tron wallet, no deposit hash is sent to the API. The server correlates the arrival on the EVM side against the Relay bridge and progresses the intent automatically.
+
+## Example
+
+```typescript
+import { TrailsApi } from '@0xtrails/api'
+
+const trailsApi = new TrailsApi('YOUR_API_KEY')
+
+// Step 1: Quote the edge intent
+const { intent, gasFeeOptions, edge } = await trailsApi.quoteIntentEdge({
+  intent: quoteRequest,
+  edge: { rail: 'SOLANA', mode: 'ORIGIN', tokenAddress: '...', userAddress: '...' },
+})
+
+// Step 2: Arm the edge monitor before the user pays on the edge chain
+const { intentStatus } = await trailsApi.executeIntentEdge({
+  intentId: intent.intentId,
+})
+
+// Step 3: Prompt the user to sign the edge deposit with their Solana / Tron wallet
+//         (handled by the SDK's edge adapters — see 0xtrails/svm or 0xtrails/tvm)
+
+// Step 4: Monitor completion
+const receipt = await trailsApi.waitIntentReceipt({ intentId: intent.intentId })
+```
+
+## Timing Requirements
+
+<Warning>
+Arm the intent within the quote's expiration window (**5 minutes** from `QuoteIntentEdge`). After arming, the user must complete the edge deposit before the intent's overall expiry, otherwise the intent refunds.
+</Warning>
+
+## Errors
+
+- **QuoteExpired** — the quoted edge intent expired before arming
+- **IntentStatus** — the intent is not in a state that permits arming (already executing, terminal, or unknown)
+- **InvalidArgument** — the intent is not an origin-mode edge intent
+
+## Next Steps
+
+- Track the external bridge hop with [`GetEdgeStatus`](/api-reference/endpoints/get-edge-status)
+- Poll or stream the intent receipt with [`WaitIntentReceipt`](/api-reference/endpoints/wait-intent-receipt)
+- Discover currently-enabled edge rails with [`GetEdges`](/api-reference/endpoints/get-edges)

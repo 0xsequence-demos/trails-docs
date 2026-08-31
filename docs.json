@@ -146,6 +146,7 @@
               "api-reference/endpoints/quote-intent-edge",
               "api-reference/endpoints/commit-intent",
               "api-reference/endpoints/execute-intent",
+              "api-reference/endpoints/execute-intent-edge",
               "api-reference/endpoints/get-intent-receipt",
               "api-reference/endpoints/wait-intent-receipt",
               "api-reference/endpoints/get-edge-status",
