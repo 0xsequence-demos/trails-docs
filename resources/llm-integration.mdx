@@ -291,9 +291,10 @@ async function handlePaymentTool(params: {
   };
 }
 
-// After user confirms, commit and execute
+// After user confirms, execute the quoted intent directly.
+// CommitIntent is deprecated — ExecuteIntent accepts QUOTED intents.
 async function executePayment(intent: any, signature: string) {
-  const { intentId } = await trails.commitIntent({ intent });
+  const intentId = intent.intentId;
 
   const { intentStatus } = await trails.executeIntent({
     intentId,
