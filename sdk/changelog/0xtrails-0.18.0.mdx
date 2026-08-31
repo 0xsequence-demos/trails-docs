@@ -1,0 +1,80 @@
+---
+title: "0xtrails@0.18.0"
+description: "Release notes for the 0xtrails SDK v0.18.0 — Tron edge support and a simplified intent lifecycle"
+---
+
+_Released August 18, 2026_
+
+Two headline changes in this release: **Tron (TVM) support** joins Solana as an [edge rail](/architecture/edge-alt-vms), and the **intent lifecycle drops the separate commit step** — new integrations execute directly on a quoted intent.
+
+## Highlights
+
+- **Tron (TVM) support** — pay *from* Tron with the new [`@0xtrails/tvm`](https://www.npmjs.com/package/@0xtrails/tvm) adapter, auto-detecting TronLink and other TIP-6963 wallets.
+- **Direct execution from `QUOTED`** — `send()` calls `ExecuteIntent` right after quoting; `CommitIntent` is no longer invoked in the send flow. `useCommitIntent` and `skipCommit` remain exported but deprecated.
+- **`ExecuteIntentEdge` RPC** — the new arm step for Solana / Tron origin flows. `send()` calls it internally before the edge deposit, replacing the old `CommitIntent` call on the edge path. See the [ExecuteIntentEdge](/api-reference/endpoints/execute-intent-edge) endpoint reference.
+- **Composable `actions` on `TrailsWidget`** — widget payment forms now forward destination `actions` so composable destination calls execute instead of falling back to a plain payment transfer.
+
+## Introducing Tron
+
+Tron is Trails' second **edge chain**, following the same [edge rail](/architecture/edge-alt-vms) model as Solana: the intent is anchored in EVM orchestration and the Tron leg sits at the edge as the origin the user funds from. Paying **to** Tron via the edge destination path continues to be supported via Relay.
+
+### Add it to your widget
+
+```tsx
+import { TrailsWidget, evmAdapter } from '0xtrails'
+import { tronAdapter } from '@0xtrails/tvm'
+
+<TrailsWidget
+  apiKey="YOUR_API_KEY"
+  adapters={[
+    evmAdapter({ wallets: [{ id: 'injected', name: 'MetaMask' }] }),
+    tronAdapter(),
+  ]}
+  renderInline
+/>
+```
+
+<Note>
+`@0xtrails/tvm` pulls in TronWeb, which references Node's `Buffer` at module-evaluation time. Add a `Buffer` polyfill to your app entry before importing the adapter — see the [`@0xtrails/tvm` README](https://www.npmjs.com/package/@0xtrails/tvm) for the two-line polyfill and Vite alternative.
+</Note>
+
+For the current list of edge chains, see [Supported Chains → Edge Chains](/resources/supported-chains#edge-chains).
+
+## Simplified intent lifecycle
+
+Before 0.18.0, the SDK ran `QuoteIntent → CommitIntent → ExecuteIntent`. As of 0.18.0:
+
+- **EVM flows** — `send()` calls `ExecuteIntent` on the quoted intent directly. No `CommitIntent`.
+- **Edge flows (Solana, Tron)** — `send()` calls the new `ExecuteIntentEdge(intentId)` to arm fill monitoring server-side, then prompts the user to deposit on the edge chain. The Relay fill and downstream EVM execution are server-owned.
+
+### What's still exported (but deprecated)
+
+- `useCommitIntent` — the mutation hook
+- `commitIntent` — the low-level helper
+- `commitIntentFn` — the `send()` option
+- `skipCommit` — the `send()` option
+
+None of these are invoked by the SDK any more. They remain exported so existing integrations keep compiling; migrate at your own pace.
+
+### Server requirements
+
+Requires a trails-api deployment that executes `QUOTED` intents (i.e. supports `ExecuteIntentEdge`). If you self-host trails-api, deploy the release tagged for 0xtrails 0.18.0 or newer.
+
+## Migration checklist
+
+- Remove any explicit `commitIntent` call before `executeIntent` — pass the quoted `intent.intentId` directly to `useExecuteIntent` or `trailsApi.executeIntent`.
+- Delete the `skipCommit` and `commitIntentFn` `send()` options if you passed them.
+- For Solana/Tron origin flows via direct API integration, replace the old `CommitIntent` call with [`ExecuteIntentEdge`](/api-reference/endpoints/execute-intent-edge) before the edge deposit.
+- If you use `TrailsWidget` with composable destination `actions`, no change — they now propagate through payment forms.
+
+## Patch updates (0.18.1 / 0.18.2)
+
+- **0.18.1** — publish `dist` in `@0xtrails/api` after the changesets v3 upgrade.
+- **0.18.2** — small fix on the Tron connector; correct EIP-6963 provider misattribution when providers advertise unknown `rdns` via flag selectors.
+
+## Related documentation
+
+- [ExecuteIntentEdge endpoint reference](/api-reference/endpoints/execute-intent-edge)
+- [CommitIntent (deprecated) reference](/api-reference/endpoints/commit-intent)
+- [Edge & Alternative VMs](/architecture/edge-alt-vms)
+- [Adapters overview](/sdk/adapters/overview)

@@ -1627,18 +1627,24 @@ type UseIntentRecoverWithSignatureReturn = {
 
 ## useCommitIntent / useExecuteIntent
 
-Mutation hooks for committing and executing intents. These are lower-level hooks for advanced users who need direct control over the intent lifecycle.
+Mutation hooks for the intent lifecycle. These are lower-level hooks for advanced users who need direct control.
 
 ```ts
 import { useCommitIntent, useExecuteIntent } from '0xtrails'
 ```
 
-### useCommitIntent
+<Warning>
+**`useCommitIntent` is deprecated as of 0xtrails 0.18.0.** New integrations call `useExecuteIntent` directly on the intent returned from `useQuote` — `ExecuteIntent` accepts `QUOTED` intents and folds in the same validation. The hook remains exported for legacy callers.
+
+For Solana or Tron origin flows, `send()` now arms the intent via the server's new `ExecuteIntentEdge` RPC internally. Use the widget or `useTrailsSendTransaction` — the deprecated `commitIntentFn` / `skipCommit` options are no longer invoked.
+</Warning>
+
+### useCommitIntent (deprecated)
 
 ```tsx
 const { mutate: commitIntent, isPending, isError, error, data } = useCommitIntent()
 
-// Commit an intent
+// Legacy: commit an intent before executing
 commitIntent(intent)
 ```
 
@@ -1647,7 +1653,7 @@ commitIntent(intent)
 ```tsx
 const { mutate: executeIntent, isPending, isError, error, data } = useExecuteIntent()
 
-// Execute an intent with deposit signature
+// Execute the quoted intent directly (no commit step needed)
 executeIntent({
   intent,
   depositSignature,
@@ -1729,9 +1735,13 @@ type TrailsFee = {
 }
 ```
 
-### commitIntent
+### commitIntent (deprecated)
 
-Commits an intent to the blockchain.
+<Warning>
+Deprecated as of 0xtrails 0.18.0. Skip this call entirely — pass the quoted intent to `sendOriginTransaction` (or use the widget hooks) and the SDK routes to `ExecuteIntent` / `ExecuteIntentEdge` on its own.
+</Warning>
+
+Legacy commit helper. Committed to the API, not the blockchain — the deprecated `CommitIntent` RPC still validates a quoted intent and transitions it from `QUOTED` to `COMMITTED` for callers that have not migrated.
 
 **Signature**: `(params: CommitIntentParams) => Promise<CommitIntentResult>`
 
