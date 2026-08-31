@@ -6,6 +6,10 @@ description: "Release notes and migration notes for the 0xtrails SDK"
 Track SDK releases, migration guidance, and notable changes.
 
 <CardGroup cols={1}>
+  <Card title="0xtrails@0.18.0" icon="tag" href="/sdk/changelog/0xtrails-0.18.0">
+    August 18, 2026 · Tron edge support arrives via the new `@0xtrails/tvm` adapter, and the intent lifecycle drops `CommitIntent` —
+    new integrations call `ExecuteIntent` (or `ExecuteIntentEdge` for edge origins) directly on a quoted intent.
+  </Card>
   <Card title="0xtrails@0.17.0" icon="tag" href="/sdk/changelog/0xtrails-0.17.0">
     July 21, 2026 · Solana support arrives — pay from and to Solana via edge rails with the new `@0xtrails/svm` adapter, plus gasless
     transactions and new bridge providers.
