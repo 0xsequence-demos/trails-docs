@@ -196,19 +196,10 @@ const quoteResponse = await fetch('https://trails-api.sequence.app/rpc/Trails/Qu
 
 const { intent } = await quoteResponse.json()
 const intentAddress = intent.depositTransaction.toAddress
+const intentId = intent.intentId
 
-const commitResponse = await fetch('https://trails-api.sequence.app/rpc/Trails/CommitIntent', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-Access-Key': 'YOUR_ACCESS_KEY',
-  },
-  body: JSON.stringify({ intent }),
-})
-
-const { intentId } = await commitResponse.json()
-
-// Ask the user to deposit to the intent address, then execute
+// Ask the user to deposit to the intent address, then execute directly from QUOTED
+// (no separate CommitIntent step — that call is deprecated for new integrations)
 const executeResponse = await fetch('https://trails-api.sequence.app/rpc/Trails/ExecuteIntent', {
   method: 'POST',
   headers: {
@@ -224,7 +215,7 @@ const executeResponse = await fetch('https://trails-api.sequence.app/rpc/Trails/
 </CodeGroup>
 
 <Note>
-Quotes expire after **10 minutes**.
+Quotes expire after **5 minutes**. Call `ExecuteIntent` before that window closes or request a new quote. For a Solana or Tron origin, call [`ExecuteIntentEdge`](/api-reference/endpoints/execute-intent-edge) instead — it arms the server-side fill monitor before the user pays on the edge chain.
 </Note>
 
 ## Next steps
