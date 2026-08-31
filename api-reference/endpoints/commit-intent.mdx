@@ -3,15 +3,18 @@ title: CommitIntent
 openapi: ../trails-api.gen.json post /rpc/Trails/CommitIntent
 ---
 
+<Warning>
+**Deprecated for new integrations.** `CommitIntent` remains behaviorally stable for existing callers, but new integrations should call [`ExecuteIntent`](/api-reference/endpoints/execute-intent) directly on a `QUOTED` intent. For a Solana or Tron origin, arm fill monitoring with [`ExecuteIntentEdge`](/api-reference/endpoints/execute-intent-edge) instead.
+</Warning>
+
 ## Overview
 
-The `CommitIntent` endpoint commits an intent to the Trails system, reserving the quote and preparing it for execution. This is a required step between getting a quote and executing the transaction.
+The `CommitIntent` endpoint validates a quoted intent, atomically arms origin edge quotes, and transitions the intent from `QUOTED` to `COMMITTED`. New clients skip this step — `ExecuteIntent` accepts `QUOTED` intents directly and folds in the same validation.
 
 ## Use Cases
 
-- Lock in a quote before execution
-- Prepare the intent for signing and execution
-- Transition from quoted to committed state and preparing a deposit intent address
+- Legacy integrations that still separate the commit step from execution
+- Preserving compatibility with older SDKs that call `CommitIntent` before `ExecuteIntent`
 
 ## Request Parameters
 
@@ -27,14 +30,19 @@ The response includes:
 
 ## Intent Lifecycle
 
+Legacy flow (existing callers):
+
 ```
 QuoteIntent → CommitIntent → ExecuteIntent → Receipt
 ```
 
-The `CommitIntent` step is crucial because it:
-1. Reserves the quoted rates
-2. Locks in the gas fee estimates
-3. Validates the intent parameters
+Current flow (new integrations):
+
+```
+QuoteIntent → ExecuteIntent → Receipt
+```
+
+For Solana/Tron origins, replace `ExecuteIntent` with `ExecuteIntentEdge` to arm fill monitoring before the user pays on the edge chain.
 
 ## Example
 
@@ -68,17 +76,17 @@ console.log('Intent committed:', intentId);
 ## Important Notes
 
 <Warning>
-Committed intents must be executed within **10 minutes**. Make sure to call `ExecuteIntent` before this window expires, or you'll need to get a new quote and commit again.
+Committed intents must be executed within **10 minutes**. Call `ExecuteIntent` before this window expires or the intent will expire and require a fresh quote.
 </Warning>
 
 <Info>
-The intent object from `QuoteIntent` should not be modified, otherwise the API will reject the commitment.
+The intent object from `QuoteIntent` must be forwarded unmodified — the server rejects mutated intents.
 </Info>
 
 ## Next Steps
 
 After committing an intent:
-1. Prepare the transaction signature using the provided intent details for the user to deposit into the intent address
-2. Execute the transaction with `ExecuteIntent`
-3. Monitor the transaction status with `WaitIntentReceipt`
+1. Prepare the transaction signature using the provided intent details for the user to deposit into the intent address.
+2. Execute the transaction with [`ExecuteIntent`](/api-reference/endpoints/execute-intent).
+3. Monitor the transaction status with [`WaitIntentReceipt`](/api-reference/endpoints/wait-intent-receipt).
 

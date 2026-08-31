@@ -5,11 +5,17 @@ openapi: ../trails-api.gen.json post /rpc/Trails/ExecuteIntent
 
 ## Overview
 
-The `ExecuteIntent` endpoint initiates the execution of a committed intent. This endpoint triggers the actual cross-chain transaction flow, including deposits, swaps, bridges, and destination calls.
+The `ExecuteIntent` endpoint initiates the execution of a quoted intent. It accepts intents directly out of `QuoteIntent` — no separate `CommitIntent` step is required for new integrations. Existing callers that still commit before executing continue to work unchanged.
+
+The call triggers the cross-chain transaction flow: deposit confirmation, swaps, bridges, and destination calls.
+
+<Note>
+For Solana or Tron origins, call [`ExecuteIntentEdge`](/api-reference/endpoints/execute-intent-edge) instead. `ExecuteIntent` covers the EVM-to-EVM path; the edge equivalent arms a Relay fill monitor and doesn't take a deposit hash — the server discovers it on-chain.
+</Note>
 
 ## Use Cases
 
-- Execute a committed cross-chain transaction
+- Execute a quoted cross-chain transaction
 - Initiate gasless transactions with deposit signatures
 - Trigger intent execution after deposit confirmation
 - Start the cross-chain bridging process
@@ -18,7 +24,7 @@ The `ExecuteIntent` endpoint initiates the execution of a committed intent. This
 
 ### Required Fields
 
-- **intentId** (string): The unique identifier returned from `CommitIntent`
+- **intentId** (string): The intent identifier — read from `QuoteIntentResponse.intent.intentId` (or the `intentId` returned by `CommitIntent` for legacy flows)
 
 ### Optional Fields
 
@@ -156,12 +162,9 @@ const quoteRequest = {
 const quoteResponse = await trailsApi.quoteIntent(quoteRequest);
 const { intent, gasFeeOptions } = quoteResponse;
 
-// Step 2: Commit
-const { intentId } = await trailsApi.commitIntent({ intent });
-
-// Step 3: Execute
+// Step 2: Execute directly from QUOTED (no separate commit step)
 const { intentStatus } = await trailsApi.executeIntent({
-    intentId,
+    intentId: intent.intentId,
     depositSignature: {
         intentSignature: await signIntent(intent),
         selectedGasFeeOption: gasFeeOptions.feeOptions[0],
@@ -172,15 +175,15 @@ const { intentStatus } = await trailsApi.executeIntent({
 
 console.log('Status:', intentStatus); // EXECUTING
 
-// Step 4: Monitor
-const receipt = await trailsApi.waitIntentReceipt({ intentId });
+// Step 3: Monitor
+const receipt = await trailsApi.waitIntentReceipt({ intentId: intent.intentId });
 console.log('Receipt:', receipt);
 ```
 
 ## Timing Requirements
 
 <Warning>
-You must call `ExecuteIntent` within **10 minutes** of committing the intent. If this window expires, the committed intent becomes invalid and you'll need to request a new quote and commit again.
+Call `ExecuteIntent` within the quote's expiration window (**5 minutes** from `QuoteIntent`). If the quote expires before execution, request a new quote and execute again. Legacy callers that committed first have **10 minutes** after `CommitIntent` to execute.
 </Warning>
 
 ## Error Handling
